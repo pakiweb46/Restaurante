@@ -1,0 +1,66 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <style type="text/css">
+      html { height: 100% }
+      body { height: 100%; margin: 0; padding: 0 }
+      #map_canvas { height: 100% }
+    </style>
+    <script type="text/javascript"
+      src="http://maps.googleapis.com/maps/api/js?v=3.exp&key=AIzaSyBmgD5niGEOZkabOgUW08mbt2yO8R_Zg3I&sensor=true">
+    </script>
+    
+    <script type="text/javascript">
+        var directionsDisplay;
+        var directionsService = new google.maps.DirectionsService();
+        var map;
+
+        function initialize() {
+            directionsDisplay = new google.maps.DirectionsRenderer();
+            var chicago = new google.maps.LatLng(41.850033, -87.6500523);
+            var mapOptions = {
+                zoom: 3,
+                mapTypeId: google.maps.MapTypeId.ROADMAP,
+                center: chicago
+            }
+            map = new google.maps.Map(document.getElementById("map_canvas"), mapOptions);
+            directionsDisplay.setMap(map);
+            calcRoute();
+        }
+        function calcRoute() {
+            var start = "Jahnplatz 2a, Hannover";
+            var end = unescape(getUrlVars()["Ziel"]);
+            
+            var request = {
+                origin: start,
+                destination: end,
+                travelMode: google.maps.TravelMode.DRIVING
+            };
+            directionsService.route(request, function (result, status) {
+                if (status == google.maps.DirectionsStatus.OK) {
+                    directionsDisplay.setDirections(result);
+                }
+                else if(status==google.maps.DirectionsStatus.NOT_FOUND) {
+                    alert("Die Strasse könnte nicht gefunden werden"+ status);
+                }
+            });
+        }
+        function getUrlVars() {
+            var vars = {};
+            var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function (m, key, value) {
+                vars[key] = value;
+            });
+            return vars;
+        }
+
+    </script>
+ 
+  
+    <title>Google Map Address Finder</title>
+</head>
+<body onload="initialize()">
+    <div id="map_canvas" style="width:100%; height:100%"></div>
+   <input name="RRR"  value="Heisenberg str.09" type="hidden" />
+</body>
+</html>
