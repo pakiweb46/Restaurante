@@ -1,13 +1,8 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using LieferDienst;
 namespace Restaurante
 {
 
@@ -15,7 +10,7 @@ namespace Restaurante
     // TODO::IMprovements 2. Function Names to either Englisch or German
     public partial class frmBestellung : Form
     {
-        static string connStr = Class1.connString;
+        static string connStr = Globals.connString;
         MySqlConnection conn = new MySqlConnection(connStr);
         MySqlCommand cmd;
         public int a5index = 0;
@@ -58,14 +53,14 @@ namespace Restaurante
             tbTotalMwst.Text = String.Format("{0:0.00}", MwstAnfahrt);
             LoadOptionVariable();
             listView1.Enabled = false;
-            button1.Enabled = false;
+            btnDrucken.Enabled = false;
             KeyPreview = true;
             this.KeyDown += new KeyEventHandler(frmBestellung_KeyDown);
             tbArtikel.Focus();
         }
-        private void LoadOptionVariable()
+        private void LoadOptionVariable() // TODO::Othere implementation required instead of Option variables
         {
-               if (conn.State.ToString() == "Closed")
+            if (conn.State.ToString() == "Closed")
                 conn.Open();
                // var_var takes two prints=1 means two zettel
             string sql = "Select var_value from dbbari.option_variable where var_name='two_print';";
@@ -100,8 +95,8 @@ namespace Restaurante
         {
             if (e.KeyCode == Keys.F3)
             {
-                if (button1.Enabled == true) // Drucken
-                    button1.PerformClick();
+                if (btnDrucken.Enabled == true) // Drucken
+                    btnDrucken.PerformClick();
 
             }
             else if (e.KeyCode == Keys.F10)
@@ -433,7 +428,7 @@ namespace Restaurante
                 tbTotalMwst.Text = (grundmwst.ToString());
 
 
-                button1.Enabled = true;
+                btnDrucken.Enabled = true;
                 listView1.Enabled = true;
                 if (pfand == "PFAND1")
                     pfandAdd("PFAND1");
@@ -906,7 +901,7 @@ namespace Restaurante
 
             return returnvalue;
         }
-        private void button1_Click(object sender, EventArgs e)
+        private void btnDrucken_Click(object sender, EventArgs e)
         {
             BestellNr = getBestellNr(System.DateTime.Now.ToShortDateString());
             Zettel_Drucken(); // Save and print the reciept
@@ -1051,19 +1046,19 @@ namespace Restaurante
 
                         // TODO :: move it to some center place or global Class and also 
                         // condition with there ID Would be better
-                        obj.Title_Text = "Tamarinde";  
-                        obj.Addresse_Text_Line1 = "Grubenstr. 7 - 18055 Rostock ";
-                        obj.Addresse_Text_Line2 = " Tel. : 0381 21055633";
-                        obj.Addresse_Text_Line3 = "Tel2. : ";
-                        obj.Oeffenung_Text_Line1 = "Fax : ";
+                        obj.Title_Text = Globals.TITLE_NAME;  
+                        obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                        obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                        obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                        obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
                     }
                     else
                     {
-                        obj.Title_Text = "Tamarinde";
-                        obj.Addresse_Text_Line1 = "Grubenstr. 7 - 18055 Rostock";
-                        obj.Addresse_Text_Line2 = " Tel. 0381 21055633";
-                        obj.Addresse_Text_Line3 = "Tel2. ";
-                        obj.Oeffenung_Text_Line1 = "";
+                        obj.Title_Text = Globals.TITLE_NAME;
+                        obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                        obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                        obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                        obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
                     } 
                     obj.Bestellung_Text = "Bestellung - " +BestellNr+" - "+ System.DateTime.Now.ToShortDateString() + " " + System.DateTime.Now.ToShortTimeString();
                     obj.KundenName_Text = KundenName;
@@ -1229,7 +1224,7 @@ namespace Restaurante
                 txtRabatt.Text = ((Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100).ToString();
                 txtDifference.Text = (Convert.ToDouble(tbGesamt.Text) - Convert.ToDouble(txtRabatt.Text)).ToString();
                 tbTotalMwst.Text = (Convert.ToDouble(tbTotalMwst.Text) + tempMwst).ToString();
-                button1.Enabled = true;
+                btnDrucken.Enabled = true;
                 PerformClear();
 
                 tbArtikel.Focus();
@@ -1390,7 +1385,7 @@ namespace Restaurante
   //              tbTotalMwst.Text = (Convert.ToDouble(tbTotalMwst.Text) + tempMwst).ToString();
                 txtRabatt.Text = ((Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100).ToString();
                 txtDifference.Text = (Convert.ToDouble(tbGesamt.Text) - Convert.ToDouble(txtRabatt.Text)).ToString();
-                button1.Enabled = true;
+                btnDrucken.Enabled = true;
                 PerformClear();
                 tbArtikel.Focus();
 
@@ -1545,7 +1540,7 @@ namespace Restaurante
                     tbTotalMwst.Text = (Convert.ToDouble(tbTotalMwst.Text) + tempMwst).ToString();
                    txtRabatt.Text= ((Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100).ToString();
                    txtDifference.Text = (Convert.ToDouble(tbGesamt.Text) - Convert.ToDouble(txtRabatt.Text)).ToString();
-                button1.Enabled = true;
+                btnDrucken.Enabled = true;
                 PerformClear();
 
             }
@@ -1633,7 +1628,7 @@ namespace Restaurante
                     txtRabatt.Text = ((Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100).ToString();
                     txtDifference.Text = (Convert.ToDouble(tbGesamt.Text) - Convert.ToDouble(txtRabatt.Text)).ToString();
                     
-               button1.Enabled = true;
+               btnDrucken.Enabled = true;
                PerformClear();
 
 
@@ -1747,7 +1742,7 @@ namespace Restaurante
                 txtRabatt.Text = ((Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100).ToString();
              
                 tbTotalMwst.Text = (grundmwst + zutatmwst).ToString();
-                button1.Enabled = true;
+                btnDrucken.Enabled = true;
                 PerformClear();
 
             }
@@ -1865,7 +1860,7 @@ namespace Restaurante
 
             
                 tbTotalMwst.Text = (grundmwst + zutatmwst).ToString();
-                button1.Enabled = true;
+                btnDrucken.Enabled = true;
                 PerformClear();
 
             }

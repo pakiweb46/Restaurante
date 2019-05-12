@@ -229,7 +229,7 @@ namespace Restaurante
         }
         
         private int index;
-        static string connStr =Class1.connString;
+        static string connStr = Globals.connString;
         MySqlConnection conn = new MySqlConnection(connStr);
         MySqlCommand cmd;
         MySqlDataReader rdr;
@@ -241,7 +241,8 @@ namespace Restaurante
         public frmShowList(int reference, string title )
         {
 
-            if (title == "Artikel Liste")
+            //TODO User ENUM Here decision on based on title BAD
+            if (title == "Artikel Liste") 
                 InitializeArtikel();
             else if (title == "Bestellung Details")
                 InitializeBestellung();
@@ -478,19 +479,19 @@ namespace Restaurante
                     obj.Artikel_Anzahl = Artikel_Anzahl;
                     if (Artikel_Nummer[0].Substring(0, 1) == "5" || Artikel_Nummer[0].Substring(0, 1) == "6" || Artikel_Nummer[0].Substring(0, 1) == "7" || Artikel_Nummer[0].Substring(0, 1) == "8" || Artikel_Nummer[0].Substring(0, 1) == "9")
                     {
-                        obj.Title_Text = "Tamarinde";
-                        obj.Addresse_Text_Line1 = "Grubenstr. 7 - 18055 Rostock ";
-                        obj.Addresse_Text_Line2 = " Tel. : 0381 21055633";
-                        obj.Addresse_Text_Line3 = "Tel2. ";
-                        obj.Oeffenung_Text_Line1 = "Fax : ";
+                        obj.Title_Text = Globals.TITLE_NAME;
+                        obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                        obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                        obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                        obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
                     }
                     else
                     {
-                        obj.Title_Text = "Tamarinde";
-                        obj.Addresse_Text_Line1 = "Grubenstr. 7 - 18055 Rostock";
-                        obj.Addresse_Text_Line2 = "Tel. 0381 21055633";
-                        obj.Addresse_Text_Line3 = "Tel2. ";
-                        obj.Oeffenung_Text_Line1 = "";
+                        obj.Title_Text = Globals.TITLE_NAME;
+                        obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                        obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                        obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                        obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
                     }
                     obj.Bestellung_Text = "Bestellung " + System.DateTime.Now.ToShortDateString() + " " + System.DateTime.Now.ToShortTimeString();
                     obj.KundenName_Text = KundenName;

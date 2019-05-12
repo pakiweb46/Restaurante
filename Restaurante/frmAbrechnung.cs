@@ -27,7 +27,7 @@ namespace Restaurante
 #endregion
 
         /// </summary>
-        static string connStr = Class1.connString;
+        static string connStr = Globals.connString;
         MySqlConnection conn = new MySqlConnection(connStr);
         MySqlConnection conn2= new MySqlConnection(connStr);
         public int recordNr, recordCount,rollNo=0;

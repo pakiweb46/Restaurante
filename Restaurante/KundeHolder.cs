@@ -109,7 +109,7 @@ namespace Restaurante
         /// <summary>
         /// Functions for Kundendaten
         /// </summary>
-        static string connStr = Class1.connString;
+        static string connStr = Globals.connString;
         private void loadKundendaten(int kundenid)
         {
             

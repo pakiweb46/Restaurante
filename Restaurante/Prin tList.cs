@@ -19,7 +19,7 @@ namespace Restaurante
         private PrintPreviewDialog m_previewDlg = new PrintPreviewDialog();
         private PrintDocument m_prnDoc = new PrintDocument();
        MySqlCommand cmd;
-       static string connStr = Class1.connString;
+       static string connStr = Globals.connString;
         MySqlConnection conn = new MySqlConnection(connStr);
       MySqlDataReader rdr;
       private double Mwst7,Mwst19,summe,totalSumme,totalMwst7,totalMwst19;

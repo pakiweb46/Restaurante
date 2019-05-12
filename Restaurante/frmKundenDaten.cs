@@ -1,13 +1,8 @@
 ﻿
 using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using MySql.Data;
+
 using MySql.Data.MySqlClient;
 
 using LieferDienst;
@@ -19,7 +14,7 @@ namespace Restaurante
         static Color FocusColor = Color.Cyan;
         static Color BlurColor = Color.White;
         // MYSQL String 
-        static string connStr = Class1.connString;
+        static string connStr = Globals.connString;
         MySqlConnection conn = new MySqlConnection(connStr);
         public int recordNr,recordCount;
         MySqlCommand cmd;

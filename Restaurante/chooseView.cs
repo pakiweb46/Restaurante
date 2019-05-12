@@ -12,7 +12,7 @@ namespace Restaurante
 {
     public partial class chooseView : Form
     {
-        static string connStr = Class1.connString;
+        static string connStr = Globals.connString;
         MySqlConnection conn = new MySqlConnection(connStr);
         public string selectedFahrer;
         public chooseView()

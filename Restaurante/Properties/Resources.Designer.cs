@@ -60,14 +60,7 @@ namespace LieferDienst.Properties {
             }
         }
         
-        /// <summary>
-        ///   Sucht eine lokalisierte Ressource vom Typ System.Byte[].
-        /// </summary>
-        internal static byte[] mysql_5_5_22_win32 {
-            get {
-                object obj = ResourceManager.GetObject("mysql_5_5_22_win32", resourceCulture);
-                return ((byte[])(obj));
-            }
-        }
+     
+        
     }
 }

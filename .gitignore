@@ -259,3 +259,4 @@ paket-files/
 # Python Tools for Visual Studio (PTVS)
 __pycache__/
 *.pyc
+Restaurante/Resources/mysql-5.5.22-win32.msi

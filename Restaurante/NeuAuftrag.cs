@@ -1,14 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using MySql.Data;
+
 using MySql.Data.MySqlClient;
-using LieferDienst;
+
 namespace Restaurante
 
 {
@@ -17,13 +12,13 @@ namespace Restaurante
         DialogResult NeuKunde; // Hold if Neu Kunde Speichern or not        
         public string kundenreference;
         //KundeHolder obj_kunde = new KundeHolder();
-        Speisekarte obj_speise = new Speisekarte();
+      
         private string CustomerId;// Contains the current idKundendaten
         private bool isDataComplete=true;//ob kundendaten sind vollständig
-        // MYSQL String 
-        static string connStr = Class1.connString;
-        MySqlConnection conn = new MySqlConnection(connStr);
-        MySqlConnection conn1 = new MySqlConnection(connStr);
+
+       
+        MySqlConnection conn = new MySqlConnection(Globals.connString);
+        MySqlConnection conn1 = new MySqlConnection(Globals.connString);
         
         public int recordNr, recordCount;
         MySqlCommand cmd;

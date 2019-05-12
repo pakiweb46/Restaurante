@@ -30,10 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmBestellung));
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.txtDifference = new System.Windows.Forms.TextBox();
+            this.label15 = new System.Windows.Forms.Label();
+            this.txtRabatt = new System.Windows.Forms.TextBox();
+            this.label14 = new System.Windows.Forms.Label();
             this.lblRabatt = new System.Windows.Forms.Label();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
-            this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.lvBestellung = new Restaurante.PrintableListView2();
@@ -62,7 +65,7 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.label12 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
             this.tbPreis = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.tbMenge = new System.Windows.Forms.TextBox();
@@ -75,12 +78,9 @@
             this.label9 = new System.Windows.Forms.Label();
             this.label8 = new System.Windows.Forms.Label();
             this.panelZutaten = new System.Windows.Forms.Panel();
+            this.label7 = new System.Windows.Forms.Label();
             this.Test = new System.Windows.Forms.Button();
             this.label13 = new System.Windows.Forms.Label();
-            this.label14 = new System.Windows.Forms.Label();
-            this.txtRabatt = new System.Windows.Forms.TextBox();
-            this.label15 = new System.Windows.Forms.Label();
-            this.txtDifference = new System.Windows.Forms.TextBox();
             this.groupBox1.SuspendLayout();
             this.panel1.SuspendLayout();
             this.panelSpeiseKarte.SuspendLayout();
@@ -112,7 +112,7 @@
             this.groupBox1.Controls.Add(this.button3);
             this.groupBox1.Controls.Add(this.button2);
             this.groupBox1.Controls.Add(this.label12);
-            this.groupBox1.Controls.Add(this.button1);
+            this.groupBox1.Controls.Add(this.btnDrucken);
             this.groupBox1.Controls.Add(this.tbPreis);
             this.groupBox1.Controls.Add(this.label2);
             this.groupBox1.Controls.Add(this.tbMenge);
@@ -131,14 +131,46 @@
             this.groupBox1.TabIndex = 16;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Bestellung";
-         
+            // 
+            // txtDifference
+            // 
+            this.txtDifference.Location = new System.Drawing.Point(558, 662);
+            this.txtDifference.Name = "txtDifference";
+            this.txtDifference.Size = new System.Drawing.Size(72, 22);
+            this.txtDifference.TabIndex = 42;
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(412, 666);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(116, 16);
+            this.label15.TabIndex = 41;
+            this.label15.Text = "Zwischen Summe:";
+            // 
+            // txtRabatt
+            // 
+            this.txtRabatt.Location = new System.Drawing.Point(556, 628);
+            this.txtRabatt.Margin = new System.Windows.Forms.Padding(4);
+            this.txtRabatt.Name = "txtRabatt";
+            this.txtRabatt.Size = new System.Drawing.Size(64, 22);
+            this.txtRabatt.TabIndex = 40;
+            // 
+            // label14
+            // 
+            this.label14.AutoSize = true;
+            this.label14.Location = new System.Drawing.Point(490, 629);
+            this.label14.Name = "label14";
+            this.label14.Size = new System.Drawing.Size(54, 16);
+            this.label14.TabIndex = 39;
+            this.label14.Text = "Rabatt :";
             // 
             // lblRabatt
             // 
             this.lblRabatt.AutoSize = true;
             this.lblRabatt.Location = new System.Drawing.Point(230, 672);
             this.lblRabatt.Name = "lblRabatt";
-            this.lblRabatt.Size = new System.Drawing.Size(92, 20);
+            this.lblRabatt.Size = new System.Drawing.Size(73, 16);
             this.lblRabatt.TabIndex = 38;
             this.lblRabatt.Text = "0 % Rabatt";
             // 
@@ -147,7 +179,7 @@
             this.checkBox1.AutoSize = true;
             this.checkBox1.Location = new System.Drawing.Point(207, 650);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(124, 24);
+            this.checkBox1.Size = new System.Drawing.Size(100, 20);
             this.checkBox1.TabIndex = 37;
             this.checkBox1.Text = "Küche Zettel";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -157,26 +189,16 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(867, 666);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(53, 20);
+            this.label6.Size = new System.Drawing.Size(45, 16);
             this.label6.TabIndex = 35;
             this.label6.Text = "label6";
-            // 
-            // label7
-            // 
-            this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(1043, 342);
-            this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(53, 20);
-            this.label7.TabIndex = 36;
-            this.label7.Text = "label7";
-            this.label7.Visible = false;
             // 
             // label5
             // 
             this.label5.AutoSize = true;
             this.label5.Location = new System.Drawing.Point(687, 667);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(53, 20);
+            this.label5.Size = new System.Drawing.Size(45, 16);
             this.label5.TabIndex = 34;
             this.label5.Text = "label5";
             // 
@@ -200,6 +222,7 @@
             this.lvBestellung.FitToPage = false;
             this.lvBestellung.FullRowSelect = true;
             this.lvBestellung.GridLines = true;
+            this.lvBestellung.HideSelection = false;
             this.lvBestellung.Location = new System.Drawing.Point(19, 12);
             this.lvBestellung.Margin = new System.Windows.Forms.Padding(4);
             this.lvBestellung.MultiSelect = false;
@@ -268,6 +291,7 @@
             this.columnHeader8});
             this.lvArtikel.FullRowSelect = true;
             this.lvArtikel.GridLines = true;
+            this.lvArtikel.HideSelection = false;
             this.lvArtikel.Location = new System.Drawing.Point(4, 17);
             this.lvArtikel.Margin = new System.Windows.Forms.Padding(4);
             this.lvArtikel.MultiSelect = false;
@@ -305,7 +329,7 @@
             this.label1.Location = new System.Drawing.Point(770, 35);
             this.label1.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(137, 25);
+            this.label1.Size = new System.Drawing.Size(112, 20);
             this.label1.TabIndex = 21;
             this.label1.Text = "Speise Karte";
             // 
@@ -322,9 +346,8 @@
             this.tbArtikel.Location = new System.Drawing.Point(4, 6);
             this.tbArtikel.Margin = new System.Windows.Forms.Padding(4);
             this.tbArtikel.Name = "tbArtikel";
-            this.tbArtikel.Size = new System.Drawing.Size(90, 26);
+            this.tbArtikel.Size = new System.Drawing.Size(90, 22);
             this.tbArtikel.TabIndex = 4;
-        
             this.tbArtikel.GotFocus += new System.EventHandler(this.tbArtikel_GotFocus);
             this.tbArtikel.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbArtikel_KeyDown);
             this.tbArtikel.LostFocus += new System.EventHandler(this.tbArtikel_LostFocus);
@@ -344,7 +367,7 @@
             // 
             this.tbAnfahrtkosten.Location = new System.Drawing.Point(556, 536);
             this.tbAnfahrtkosten.Name = "tbAnfahrtkosten";
-            this.tbAnfahrtkosten.Size = new System.Drawing.Size(64, 26);
+            this.tbAnfahrtkosten.Size = new System.Drawing.Size(64, 22);
             this.tbAnfahrtkosten.TabIndex = 8;
             // 
             // label4
@@ -352,7 +375,7 @@
             this.label4.AutoSize = true;
             this.label4.Location = new System.Drawing.Point(441, 537);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(117, 20);
+            this.label4.Size = new System.Drawing.Size(92, 16);
             this.label4.TabIndex = 27;
             this.label4.Text = "Anfahrtkosten:";
             // 
@@ -361,7 +384,7 @@
             this.label3.AutoSize = true;
             this.label3.Location = new System.Drawing.Point(502, 565);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(54, 20);
+            this.label3.Size = new System.Drawing.Size(41, 16);
             this.label3.TabIndex = 26;
             this.label3.Text = "Mwst:";
             // 
@@ -369,7 +392,7 @@
             // 
             this.tbTotalMwst.Location = new System.Drawing.Point(556, 566);
             this.tbTotalMwst.Name = "tbTotalMwst";
-            this.tbTotalMwst.Size = new System.Drawing.Size(64, 26);
+            this.tbTotalMwst.Size = new System.Drawing.Size(64, 22);
             this.tbTotalMwst.TabIndex = 25;
             // 
             // tbMwSt
@@ -377,7 +400,7 @@
             this.tbMwSt.Location = new System.Drawing.Point(631, 10);
             this.tbMwSt.Margin = new System.Windows.Forms.Padding(4);
             this.tbMwSt.Name = "tbMwSt";
-            this.tbMwSt.Size = new System.Drawing.Size(64, 26);
+            this.tbMwSt.Size = new System.Drawing.Size(64, 22);
             this.tbMwSt.TabIndex = 11;
             this.tbMwSt.Visible = false;
             // 
@@ -397,7 +420,7 @@
             this.tbGesamt.Location = new System.Drawing.Point(556, 596);
             this.tbGesamt.Margin = new System.Windows.Forms.Padding(4);
             this.tbGesamt.Name = "tbGesamt";
-            this.tbGesamt.Size = new System.Drawing.Size(64, 26);
+            this.tbGesamt.Size = new System.Drawing.Size(64, 22);
             this.tbGesamt.TabIndex = 10;
             // 
             // button3
@@ -428,27 +451,27 @@
             this.label12.Location = new System.Drawing.Point(432, 594);
             this.label12.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(128, 20);
+            this.label12.Size = new System.Drawing.Size(101, 16);
             this.label12.TabIndex = 9;
             this.label12.Text = "Gesamt Betrag:";
             // 
-            // button1
+            // btnDrucken
             // 
-            this.button1.Location = new System.Drawing.Point(12, 564);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(176, 34);
-            this.button1.TabIndex = 17;
-            this.button1.Text = "Drucken (F3)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(12, 564);
+            this.btnDrucken.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDrucken.Name = "btnDrucken";
+            this.btnDrucken.Size = new System.Drawing.Size(176, 34);
+            this.btnDrucken.TabIndex = 17;
+            this.btnDrucken.Text = "Drucken (F3)";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             // 
             // tbPreis
             // 
             this.tbPreis.Location = new System.Drawing.Point(556, 40);
             this.tbPreis.Margin = new System.Windows.Forms.Padding(4);
             this.tbPreis.Name = "tbPreis";
-            this.tbPreis.Size = new System.Drawing.Size(114, 26);
+            this.tbPreis.Size = new System.Drawing.Size(114, 22);
             this.tbPreis.TabIndex = 12;
             // 
             // label2
@@ -458,7 +481,7 @@
             this.label2.Location = new System.Drawing.Point(810, 347);
             this.label2.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(85, 25);
+            this.label2.Size = new System.Drawing.Size(72, 20);
             this.label2.TabIndex = 22;
             this.label2.Text = "Zutaten";
             // 
@@ -467,9 +490,8 @@
             this.tbMenge.Location = new System.Drawing.Point(459, 40);
             this.tbMenge.Margin = new System.Windows.Forms.Padding(4);
             this.tbMenge.Name = "tbMenge";
-            this.tbMenge.Size = new System.Drawing.Size(89, 26);
+            this.tbMenge.Size = new System.Drawing.Size(89, 22);
             this.tbMenge.TabIndex = 11;
-           
             this.tbMenge.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbMenge_KeyDown);
             this.tbMenge.LostFocus += new System.EventHandler(this.tbMenge_LostFocus);
             // 
@@ -478,7 +500,7 @@
             this.tbBezeichnung.Location = new System.Drawing.Point(106, 40);
             this.tbBezeichnung.Margin = new System.Windows.Forms.Padding(4);
             this.tbBezeichnung.Name = "tbBezeichnung";
-            this.tbBezeichnung.Size = new System.Drawing.Size(345, 26);
+            this.tbBezeichnung.Size = new System.Drawing.Size(345, 22);
             this.tbBezeichnung.TabIndex = 10;
             // 
             // listView1
@@ -488,6 +510,7 @@
             this.columnHeader10});
             this.listView1.FullRowSelect = true;
             this.listView1.GridLines = true;
+            this.listView1.HideSelection = false;
             this.listView1.Location = new System.Drawing.Point(703, 380);
             this.listView1.Margin = new System.Windows.Forms.Padding(4);
             this.listView1.MultiSelect = false;
@@ -519,7 +542,7 @@
             this.label11.Location = new System.Drawing.Point(563, 16);
             this.label11.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(48, 20);
+            this.label11.Size = new System.Drawing.Size(39, 16);
             this.label11.TabIndex = 3;
             this.label11.Text = "Preis";
             // 
@@ -529,7 +552,7 @@
             this.label10.Location = new System.Drawing.Point(463, 16);
             this.label10.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(59, 20);
+            this.label10.Size = new System.Drawing.Size(50, 16);
             this.label10.TabIndex = 2;
             this.label10.Text = "Menge";
             // 
@@ -539,7 +562,7 @@
             this.label9.Location = new System.Drawing.Point(103, 16);
             this.label9.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(106, 20);
+            this.label9.Size = new System.Drawing.Size(85, 16);
             this.label9.TabIndex = 1;
             this.label9.Text = "Bezeichnung";
             // 
@@ -549,7 +572,7 @@
             this.label8.Location = new System.Drawing.Point(8, 20);
             this.label8.Margin = new System.Windows.Forms.Padding(4, 0, 4, 0);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(81, 20);
+            this.label8.Size = new System.Drawing.Size(62, 16);
             this.label8.TabIndex = 0;
             this.label8.Text = "Artikel nr:";
             // 
@@ -559,6 +582,16 @@
             this.panelZutaten.Name = "panelZutaten";
             this.panelZutaten.Size = new System.Drawing.Size(287, 293);
             this.panelZutaten.TabIndex = 32;
+            // 
+            // label7
+            // 
+            this.label7.AutoSize = true;
+            this.label7.Location = new System.Drawing.Point(1043, 342);
+            this.label7.Name = "label7";
+            this.label7.Size = new System.Drawing.Size(45, 16);
+            this.label7.TabIndex = 36;
+            this.label7.Text = "label7";
+            this.label7.Visible = false;
             // 
             // Test
             // 
@@ -573,42 +606,9 @@
             this.label13.AutoSize = true;
             this.label13.Location = new System.Drawing.Point(105, 3);
             this.label13.Name = "label13";
-            this.label13.Size = new System.Drawing.Size(62, 20);
+            this.label13.Size = new System.Drawing.Size(52, 16);
             this.label13.TabIndex = 36;
             this.label13.Text = "label13";
-            // 
-            // label14
-            // 
-            this.label14.AutoSize = true;
-            this.label14.Location = new System.Drawing.Point(490, 629);
-            this.label14.Name = "label14";
-            this.label14.Size = new System.Drawing.Size(68, 20);
-            this.label14.TabIndex = 39;
-            this.label14.Text = "Rabatt :";
-            // 
-            // txtRabatt
-            // 
-            this.txtRabatt.Location = new System.Drawing.Point(556, 628);
-            this.txtRabatt.Margin = new System.Windows.Forms.Padding(4);
-            this.txtRabatt.Name = "txtRabatt";
-            this.txtRabatt.Size = new System.Drawing.Size(64, 26);
-            this.txtRabatt.TabIndex = 40;
-            // 
-            // label15
-            // 
-            this.label15.AutoSize = true;
-            this.label15.Location = new System.Drawing.Point(412, 666);
-            this.label15.Name = "label15";
-            this.label15.Size = new System.Drawing.Size(146, 20);
-            this.label15.TabIndex = 41;
-            this.label15.Text = "Zwischen Summe:";
-            // 
-            // txtDifference
-            // 
-            this.txtDifference.Location = new System.Drawing.Point(558, 662);
-            this.txtDifference.Name = "txtDifference";
-            this.txtDifference.Size = new System.Drawing.Size(72, 26);
-            this.txtDifference.TabIndex = 42;
             // 
             // frmBestellung
             // 
@@ -660,7 +660,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader9;
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnDrucken;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
         private System.Windows.Forms.Button button4;

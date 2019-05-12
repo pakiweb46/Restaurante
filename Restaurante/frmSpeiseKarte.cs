@@ -12,7 +12,7 @@ namespace Restaurante
 {
     public partial class frmSpeiseKarte : Form
     {
-        static string connStr = Class1.connString;
+        static string connStr = Globals.connString;
         private int recordNr;
         MySqlConnection conn = new MySqlConnection(connStr);
         MySqlCommand cmd,cmd2;

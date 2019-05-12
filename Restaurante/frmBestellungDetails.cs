@@ -1,13 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
-using LieferDienst;
+
 namespace Restaurante
 {
     public partial class frmBestellungDetails : Form
@@ -19,7 +13,7 @@ namespace Restaurante
             this.BestellNr = bestnr;
         }
         private int index;
-               static string connStr = Class1.connString;
+               static string connStr = Globals.connString;
         MySqlConnection conn = new MySqlConnection(connStr);
         MySqlCommand cmd;
         MySqlDataReader rdr;
@@ -231,20 +225,20 @@ namespace Restaurante
                 bool isGrillPfane = checkArtikel(Artikel_Nummer[0]);
                 if (isGrillPfane)
                 {
-                    obj.Title_Text = "Tamarinde";
-                    obj.Addresse_Text_Line1 = "Grubenstr. 7 - 18055 Rostock";
-                    obj.Addresse_Text_Line2 = " Tel. : 0381 21055633";
-                    obj.Addresse_Text_Line3 = "Tel2. ";
-                    obj.Oeffenung_Text_Line1 = "Fax : ";
+                    obj.Title_Text = Globals.TITLE_NAME;
+                    obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                    obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                    obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                    obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
                 }
                 else
                 {
-                    obj.Title_Text = "Tamarinde";
-                    obj.Addresse_Text_Line1 = "Grubenstr. 7 - 18055 Rostock";
-                    obj.Addresse_Text_Line2 = "Tel. 0381 21055633";
-                    obj.Addresse_Text_Line3 = "Tel2.";
-                    obj.Oeffenung_Text_Line1 = "";
-                }
+                    obj.Title_Text = Globals.TITLE_NAME;
+                    obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                    obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                    obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                    obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
+               }
        
                 obj.Bestellung_Text = "Bestellung - " + BestellNr + " - " + System.DateTime.Now.ToShortDateString() + " " + System.DateTime.Now.ToShortTimeString();
                 obj.KundenName_Text = KundenName;
