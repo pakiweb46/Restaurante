@@ -33,10 +33,10 @@
             this.columnHeader10 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.textBox14 = new System.Windows.Forms.TextBox();
             this.columnHeader11 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnHauptmenu = new System.Windows.Forms.Button();
+            this.btnfldLeeren = new System.Windows.Forms.Button();
+            this.btnSpeichern = new System.Windows.Forms.Button();
+            this.btnWeiter = new System.Windows.Forms.Button();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.tbZusatz = new System.Windows.Forms.TextBox();
             this.tbOrt = new System.Windows.Forms.TextBox();
@@ -51,7 +51,7 @@
             this.label4 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.listView2 = new System.Windows.Forms.ListView();
+            this.lwKundenDaten = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.tbRabatt = new System.Windows.Forms.TextBox();
@@ -73,7 +73,7 @@
             this.panelAnfahrt = new System.Windows.Forms.Panel();
             this.panelRabatt = new System.Windows.Forms.Panel();
             this.panelGoogle = new System.Windows.Forms.Panel();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btnMapDrucken = new System.Windows.Forms.Button();
             this.panelTelefon.SuspendLayout();
             this.panelKNr.SuspendLayout();
             this.panelName.SuspendLayout();
@@ -93,7 +93,7 @@
             this.label1.Location = new System.Drawing.Point(12, 54);
             this.label1.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 25);
+            this.label1.Size = new System.Drawing.Size(70, 20);
             this.label1.TabIndex = 29;
             this.label1.Text = "Telefon: ";
             // 
@@ -112,7 +112,7 @@
             this.textBox14.Location = new System.Drawing.Point(335, 6);
             this.textBox14.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.textBox14.Name = "textBox14";
-            this.textBox14.Size = new System.Drawing.Size(97, 30);
+            this.textBox14.Size = new System.Drawing.Size(97, 26);
             this.textBox14.TabIndex = 49;
             this.textBox14.TabStop = false;
             // 
@@ -121,49 +121,49 @@
             this.columnHeader11.Text = "K-Nr";
             this.columnHeader11.Width = 59;
             // 
-            // button4
+            // btnHauptmenu
             // 
-            this.button4.Location = new System.Drawing.Point(523, 661);
-            this.button4.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(164, 34);
-            this.button4.TabIndex = 51;
-            this.button4.Text = "Hauptmenu (F4)";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnHauptmenu.Location = new System.Drawing.Point(523, 661);
+            this.btnHauptmenu.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnHauptmenu.Name = "btnHauptmenu";
+            this.btnHauptmenu.Size = new System.Drawing.Size(164, 34);
+            this.btnHauptmenu.TabIndex = 51;
+            this.btnHauptmenu.Text = "Hauptmenu (F4)";
+            this.btnHauptmenu.UseVisualStyleBackColor = true;
+            this.btnHauptmenu.Click += new System.EventHandler(this.button4_Click);
             // 
-            // button3
+            // btnfldLeeren
             // 
-            this.button3.Location = new System.Drawing.Point(351, 661);
-            this.button3.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(164, 34);
-            this.button3.TabIndex = 50;
-            this.button3.Text = "Felder leeren(F5)";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnfldLeeren.Location = new System.Drawing.Point(351, 661);
+            this.btnfldLeeren.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnfldLeeren.Name = "btnfldLeeren";
+            this.btnfldLeeren.Size = new System.Drawing.Size(164, 34);
+            this.btnfldLeeren.TabIndex = 50;
+            this.btnfldLeeren.Text = "Felder leeren(F5)";
+            this.btnfldLeeren.UseVisualStyleBackColor = true;
+            this.btnfldLeeren.Click += new System.EventHandler(this.button3_Click);
             // 
-            // button2
+            // btnSpeichern
             // 
-            this.button2.Location = new System.Drawing.Point(179, 661);
-            this.button2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(164, 34);
-            this.button2.TabIndex = 49;
-            this.button2.Text = "Speichern (F10)";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnSpeichern.Location = new System.Drawing.Point(179, 661);
+            this.btnSpeichern.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnSpeichern.Name = "btnSpeichern";
+            this.btnSpeichern.Size = new System.Drawing.Size(164, 34);
+            this.btnSpeichern.TabIndex = 49;
+            this.btnSpeichern.Text = "Speichern (F10)";
+            this.btnSpeichern.UseVisualStyleBackColor = true;
+            this.btnSpeichern.Click += new System.EventHandler(this.button2_Click);
             // 
-            // button1
+            // btnWeiter
             // 
-            this.button1.Location = new System.Drawing.Point(7, 661);
-            this.button1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(164, 34);
-            this.button1.TabIndex = 48;
-            this.button1.Text = "Weiter (F2)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnWeiter.Location = new System.Drawing.Point(7, 661);
+            this.btnWeiter.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.btnWeiter.Name = "btnWeiter";
+            this.btnWeiter.Size = new System.Drawing.Size(164, 34);
+            this.btnWeiter.TabIndex = 48;
+            this.btnWeiter.Text = "Weiter (F2)";
+            this.btnWeiter.UseVisualStyleBackColor = true;
+            this.btnWeiter.Click += new System.EventHandler(this.button1_Click);
             // 
             // checkBox1
             // 
@@ -171,7 +171,7 @@
             this.checkBox1.Location = new System.Drawing.Point(9, 5);
             this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(196, 29);
+            this.checkBox1.Size = new System.Drawing.Size(159, 24);
             this.checkBox1.TabIndex = 47;
             this.checkBox1.Text = "Show Google Plan";
             this.checkBox1.UseVisualStyleBackColor = true;
@@ -182,7 +182,7 @@
             this.tbZusatz.Location = new System.Drawing.Point(5, 6);
             this.tbZusatz.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbZusatz.Name = "tbZusatz";
-            this.tbZusatz.Size = new System.Drawing.Size(470, 30);
+            this.tbZusatz.Size = new System.Drawing.Size(470, 26);
             this.tbZusatz.TabIndex = 44;
             this.tbZusatz.GotFocus += new System.EventHandler(this.tbZusatz_GotFocus);
             this.tbZusatz.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbZusatz_KeyDown);
@@ -193,7 +193,7 @@
             this.tbOrt.Location = new System.Drawing.Point(8, 8);
             this.tbOrt.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbOrt.Name = "tbOrt";
-            this.tbOrt.Size = new System.Drawing.Size(284, 30);
+            this.tbOrt.Size = new System.Drawing.Size(284, 26);
             this.tbOrt.TabIndex = 43;
             this.tbOrt.GotFocus += new System.EventHandler(this.tbOrt_GotFocus);
             this.tbOrt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbOrt_KeyDown);
@@ -204,7 +204,7 @@
             this.tbPLZ.Location = new System.Drawing.Point(10, 12);
             this.tbPLZ.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbPLZ.Name = "tbPLZ";
-            this.tbPLZ.Size = new System.Drawing.Size(118, 30);
+            this.tbPLZ.Size = new System.Drawing.Size(118, 26);
             this.tbPLZ.TabIndex = 42;
             this.tbPLZ.GotFocus += new System.EventHandler(this.tbPLZ_GotFocus);
             this.tbPLZ.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPLZ_KeyDown);
@@ -215,7 +215,7 @@
             this.tbStrNo.Location = new System.Drawing.Point(6, 8);
             this.tbStrNo.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbStrNo.Name = "tbStrNo";
-            this.tbStrNo.Size = new System.Drawing.Size(88, 30);
+            this.tbStrNo.Size = new System.Drawing.Size(88, 26);
             this.tbStrNo.TabIndex = 41;
             this.tbStrNo.GotFocus += new System.EventHandler(this.tbStrNo_GotFocus);
             this.tbStrNo.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbStrNo_KeyDown);
@@ -228,9 +228,9 @@
             this.tbStrasse.Location = new System.Drawing.Point(8, 7);
             this.tbStrasse.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbStrasse.Name = "tbStrasse";
-            this.tbStrasse.Size = new System.Drawing.Size(357, 30);
+            this.tbStrasse.Size = new System.Drawing.Size(357, 26);
             this.tbStrasse.TabIndex = 40;
-            this.tbStrasse.TextChanged += new System.EventHandler(this.tbStrasse_TextChanged);
+ 
             this.tbStrasse.GotFocus += new System.EventHandler(this.tbStrasse_GotFocus);
             this.tbStrasse.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbStrasse_KeyDown);
             this.tbStrasse.LostFocus += new System.EventHandler(this.tbStrasse_LostFocus);
@@ -240,7 +240,7 @@
             this.tbName.Location = new System.Drawing.Point(8, 9);
             this.tbName.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbName.Name = "tbName";
-            this.tbName.Size = new System.Drawing.Size(357, 30);
+            this.tbName.Size = new System.Drawing.Size(357, 26);
             this.tbName.TabIndex = 39;
             this.tbName.GotFocus += new System.EventHandler(this.tbName_GotFocus);
             this.tbName.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbName_KeyDown);
@@ -251,7 +251,7 @@
             this.tbDatum.Location = new System.Drawing.Point(118, 6);
             this.tbDatum.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbDatum.Name = "tbDatum";
-            this.tbDatum.Size = new System.Drawing.Size(208, 30);
+            this.tbDatum.Size = new System.Drawing.Size(208, 26);
             this.tbDatum.TabIndex = 36;
             // 
             // label7
@@ -260,7 +260,7 @@
             this.label7.Location = new System.Drawing.Point(15, 280);
             this.label7.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label7.Name = "label7";
-            this.label7.Size = new System.Drawing.Size(97, 25);
+            this.label7.Size = new System.Drawing.Size(77, 20);
             this.label7.TabIndex = 35;
             this.label7.Text = "Hinweise:";
             // 
@@ -270,7 +270,7 @@
             this.label5.Location = new System.Drawing.Point(12, 141);
             this.label5.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(70, 25);
+            this.label5.Size = new System.Drawing.Size(55, 20);
             this.label5.TabIndex = 33;
             this.label5.Text = "Name:";
             // 
@@ -280,7 +280,7 @@
             this.label6.Location = new System.Drawing.Point(265, 236);
             this.label6.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(45, 25);
+            this.label6.Size = new System.Drawing.Size(35, 20);
             this.label6.TabIndex = 34;
             this.label6.Text = "Ort:";
             // 
@@ -290,7 +290,7 @@
             this.label4.Location = new System.Drawing.Point(12, 6);
             this.label4.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(75, 25);
+            this.label4.Size = new System.Drawing.Size(61, 20);
             this.label4.TabIndex = 32;
             this.label4.Text = "Datum:";
             // 
@@ -300,7 +300,7 @@
             this.label3.Location = new System.Drawing.Point(12, 194);
             this.label3.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(118, 25);
+            this.label3.Size = new System.Drawing.Size(94, 20);
             this.label3.TabIndex = 31;
             this.label3.Text = "Straße  / Nr:";
             // 
@@ -310,29 +310,30 @@
             this.label2.Location = new System.Drawing.Point(12, 237);
             this.label2.Margin = new System.Windows.Forms.Padding(7, 0, 7, 0);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(54, 25);
+            this.label2.Size = new System.Drawing.Size(42, 20);
             this.label2.TabIndex = 30;
             this.label2.Text = "PLZ:";
             // 
-            // listView2
+            // lwKundenDaten
             // 
-            this.listView2.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lwKundenDaten.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader9,
             this.columnHeader10,
             this.columnHeader11,
             this.columnHeader1});
-            this.listView2.FullRowSelect = true;
-            this.listView2.GridLines = true;
-            this.listView2.Location = new System.Drawing.Point(618, 14);
-            this.listView2.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.listView2.Name = "listView2";
-            this.listView2.Size = new System.Drawing.Size(380, 294);
-            this.listView2.Sorting = System.Windows.Forms.SortOrder.Ascending;
-            this.listView2.TabIndex = 50;
-            this.listView2.TabStop = false;
-            this.listView2.UseCompatibleStateImageBehavior = false;
-            this.listView2.View = System.Windows.Forms.View.Details;
-            this.listView2.SelectedIndexChanged += new System.EventHandler(this.listView2_SelectedIndexChanged);
+            this.lwKundenDaten.FullRowSelect = true;
+            this.lwKundenDaten.GridLines = true;
+            this.lwKundenDaten.HideSelection = false;
+            this.lwKundenDaten.Location = new System.Drawing.Point(618, 14);
+            this.lwKundenDaten.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.lwKundenDaten.Name = "lwKundenDaten";
+            this.lwKundenDaten.Size = new System.Drawing.Size(380, 294);
+            this.lwKundenDaten.Sorting = System.Windows.Forms.SortOrder.Ascending;
+            this.lwKundenDaten.TabIndex = 50;
+            this.lwKundenDaten.TabStop = false;
+            this.lwKundenDaten.UseCompatibleStateImageBehavior = false;
+            this.lwKundenDaten.View = System.Windows.Forms.View.Details;
+            this.lwKundenDaten.SelectedIndexChanged += new System.EventHandler(this.lwKundenDaten_SelectedIndexChanged);
             // 
             // columnHeader1
             // 
@@ -354,7 +355,7 @@
             // 
             this.tbRabatt.Location = new System.Drawing.Point(12, 7);
             this.tbRabatt.Name = "tbRabatt";
-            this.tbRabatt.Size = new System.Drawing.Size(90, 30);
+            this.tbRabatt.Size = new System.Drawing.Size(90, 26);
             this.tbRabatt.TabIndex = 46;
             this.tbRabatt.GotFocus += new System.EventHandler(this.tbRabatt_GotFocus);
             this.tbRabatt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbRabatt_KeyDown);
@@ -365,7 +366,7 @@
             this.label8.AutoSize = true;
             this.label8.Location = new System.Drawing.Point(236, 318);
             this.label8.Name = "label8";
-            this.label8.Size = new System.Drawing.Size(102, 25);
+            this.label8.Size = new System.Drawing.Size(84, 20);
             this.label8.TabIndex = 56;
             this.label8.Text = "Rabatt %: ";
             // 
@@ -373,7 +374,7 @@
             // 
             this.tbAnfahrt.Location = new System.Drawing.Point(11, 6);
             this.tbAnfahrt.Name = "tbAnfahrt";
-            this.tbAnfahrt.Size = new System.Drawing.Size(90, 30);
+            this.tbAnfahrt.Size = new System.Drawing.Size(90, 26);
             this.tbAnfahrt.TabIndex = 45;
             this.tbAnfahrt.GotFocus += new System.EventHandler(this.tbAnfahrt_GotFocus);
             this.tbAnfahrt.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbAnfahrt_KeyDown);
@@ -384,7 +385,7 @@
             this.label9.AutoSize = true;
             this.label9.Location = new System.Drawing.Point(12, 318);
             this.label9.Name = "label9";
-            this.label9.Size = new System.Drawing.Size(139, 25);
+            this.label9.Size = new System.Drawing.Size(114, 20);
             this.label9.TabIndex = 54;
             this.label9.Text = "Anfahrtkosten:";
             // 
@@ -393,7 +394,7 @@
             this.label10.AutoSize = true;
             this.label10.Location = new System.Drawing.Point(12, 94);
             this.label10.Name = "label10";
-            this.label10.Size = new System.Drawing.Size(112, 25);
+            this.label10.Size = new System.Drawing.Size(88, 20);
             this.label10.TabIndex = 57;
             this.label10.Text = "Kunden Nr:";
             // 
@@ -401,9 +402,8 @@
             // 
             this.tbKNr.Location = new System.Drawing.Point(10, 7);
             this.tbKNr.Name = "tbKNr";
-            this.tbKNr.Size = new System.Drawing.Size(119, 30);
+            this.tbKNr.Size = new System.Drawing.Size(119, 26);
             this.tbKNr.TabIndex = 38;
-            this.tbKNr.TextChanged += new System.EventHandler(this.tbKNr_TextChanged);
             this.tbKNr.GotFocus += new System.EventHandler(this.tbKNr_GotFocus);
             this.tbKNr.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbKNr_KeyDown);
             this.tbKNr.LostFocus += new System.EventHandler(this.tbKNr_LostFocus);
@@ -415,7 +415,7 @@
             this.label11.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.label11.Location = new System.Drawing.Point(269, 94);
             this.label11.Name = "label11";
-            this.label11.Size = new System.Drawing.Size(352, 27);
+            this.label11.Size = new System.Drawing.Size(287, 22);
             this.label11.TabIndex = 58;
             this.label11.Text = "F1 für Suchen - F3 für Tages Übersicht";
             this.label11.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -425,9 +425,8 @@
             this.tbTelefon.Location = new System.Drawing.Point(9, 8);
             this.tbTelefon.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.tbTelefon.Name = "tbTelefon";
-            this.tbTelefon.Size = new System.Drawing.Size(357, 30);
+            this.tbTelefon.Size = new System.Drawing.Size(357, 26);
             this.tbTelefon.TabIndex = 37;
-            this.tbTelefon.TextChanged += new System.EventHandler(this.tbTelefon_TextChanged);
             this.tbTelefon.GotFocus += new System.EventHandler(this.tbTelefon_GotFocus);
             this.tbTelefon.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbTelefon_KeyDown);
             this.tbTelefon.LostFocus += new System.EventHandler(this.tbTelefone_LostFocus);
@@ -520,23 +519,23 @@
             this.panelGoogle.Size = new System.Drawing.Size(172, 35);
             this.panelGoogle.TabIndex = 69;
             // 
-            // button5
+            // btnMapDrucken
             // 
-            this.button5.Location = new System.Drawing.Point(817, 661);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(131, 34);
-            this.button5.TabIndex = 70;
-            this.button5.Text = "Map Drucken";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click_1);
+            this.btnMapDrucken.Location = new System.Drawing.Point(817, 661);
+            this.btnMapDrucken.Name = "btnMapDrucken";
+            this.btnMapDrucken.Size = new System.Drawing.Size(131, 34);
+            this.btnMapDrucken.TabIndex = 70;
+            this.btnMapDrucken.Text = "Map Drucken";
+            this.btnMapDrucken.UseVisualStyleBackColor = true;
+            this.btnMapDrucken.Click += new System.EventHandler(this.button5_Click_1);
             // 
             // NeuAuftrag
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(9F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(1008, 729);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.btnMapDrucken);
             this.Controls.Add(this.panelGoogle);
             this.Controls.Add(this.panelRabatt);
             this.Controls.Add(this.panelAnfahrt);
@@ -555,10 +554,10 @@
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.textBox14);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnHauptmenu);
+            this.Controls.Add(this.btnfldLeeren);
+            this.Controls.Add(this.btnSpeichern);
+            this.Controls.Add(this.btnWeiter);
             this.Controls.Add(this.tbDatum);
             this.Controls.Add(this.label7);
             this.Controls.Add(this.label5);
@@ -566,7 +565,7 @@
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.listView2);
+            this.Controls.Add(this.lwKundenDaten);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
             this.Name = "NeuAuftrag";
@@ -608,10 +607,10 @@
         private System.Windows.Forms.ColumnHeader columnHeader10;
         private System.Windows.Forms.TextBox textBox14;
         private System.Windows.Forms.ColumnHeader columnHeader11;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnHauptmenu;
+        private System.Windows.Forms.Button btnfldLeeren;
+        private System.Windows.Forms.Button btnSpeichern;
+        private System.Windows.Forms.Button btnWeiter;
         private System.Windows.Forms.CheckBox checkBox1;
         private System.Windows.Forms.TextBox tbZusatz;
         private System.Windows.Forms.TextBox tbOrt;
@@ -626,7 +625,7 @@
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ListView listView2;
+        private System.Windows.Forms.ListView lwKundenDaten;
         private System.Windows.Forms.WebBrowser webBrowser1;
         private System.Windows.Forms.TextBox tbRabatt;
         private System.Windows.Forms.Label label8;
@@ -647,7 +646,7 @@
         private System.Windows.Forms.Panel panelAnfahrt;
         private System.Windows.Forms.Panel panelRabatt;
         private System.Windows.Forms.Panel panelGoogle;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnMapDrucken;
         private System.Windows.Forms.ColumnHeader columnHeader1;
     }
 }
