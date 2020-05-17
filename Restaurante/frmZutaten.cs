@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 
+//TODO:: NEXT Previous doesnt function
 namespace Restaurante
 {
     public partial class frmZutaten : Form
@@ -9,12 +10,13 @@ namespace Restaurante
         private static string connStr = Globals.connString;
         private int recordNr;
         private MySqlConnection conn = new MySqlConnection(connStr);
-        private MySqlCommand cmd, cmd2;
-        private MySqlDataReader rdr;
+        private MySqlCommand cmd;
+        private RestauranteData rData;
 
         public frmZutaten()
         {
             InitializeComponent();
+            rData = new RestauranteData();
         }
 
         private void frmZutaten_Load(object sender, EventArgs e)
@@ -56,112 +58,52 @@ namespace Restaurante
 
         private void PerformSearch()
         {
-            //if (conn.State.ToString() == "Close")
-            conn.Open();
-            string sql;
-
             if (tbBezeichnung.Text != "")
             {
-                int found = 0; // Number of matching records found
-                sql = "SELECT count(*) FROM dbbari.zutaten Where ZutatName='" + tbBezeichnung.Text.Trim() + "';";
-
-                cmd2 = new MySqlCommand(sql, conn);
-
-                try
-                {
-                    rdr = cmd2.ExecuteReader();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                if (rdr.Read())
-                {
-                    found = Convert.ToInt16(rdr[0].ToString());
-                }
-                rdr.Close();
+                // Number of matching records found
+                int found = rData.getCount("zutaten", "ZutatName", tbBezeichnung.Text.Trim());
                 if (found == 1)
                 {
-                    sql = "SELECT * FROM dbbari.zutaten Where ZutatName='" + tbBezeichnung.Text.Trim() + "';";
-                    cmd2 = new MySqlCommand(sql, conn);
+                    rData.openReadConnection();
+                    MySqlDataReader reader = rData.getDataReader("zutaten", "ZutatName", tbBezeichnung.Text.Trim());
 
-                    try
+                    if (reader.Read())
                     {
-                        rdr = cmd2.ExecuteReader();
+                        recordNr = Convert.ToInt32(reader[0].ToString());
+                        PerformDataFill(ref reader);
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    if (rdr.Read())
-                    {
-                        recordNr = Convert.ToInt32(rdr[0].ToString());
-                        PerformDataFill();
-                    }
-
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    reader.Close();
+                    rData.closeReadConnection();
                 }
                 else if (found > 1)
                 {
                     // Complete string match where more items have same name
                     //listView1.Visible = true;
-                    sql = "SELECT * FROM dbbari.zutaten Where ZutatName='" + tbBezeichnung.Text.Trim() + "';";
-                    cmd2 = new MySqlCommand(sql, conn);
-
-                    try
+                    rData.openReadConnection();
+                    MySqlDataReader reader = rData.getDataReader("zutaten", "ZutatName", tbBezeichnung.Text.Trim());
+                    if (reader.HasRows)
                     {
-                        rdr = cmd2.ExecuteReader();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    if (rdr.HasRows)
-                    {
-                        while (rdr.Read())
+                        while (reader.Read())
                         {
-                            ListViewItem item = new ListViewItem(rdr["idZutaten"].ToString());
-                            item.SubItems.Add(rdr["ZutatName"].ToString());
-                            item.SubItems.Add(rdr["Preis"].ToString());
+                            ListViewItem item = new ListViewItem(reader["idZutaten"].ToString());
+                            item.SubItems.Add(reader["ZutatName"].ToString());
+                            item.SubItems.Add(reader["Preis"].ToString());
                             lvArtikel.Items.Add(item);
                         }
                     }
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    reader.Close();
+                    rData.closeReadConnection();
                     MessageBox.Show("Mehere daten gefunden wählen sie aus der liste");
                 }
                 else
                 {
                     MessageBox.Show("Daten nicht gefunden");
                 }
-                try
-                {
-                    rdr.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
             }
             else
             {
                 MessageBox.Show("Für Suchen Bitte geben sie Kunden Nummer oder Kunden Name ein");
             }
-            if (conn.State.ToString() != "Closed")
-                conn.Close();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -187,58 +129,32 @@ namespace Restaurante
         {
         }
 
-        private void PerformDataFill()
+        private void PerformDataFill(ref MySqlDataReader reader)
         {
             myClearForm();
-            recordNr = Convert.ToInt32(rdr[0].ToString());
-            tbArtikel.Text = rdr["idZutaten"].ToString();
-            tbBezeichnung.Text = rdr["ZutatName"].ToString();
-            tbMwSt.Text = rdr["Mwst"].ToString();
-            tbVerkaufPreis.Text = rdr["Preis"].ToString();
+            recordNr = Convert.ToInt32(reader[0].ToString());
+            tbArtikel.Text = reader["idZutaten"].ToString();
+            tbBezeichnung.Text = reader["ZutatName"].ToString();
+            tbMwSt.Text = reader["Mwst"].ToString();
+            tbVerkaufPreis.Text = reader["Preis"].ToString();
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string sql;
             if (conn.State.ToString() == "Closed")
                 conn.Open();
             if (tbBezeichnung.Text != "") // Update Record
             {
-                sql = "SELECT * FROM dbbari.zutaten Where ZutatName='" + tbBezeichnung.Text + "';";
-                cmd = new MySqlCommand(sql, conn);
-
-                try
-                {
-                    rdr = cmd.ExecuteReader();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                if (rdr.Read())
+                rData.openReadConnection();
+                MySqlDataReader reader = rData.getDataReader("zutaten", "ZutatName", tbBezeichnung.Text.Trim());
+                if (reader.Read())
                 {
                     MessageBox.Show("Diese Zutat Exsistiert Schon");
-                    recordNr = Convert.ToInt32(rdr[0].ToString());
-                    PerformDataFill();
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    recordNr = Convert.ToInt32(reader[0].ToString());
+                    PerformDataFill(ref reader);
                 }
                 else // Füge Neuen Record
                 {
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
                     if (tbBezeichnung.Text == "")
                     {
                         MessageBox.Show("Bitte geben sie den ArtikelBezeichnung");
@@ -259,6 +175,7 @@ namespace Restaurante
                         MySqlCommand cmd1 = new MySqlCommand();
                         try
                         {
+                            conn.Open();
                             cmd1.Connection = conn;
                             cmd1.Parameters.Clear();
                             cmd1.CommandText = "INSERT INTO dbbari.Zutaten VALUES (NULL,  @Bezeichnung, @VerkaufPreis, @MwSt)";
@@ -273,44 +190,31 @@ namespace Restaurante
                         {
                             MessageBox.Show(ex.Message);
                         }
+                        conn.Close();
                     }
                 }
-                try
-                {
-                    conn.Close();
-                    PerformListFill();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                reader.Close();
+                rData.closeReadConnection();
+                PerformListFill();
             }
         }
 
         private void PerformListFill()
         {
-            string sql;
-            sql = "SELECT * From dbbari.zutaten ";
-            conn.Open();
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("zutaten");
+
             lvArtikel.Items.Clear();
-            cmd = new MySqlCommand(sql, conn);
-            try
+
+            if (reader.HasRows)
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
-                        ListViewItem item = new ListViewItem(rdr["idZutaten"].ToString());
-                        item.SubItems.Add(rdr["ZutatName"].ToString());
-                        item.SubItems.Add(rdr["Preis"].ToString());
+                        ListViewItem item = new ListViewItem(reader["idZutaten"].ToString());
+                        item.SubItems.Add(reader["ZutatName"].ToString());
+                        item.SubItems.Add(reader["Preis"].ToString());
                         lvArtikel.Items.Add(item);
                     }
                     catch (Exception ex)
@@ -319,15 +223,8 @@ namespace Restaurante
                     }
                 }
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
             lvArtikel.Visible = true;
         }
 
@@ -337,7 +234,7 @@ namespace Restaurante
             MySqlCommand cmd1 = new MySqlCommand(); ;
             cmd1.Connection = conn;
 
-            cmd.Parameters.Clear();
+            cmd1.Parameters.Clear();
 
             try
             {
@@ -349,46 +246,28 @@ namespace Restaurante
                 cmd1.ExecuteNonQuery();
                 MessageBox.Show("Zutat Daten sind Geändert");
                 lvArtikel.Items.Clear();
-                conn.Close();
                 PerformListFill();
             }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.Message + "Insert Error");
             }
+            conn.Close();
         }
 
         private void lvArtikel_MouseDoubleClick(object sender, EventArgs e)
         {
-            string sql;
             int lstIndex;
-            conn.Open();
             lstIndex = Convert.ToInt32(lvArtikel.SelectedIndices[0].ToString());
-            sql = "SELECT * FROM dbbari.zutaten Where idZutaten='" + lvArtikel.Items[lstIndex].Text.Trim() + "';";
-            cmd = new MySqlCommand(sql, conn);
-
-            try
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("zutaten", "idZutaten", lvArtikel.Items[lstIndex].Text.Trim());
+            if (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
+                recordNr = Convert.ToInt32(reader[0].ToString());
+                PerformDataFill(ref reader);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                recordNr = Convert.ToInt32(rdr[0].ToString());
-                PerformDataFill();
-                try
-                {
-                    rdr.Close();
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-            }
+            reader.Close();
+            rData.closeReadConnection();
         }
 
         private void lvArtikel_SelectedIndexChanged(object sender, EventArgs e)
@@ -399,8 +278,7 @@ namespace Restaurante
         {
             if (tbArtikel.Text != "" && tbBezeichnung.Text != "")
             {
-                if (conn.State.ToString() == "Closed") conn.Open();
-
+                conn.Open();
                 DialogResult result;
                 result = MessageBox.Show("Sind sie sicher dass Zutat '" + tbBezeichnung.Text + "' Löchen Möchten! ", "Vorsicht", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
@@ -412,7 +290,7 @@ namespace Restaurante
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Daten sind gelöscht");
                         button9.PerformClick();
-                        conn.Close();
+
                         PerformListFill();
                     }
                     catch (Exception ex)
@@ -420,6 +298,7 @@ namespace Restaurante
                         MessageBox.Show(ex.ToString());
                     }
                 }
+                conn.Close();
             }
         }
 

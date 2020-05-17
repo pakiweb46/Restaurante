@@ -50,6 +50,7 @@ namespace Restaurante
             closeReadConnection();
             return count;
         }
+
         public int getCount(string Table)
         {
             string sql = "SELECT count(*) FROM dbbari." + Table + ";";
@@ -83,6 +84,7 @@ namespace Restaurante
             reader = command.ExecuteReader();
             return reader;
         }
+
         public ConnectionState getReadConnectionState()
         {
             return readConnection.State;
@@ -116,6 +118,76 @@ namespace Restaurante
             command = new MySqlCommand(sql, readConnection);
             reader = command.ExecuteReader();
             return reader;
+        }
+
+        public int getMin(string Table, string parameter)
+        {
+            int min = -1;
+            openReadConnection();
+            string sql = "SELECT Min(" + parameter + ") FROM dbbari." + Table + ";";
+            MySqlDataReader reader;
+            command = new MySqlCommand(sql, readConnection);
+            reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                min = Convert.ToInt32(reader[0].ToString());
+            }
+            closeReadConnection();
+            return min;
+        }
+
+        public int getMin(string Table, string parameter, string para, string val, string op = "=")
+        {
+            int min = -1;
+            string singleQoute = "";
+            if (op == "=")
+                singleQoute = "'";
+            openReadConnection();
+            string sql = "SELECT Min(" + parameter + ") FROM dbbari." + Table + " WHERE " + para + op + singleQoute + val + singleQoute + ";";
+            MySqlDataReader reader;
+            command = new MySqlCommand(sql, readConnection);
+            reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                min = Convert.ToInt32(reader[0].ToString());
+            }
+            closeReadConnection();
+            return min;
+        }
+
+        public int getMax(string Table, string parameter)
+        {
+            int min = -1;
+            openReadConnection();
+            string sql = "SELECT Max(" + parameter + ") FROM dbbari." + Table + ";";
+            MySqlDataReader reader;
+            command = new MySqlCommand(sql, readConnection);
+            reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                min = Convert.ToInt32(reader[0].ToString());
+            }
+            closeReadConnection();
+            return min;
+        }
+
+        public int getMax(string Table, string parameter, string para, string val, string op = "=")
+        {
+            int min = -1;
+            string singleQoute = "";
+            if (op == "=")
+                singleQoute = "'";
+            openReadConnection();
+            string sql = "SELECT Max(" + parameter + ") FROM dbbari." + Table + " WHERE " + para + op + singleQoute + val + singleQoute + ";";
+            MySqlDataReader reader;
+            command = new MySqlCommand(sql, readConnection);
+            reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                min = Convert.ToInt32(reader[0].ToString());
+            }
+            closeReadConnection();
+            return min;
         }
 
         public bool updateSingleData(string Table, string variable, string value, string parameter, string searchValue)

@@ -16,31 +16,15 @@ namespace Restaurante
         private MySqlConnection conn = new MySqlConnection(connStr);
         public int recordNr, recordCount;
         private MySqlCommand cmd;
-        private MySqlDataReader rdr;
+        private RestauranteData rData;
 
         public frmMitarbeiter()
         {
             InitializeComponent();
-            try
-            {
-                // initialize indexer
-                recordNr = 0;
-                // Reader instances hasrows== true wenn rows are there
-                conn.Open();
-                string sql = "SELECT count(*) FROM dbbari.mitarbeiter;";
-                cmd = new MySqlCommand(sql, conn);
-
-                rdr = cmd.ExecuteReader();
-                if (rdr.Read())
-                {
-                    recordCount = Convert.ToInt16(rdr[0].ToString());
-                }
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            rData = new RestauranteData();
+            // initialize indexer
+            recordNr = 0;
+            recordCount = rData.getCount("mitarbeiter");
         }
 
         public static bool IsInteger(string theValue)
@@ -99,32 +83,8 @@ namespace Restaurante
 
         private int getMinId()
         {
-            int minid = -1;
-            string sql = "SELECT min(idMitarbeiter) FROM dbbari.mitarbeiter ;";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                minid = Convert.ToInt32(rdr[0].ToString());
-            }
-
-            try
-            {
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            return minid;  // -1 ist fehler
+            return rData.getMin("mitarbeiter", "idMitarbeiter");
+            // -1 ist fehler
         }
 
         private AutoCompleteStringCollection StrassenVonDatenBank()
@@ -134,35 +94,16 @@ namespace Restaurante
             AutoCompleteStringCollection colValues = new AutoCompleteStringCollection();
 
             //colValues.AddRange(new string[] { "Berlin", "Hamburg", "Bremen", "Stuttgart", "Saarbrücken", "Frankfurt a.M." });
-            string sql = "SELECT count(*) FROM dbbari.stadtplan";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-                strcount = Convert.ToInt32(rdr[0].ToString());
-            rdr.Close();
+            strcount = rData.getCount("stadtplan");
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getAllData("stadtplan");
 
-            sql = "SELECT * FROM dbbari.stadtplan";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            while (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
+                colValues.Add(reader["strasse"].ToString());
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            while (rdr.Read())
-            {
-                colValues.Add(rdr["strasse"].ToString());
-            }
-            rdr.Close();
+            reader.Close();
+            rData.closeReadConnection();
             return colValues;
         }
 
@@ -192,44 +133,19 @@ namespace Restaurante
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string sql;
             if (textBox3.Text != "") // Update Record
             {
-                sql = "SELECT * FROM dbbari.mitarbeiter Where MitarbeiterName='" + textBox3.Text.Trim() + "';";
-                cmd = new MySqlCommand(sql, conn);
+                rData.openReadConnection();
+                MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
 
-                try
-                {
-                    rdr = cmd.ExecuteReader();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                if (rdr.Read())
+                if (reader.Read())
                 {
                     MessageBox.Show("Diese Mitarbeiter Exsistiert Schon");
-                    recordNr = Convert.ToInt32(rdr[0].ToString());
-                    PerformDataFill();
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    recordNr = Convert.ToInt32(reader[0].ToString());
+                    PerformDataFill(ref reader);
                 }
                 else // Füge Neuen Record
                 {
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
                     if (textBox3.Text == "") // Name
                     {
                         MessageBox.Show("Bitte geben sie die Name");
@@ -252,6 +168,7 @@ namespace Restaurante
                     }
                     else
                     {
+                        conn.Open();
                         MySqlCommand cmd1 = new MySqlCommand();
 
                         try
@@ -276,8 +193,11 @@ namespace Restaurante
                         {
                             MessageBox.Show(ex.Message);
                         }
+                        conn.Close();
                     }
                 }
+                reader.Close();
+                rData.closeReadConnection();
             }
         }
 
@@ -289,15 +209,15 @@ namespace Restaurante
                 return 0;
         }
 
-        private void PerformDataFill()
+        private void PerformDataFill(ref MySqlDataReader reader)
         {
             myClearForm();
-            textBox3.Text = rdr["MitarbeiterName"].ToString();
-            textBox8.Text = rdr["ort"].ToString();
-            textBox7.Text = rdr["PLZ"].ToString();
-            tbStraße.Text = rdr["strasse"].ToString();
-            textBox5.Text = rdr["StrNo"].ToString();
-            textBox6.Text = rdr["zusatz"].ToString();
+            textBox3.Text = reader["MitarbeiterName"].ToString();
+            textBox8.Text = reader["ort"].ToString();
+            textBox7.Text = reader["PLZ"].ToString();
+            tbStraße.Text = reader["strasse"].ToString();
+            textBox5.Text = reader["StrNo"].ToString();
+            textBox6.Text = reader["zusatz"].ToString();
 
             button3.Enabled = true;
         }
@@ -315,32 +235,7 @@ namespace Restaurante
 
         private int getMaxId()
         {
-            int maxid = -1;
-            string sql = "SELECT max(idmitarbeiter) FROM dbbari.mitarbeiter ;";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                maxid = Convert.ToInt32(rdr[0].ToString());
-            }
-
-            try
-            {
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            return maxid;  // -1 ist fehler
+            return rData.getMax("mitarbeiter", "idmitarbeiter");  // -1 ist fehler
         }
 
         private void button3_Click(object sender, EventArgs e)
@@ -349,6 +244,7 @@ namespace Restaurante
             result = MessageBox.Show("Sind sie sicher diese mitarbeiter Löschen Möchten!", "Vorsicht", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
             if (result == DialogResult.Yes)
             {
+                conn.Open();
                 string sql = "DELETE FROM dbbari.mitarbeiter Where idMitarbeiter=" + recordNr + ";";
                 cmd = new MySqlCommand(sql, conn);
                 try
@@ -364,54 +260,19 @@ namespace Restaurante
                 {
                     MessageBox.Show(ex.ToString());
                 }
+                conn.Close();
             }
         }
 
         private int getMinId(int magicNo)
         {
-            int minid = -1;
-            string sql = "SELECT min(idmitarbeiter) FROM dbbari.mitarbeiter where idMitarbeiter >" + magicNo + " ;";
-            cmd = new MySqlCommand(sql, conn);
-
-            try
-            {
-                rdr = cmd.ExecuteReader();
-                if (rdr.Read())
-                {
-                    minid = Convert.ToInt32(rdr[0].ToString());
-                }
-
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            return minid;  // -1 ist fehler
+            return rData.getMin("mitarbeiter", "idmitarbeiter", "idMitarbeiter", magicNo.ToString(), ">");  // -1 ist fehler
         }
 
         private int getMaxId(int magicno)
         {
-            int maxid = -1;
-            string sql = "SELECT max(idmitarbeiter) FROM dbbari.mitarbeiter Where idmitarbeiter<" + magicno + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
-                rdr = cmd.ExecuteReader();
-
-                if (rdr.Read())
-                {
-                    maxid = Convert.ToInt32(rdr[0].ToString());
-                }
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            return maxid;  // -1 ist fehler
+            return rData.getMax("mitarbeiter", "idmitarbeiter", "idMitarbeiter", magicno.ToString(), "<");  // -1 ist fehler
+                                                                                                            // -1 ist fehler
         }
 
         private void button8_Click(object sender, EventArgs e)
@@ -420,30 +281,15 @@ namespace Restaurante
             {
                 recordNr = getMinId(recordNr); // gets minimum id which is greater than record number
             }
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("mitarbeiter", "idMitarbeiter", recordNr.ToString());
 
-            string sql = "SELECT * FROM dbbari.mitarbeiter Where idMitarbeiter=" + recordNr + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            if (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
+                PerformDataFill(ref reader);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                PerformDataFill();
-            }
-
-            try
-            {
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeAllConnection();
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -452,33 +298,18 @@ namespace Restaurante
             recordNr = maxid;
             if (maxid != -1)
             {
-                string sql = "SELECT * FROM dbbari.mitarbeiter Where idMitarbeiter=" + maxid + ";";
-                cmd = new MySqlCommand(sql, conn);
-                try
+                rData.openReadConnection();
+                MySqlDataReader reader = rData.getDataReader("mitarbeiter", "idMitarbeiter", maxid.ToString());
+                if (reader.Read())
                 {
-                    rdr = cmd.ExecuteReader();
+                    PerformDataFill(ref reader);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                if (rdr.Read())
-                {
-                    PerformDataFill();
-                }
-
-                try
-                {
-                    rdr.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
+                reader.Close();
+                rData.closeReadConnection();
             }
             else if (maxid == -1)
             {
-                MessageBox.Show("Ein Fehler ist getretten");
+                MessageBox.Show("Ein Fehler ist getretten.");
             }
         }
 
@@ -486,169 +317,81 @@ namespace Restaurante
         {
             if (recordNr != getMinId())
                 recordNr = getMaxId(recordNr); // gets maximum id which is smaller than recordNr
-            string sql = "SELECT * FROM dbbari.mitarbeiter Where idMitarbeiter=" + recordNr + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("mitarbeiter", "idMitarbeiter", recordNr.ToString());
+            if (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
+                PerformDataFill(ref reader);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                PerformDataFill();
-            }
-
-            try
-            {
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
             int minid = getMinId();
             recordNr = minid;
-            string sql = "SELECT * FROM dbbari.mitarbeiter Where idMitarbeiter=" + minid + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("mitarbeiter", "idMitarbeiter", minid.ToString());
+            if (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
+                PerformDataFill(ref reader);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                PerformDataFill();
-            }
-
-            try
-            {
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string sql;
-
             if (textBox3.Text != "")
             {
-                int found = 0; // Number of matching records found
-                sql = "SELECT count(*) FROM dbbari.mitarbeiter Where MitarbeiterName='" + textBox3.Text.Trim() + "';";
-
-                cmd = new MySqlCommand(sql, conn);
-
-                try
-                {
-                    rdr = cmd.ExecuteReader();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                if (rdr.Read())
-                {
-                    found = Convert.ToInt16(rdr[0].ToString());
-                }
-                rdr.Close();
+                int found = rData.getCount("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
                 if (found == 1)
                 {
-                    cmd.Parameters.Clear();
-                    sql = "SELECT * FROM dbbari.mitarbeiter Where MitarbeiterName='" + textBox3.Text.Trim() + "';";
-                    cmd = new MySqlCommand(sql, conn);
+                    rData.openReadConnection();
+                    MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
 
-                    try
+                    if (reader.Read())
                     {
-                        rdr = cmd.ExecuteReader();
+                        recordNr = Convert.ToInt32(reader[0].ToString());
+                        PerformDataFill(ref reader);
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    if (rdr.Read())
-                    {
-                        recordNr = Convert.ToInt32(rdr[0].ToString());
-                        PerformDataFill();
-                    }
-
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    reader.Close();
+                    rData.closeReadConnection();
                 }
                 else if (found > 1)
                 {
                     // Complete string match where more items have same name
                     listView1.Visible = true;
+                    rData.openReadConnection();
+                    MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
 
-                    sql = "SELECT * FROM dbbari.mitarbeiter Where MitarbeiterName='" + textBox3.Text.Trim() + "';";
-                    cmd = new MySqlCommand(sql, conn);
-
-                    try
+                    if (reader.HasRows)
                     {
-                        rdr = cmd.ExecuteReader();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    if (rdr.HasRows)
-                    {
-                        while (rdr.Read())
+                        while (reader.Read())
                         {
-                            ListViewItem item = new ListViewItem(rdr["MitarbeiterName"].ToString());
-                            item.SubItems.Add(rdr["idMitarbeiter"].ToString());
+                            ListViewItem item = new ListViewItem(reader["MitarbeiterName"].ToString());
+                            item.SubItems.Add(reader["idMitarbeiter"].ToString());
                             listView1.Items.Add(item);
                         }
                     }
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    reader.Close();
+                    rData.closeReadConnection();
                     MessageBox.Show("Mehere daten gefunden wählen sie aus der liste");
                 }
                 else
                 {
                     // not full matching found match String segments
-                    sql = "SELECT * FROM dbbari.mitarbeiter Where MitarbeiterName Like '%" + textBox3.Text.Trim() + "%';";
-                    cmd = new MySqlCommand(sql, conn);
+                    rData.openReadConnection();
+                    MySqlDataReader reader = rData.searchDaten("mitarbeiter", "MitarbeiterName", "%" + textBox3.Text.Trim() + "%");
                     listView1.Visible = true;
-                    try
-                    {
-                        rdr = cmd.ExecuteReader();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    if (rdr.HasRows)
+                    if (reader.HasRows)
                     {
                         MessageBox.Show("Mehere daten gefunden wählen sie aus der liste");
-                        while (rdr.Read())
+                        while (reader.Read())
                         {
-                            ListViewItem item = new ListViewItem(rdr["MitarbeiterName"].ToString());
-                            item.SubItems.Add(rdr["idMitarbeiter"].ToString());
+                            ListViewItem item = new ListViewItem(reader["MitarbeiterName"].ToString());
+                            item.SubItems.Add(reader["idMitarbeiter"].ToString());
                             listView1.Items.Add(item);
                         }
                     }
@@ -656,14 +399,8 @@ namespace Restaurante
                     {
                         MessageBox.Show("Daten nicht gefunden");
                     }
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    reader.Close();
+                    rData.closeReadConnection();
                 }
             }
             else
@@ -683,29 +420,13 @@ namespace Restaurante
             }
 
             //Search nach kunden Id and fill form
-            string sql = "SELECT * FROM dbbari.mitarbeiter Where idMitarbeiter=" + recordNr + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("mitarbeiter", "idMitarbeiter", recordNr.ToString());
+            if (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
+                PerformDataFill(ref reader);
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                PerformDataFill();
-            }
-
-            try
-            {
-                rdr.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            rData.closeReadConnection();
             listView1.Items.Clear();
             listView1.Visible = false;
         }

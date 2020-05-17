@@ -11,17 +11,8 @@ namespace Restaurante
 
         #region printable list view variables
 
-        //  private ListViewItem itemClone;
         private PrintListView lvObj;
 
-        // PrintableListView2 lvObj;
-        /*     private System.Windows.Forms.ColumnHeader clNr;
-             private System.Windows.Forms.ColumnHeader clTelefone;
-             private System.Windows.Forms.ColumnHeader clAddress;
-             private System.Windows.Forms.ColumnHeader clBetrag;
-             private System.Windows.Forms.ColumnHeader clFahrer;
-             private System.Windows.Forms.ColumnHeader clDatum;
-             private System.Windows.Forms.ColumnHeader clZeit;*/
         private chooseView objChooseView;
 
         #endregion printable list view variables
@@ -34,6 +25,7 @@ namespace Restaurante
         public int recordNr, recordCount, rollNo = 0;
         private MySqlCommand cmd;
         private MySqlDataReader rdr;
+        private RestauranteData rData;
         public bool monat = false, Jahr = false;
         public string datestring = System.DateTime.Now.ToShortDateString();
         public double gesamt;
@@ -45,67 +37,25 @@ namespace Restaurante
 
         public int getMitarbeiterCount()
         {
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-            int ncount = 0;
-            string sql = "SELECT count(*) FROM dbbari.mitarbeiter Where Tatigkeit='Fahrer';";
-
-            cmd = new MySqlCommand(sql, conn);
-
-            try
-            {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                ncount = Convert.ToInt16(rdr[0].ToString());
-            }
-            rdr.Close();
-            conn.Close();
-            return ncount;
+            return rData.getCount("mitarbeiter", "Tatigkeit", "Fahrer");
         }
 
         public string[] loadFahrer()
         {
             string[] temp = new string[mitarbetierCount];
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-
-            string sql = "SELECT * FROM dbbari.mitarbeiter Where Tatigkeit='Fahrer';";
-            cmd = new MySqlCommand(sql, conn);
-
-            try
-            {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("mitarbeiter", "Tatigkeit", "Fahrer");
+            if (reader.HasRows)
             {
                 int i = 0;
-                while (rdr.Read())
+                while (reader.Read())
                 {
-                    temp[i] = rdr[1].ToString();
+                    temp[i] = reader[1].ToString();
                     i++;
                 }
             }
-
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
+            reader.Close();
+            rData.closeReadConnection();
             return temp;
         }
 
@@ -125,6 +75,7 @@ namespace Restaurante
         public frmAbrechnung()
         {
             InitializeComponent();
+            rData = new RestauranteData();
         }
 
         private void button5_Click(object sender, EventArgs e)
@@ -411,96 +362,6 @@ namespace Restaurante
 
             if (conn.State.ToString() == "Closed")
                 conn.Open();
-            /*               int count=0;
-                            sql = "SELECT count(*) FROM dbbari.mitarbeiter Where Tatigkeit='Fahrer';";
-
-                            cmd = new MySqlCommand(sql, conn);
-
-                            try
-                            {
-                                rdr = cmd.ExecuteReader();
-                            }
-                            catch (Exception ex)
-                            {
-                                MessageBox.Show(ex.ToString());
-                            }
-                            if (rdr.Read())
-                            {
-                                count = Convert.ToInt16(rdr[0].ToString());
-                            }
-                            rdr.Close();
-                            int zahler = 0;
-
-                            if (rollNo < mitarbetierCount)
-                            {
-                                rollNo++;
-                                sql = "SELECT * FROM dbbari.mitarbeiter Where Tatigkeit='Fahrer';";
-                                cmd = new MySqlCommand(sql, conn);
-
-                                try
-                                {
-                                    rdr = cmd.ExecuteReader();
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.ToString());
-                                }
-                                if (rdr.HasRows)
-                                {
-                                    while (rdr.Read())
-                                    {
-                                        zahler++;
-                                        if (zahler == rollNo)
-                                        {
-                                            catchName = rdr[1].ToString();
-                                        }
-                                    }
-                                }
-
-                                try
-                                {
-                                    rdr.Close();
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.ToString());
-                                }
-                            }
-                            else
-                            {
-                                rollNo=1;
-                                sql = "SELECT * FROM dbbari.mitarbeiter Where Tatigkeit='Fahrer';";
-                                cmd = new MySqlCommand(sql, conn);
-
-                                try
-                                {
-                                    rdr = cmd.ExecuteReader();
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.ToString());
-                                }
-                                if (rdr.HasRows)
-                                {
-                                    while (rdr.Read())
-                                    {
-                                        zahler++;
-                                        if (zahler == rollNo)
-                                        {
-                                            catchName = rdr[1].ToString();
-                                        }
-                                    }
-                                }
-
-                                try
-                                {
-                                    rdr.Close();
-                                }
-                                catch (Exception ex)
-                                {
-                                    MessageBox.Show(ex.ToString());
-                                }
-                            }*/
             //Add this to UpdateFahrer
             MySqlCommand cmd1 = new MySqlCommand(); ;
             cmd1.Connection = conn;

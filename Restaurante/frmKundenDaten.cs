@@ -325,79 +325,18 @@ namespace Restaurante
 
         private int getMaxId(int magicno)
         {
-            int maxid = -1;
-            conn.Open();
-            MySqlDataReader reader;
-            string sql = "SELECT max(idKundendaten) FROM dbbari.kundendaten Where idKundendaten<" + magicno + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
-                reader = cmd.ExecuteReader();
-
-                if (reader.Read())
-                {
-                    maxid = Convert.ToInt32(reader[0].ToString());
-                }
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            conn.Close();
-
-            return maxid;  // -1 ist fehler
+            return rData.getMin("kundendaten", "idKundendaten", "idKundendaten", magicno.ToString(), "<");  // -1 ist fehler
         }
 
         private int getMinId()
         {
-            int minid = -1;
-            conn.Open();
-            MySqlDataReader reader;
-            string sql = "SELECT min(idKundendaten) FROM dbbari.kundendaten ;";
-            cmd = new MySqlCommand(sql, conn);
-            reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                minid = Convert.ToInt32(reader[0].ToString());
-            }
-
-            try
-            {
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            conn.Close();
-            return minid;  // -1 ist fehler
+            return rData.getMin("kundendaten", "idKundendaten");  // -1 ist fehler
+            // -1 ist fehler
         }
 
         private int getMinId(int magicNo)
         {
-            int minid = -1;
-            conn.Open();
-            MySqlDataReader reader;
-            string sql = "SELECT min(idKundendaten) FROM dbbari.kundendaten where idKundendaten >" + magicNo + " ;";
-            cmd = new MySqlCommand(sql, conn);
-
-            try
-            {
-                reader = cmd.ExecuteReader();
-                if (reader.Read())
-                {
-                    minid = Convert.ToInt32(reader[0].ToString());
-                }
-
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            conn.Close();
-            return minid;  // -1 ist fehler
+            return rData.getMin("kundendaten", "idKundendaten", "idKundendaten", magicNo.ToString(), ">");  // -1 ist fehler
         }
 
         private void button7_Click(object sender, EventArgs e) // Goto End of record
@@ -446,18 +385,14 @@ namespace Restaurante
         {
             int minid = getMinId();
             recordNr = minid;
-            conn.Open();
-            MySqlDataReader reader;
-            string sql = "SELECT * FROM dbbari.kundendaten Where idKundendaten=" + minid + ";";
-            cmd = new MySqlCommand(sql, conn);
-            reader = cmd.ExecuteReader();
-
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("kundendaten", "idKundendaten", minid.ToString());
             if (reader.Read())
             {
                 PerformDataFill(ref reader);
             }
             reader.Close();
-            conn.Close();
+            rData.closeReadConnection();
         }
 
         private void tbStraße_LostFocus(object sender, EventArgs e)

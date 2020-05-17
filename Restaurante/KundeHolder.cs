@@ -1,12 +1,20 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
-using System.Windows.Forms;
 
+//TODO Momentan keine Nutzung
 namespace Restaurante
 {
     internal class KundeHolder
     {
         #region Property Variables
+
+        private double AnfahrtKosten;
+
+        private double Gesamt;
+
+        private string KundenAddresse;
+
+        private string KundenHinweis;
 
         /// <summary>
         /// Property variable kundendaten
@@ -16,12 +24,8 @@ namespace Restaurante
 
         private string KundenOrt;
         private string KundenPLZ;
-        private string KundenAddresse;
         private string KundenTelefone;
-        private string KundenHinweis;
-        private double AnfahrtKosten;
         private double MwstAnfahrt;
-        private double Gesamt;
         private double Rabatt;
 
         #endregion Property Variables
@@ -29,12 +33,35 @@ namespace Restaurante
         #region Class Variable
 
         private MySqlConnection conn = new MySqlConnection(connStr);
-        private MySqlCommand cmd;
-        private MySqlDataReader rdr;
+        private RestauranteData rData;
 
         #endregion Class Variable
 
         #region class Properties
+
+        public double sAnfahrtKosten
+        {
+            get { return AnfahrtKosten; }
+            set { AnfahrtKosten = value; }
+        }
+
+        public double sGesamt
+        {
+            get { return Gesamt; }
+            set { Gesamt = value; }
+        }
+
+        public string sKundenAddresse
+        {
+            get { return KundenAddresse; }
+            set { KundenAddresse = value; }
+        }
+
+        public string sKundenHinweis
+        {
+            get { return sKundenHinweis; }
+            set { sKundenHinweis = value; }
+        }
 
         public string sKundenName
         {
@@ -54,40 +81,16 @@ namespace Restaurante
             set { KundenPLZ = value; }
         }
 
-        public string sKundenAddresse
-        {
-            get { return KundenAddresse; }
-            set { KundenAddresse = value; }
-        }
-
         public string sKundenTelefone
         {
             get { return KundenTelefone; }
             set { KundenTelefone = value; }
         }
 
-        public string sKundenHinweis
-        {
-            get { return sKundenHinweis; }
-            set { sKundenHinweis = value; }
-        }
-
-        public double sAnfahrtKosten
-        {
-            get { return AnfahrtKosten; }
-            set { AnfahrtKosten = value; }
-        }
-
         public double sMwstAnfahrt
         {
             get { return MwstAnfahrt; }
             set { MwstAnfahrt = value; }
-        }
-
-        public double sGesamt
-        {
-            get { return Gesamt; }
-            set { Gesamt = value; }
         }
 
         public double sRabatt
@@ -102,6 +105,7 @@ namespace Restaurante
 
         public KundeHolder()
         {
+            rData = new RestauranteData();
             KundenName = string.Empty;
             KundenOrt = string.Empty;
             KundenPLZ = string.Empty;
@@ -125,43 +129,26 @@ namespace Restaurante
 
         private void loadKundendaten(int kundenid)
         {
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-            string sql = "SELECT * FROM dbbari.kundendaten Where idKundendaten=" + kundenid + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("kundendaten", "idKundendaten", kundenid.ToString());
+
+            if (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                KundenName = rdr["KundenName"].ToString();
-                KundenOrt = rdr["ort"].ToString();
-                KundenPLZ = rdr["PLZ"].ToString();
-                KundenAddresse = rdr["strasse"].ToString() + " ." + rdr["StrNo"].ToString();
-                KundenTelefone = rdr["kundennr"].ToString();
-                KundenHinweis = rdr["zusatz"].ToString();
-                AnfahrtKosten = Convert.ToDouble(rdr["AnfahrtKosten"].ToString());
+                KundenName = reader["KundenName"].ToString();
+                KundenOrt = reader["ort"].ToString();
+                KundenPLZ = reader["PLZ"].ToString();
+                KundenAddresse = reader["strasse"].ToString() + " ." + reader["StrNo"].ToString();
+                KundenTelefone = reader["kundennr"].ToString();
+                KundenHinweis = reader["zusatz"].ToString();
+                AnfahrtKosten = Convert.ToDouble(reader["AnfahrtKosten"].ToString());
                 MwstAnfahrt = AnfahrtKosten * 0.19;
                 // Add anfahrt kosten in total
                 Gesamt = AnfahrtKosten;
                 // Mwst of Anfahrt in Mwst Total
-                Rabatt = Convert.ToDouble(rdr["Rabatt"].ToString());
+                Rabatt = Convert.ToDouble(reader["Rabatt"].ToString());
             }
-
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
         }
 
         #endregion functions

@@ -2,6 +2,7 @@
 using System;
 using System.Windows.Forms;
 
+//TODO:: NEXT PREVIOUS NOT FUNCTIONING
 namespace Restaurante
 {
     public partial class frmSpeiseKarte : Form
@@ -34,7 +35,6 @@ namespace Restaurante
 
         private void PerformSearch(string ArtikelNr)
         {
-            
             if (tbArtikel.Text != "")
             {
                 rData.openReadConnection();
@@ -159,11 +159,9 @@ namespace Restaurante
                     MessageBox.Show("Artikel Exsistiert Schon");
                     recordNr = Convert.ToInt32(reader[0].ToString());
                     PerformDataFill(ref reader);
-                   
                 }
                 else // Füge Neuen Record
                 {
-                  
                     if (tbBezeichnung.Text == "")
                     {
                         MessageBox.Show("Bitte geben sie den ArtikelBezeichnung");
@@ -201,20 +199,17 @@ namespace Restaurante
 
                             cmd1.ExecuteNonQuery();
                             MessageBox.Show("Artikel Eingefügt");
-                            
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);
                         }
                         conn.Close();
-
                     }
                 }
                 reader.Close();
                 rData.closeReadConnection();
                 PerformListFill();
-                
             }
         }
 
@@ -234,7 +229,7 @@ namespace Restaurante
             rData.openReadConnection();
             MySqlDataReader reader = rData.getDataReader("Speisekarte");
             lvArtikel.Items.Clear();
-           
+
             if (reader.HasRows)
             {
                 while (reader.Read())
@@ -263,7 +258,7 @@ namespace Restaurante
             MySqlCommand cmd1 = new MySqlCommand(); ;
             cmd1.Connection = conn;
 
-            cmd.Parameters.Clear();
+            cmd1.Parameters.Clear();
 
             try
             {
@@ -298,7 +293,6 @@ namespace Restaurante
             }
             reader.Close();
             rData.closeReadConnection();
-
         }
 
         private void lvArtikel_SelectedIndexChanged(object sender, EventArgs e)
