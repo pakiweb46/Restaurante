@@ -1,22 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using LieferDienst;
+
 namespace Restaurante
 {
-
     public partial class frmShowList : Form
     {
         //ovveride initialzeComponent()
-        private bool isBestellung=false;
+        private bool isBestellung = false;
+
         private void InitializeArtikel()
         {
+            rData = new RestauranteData();
             this.listView1 = new PrintableListView2();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -24,11 +19,11 @@ namespace Restaurante
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button1 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
- 
+
             this.SuspendLayout();
-            // 
+            //
             // listView1
-            // 
+            //
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -42,29 +37,29 @@ namespace Restaurante
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            
-            // 
+
+            //
             // columnHeader1
-            // 
+            //
             this.columnHeader1.Text = "Artikel Nr";
             this.columnHeader1.Width = 149;
-            // 
+            //
             // columnHeader2
-            // 
+            //
             this.columnHeader2.Text = "Bezeichnung";
             this.columnHeader2.Width = 312;
-            // 
+            //
             // columnHeader3
-            // 
+            //
             this.columnHeader3.Text = "Zusatz";
             this.columnHeader3.Width = 118;
-            // 
+            //
             // columnHeader5
-            // 
+            //
             this.columnHeader4.Text = "Preis";
             this.columnHeader4.Width = 133;
             // button1
-            // 
+            //
             this.button1.Location = new System.Drawing.Point(53, 614);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(136, 45);
@@ -72,9 +67,9 @@ namespace Restaurante
             this.button1.Text = "Drucken (F3)";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
+            //
             // button2
-            // 
+            //
             this.button2.Location = new System.Drawing.Point(195, 614);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(148, 45);
@@ -82,19 +77,19 @@ namespace Restaurante
             this.button2.Text = "Zurück (Esc)";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            
-            // 
- 
-            // 
+
+            //
+
+            //
             // frmShowList
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 671);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.button1);
- 
+
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "frmShowList";
@@ -102,14 +97,15 @@ namespace Restaurante
             this.Load += new System.EventHandler(this.frmShowList_Load);
             this.ResumeLayout(false);
             this.PerformLayout();
-
         }
+
         private void InitializeBestellung()
         {
+            rData = new RestauranteData();
             this.listView1 = new PrintableListView2();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            
+
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -120,9 +116,9 @@ namespace Restaurante
             this.button2 = new System.Windows.Forms.Button();
 
             this.SuspendLayout();
-            // 
+            //
             // label1
-            // 
+            //
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(623, 553);
             this.label1.Margin = new System.Windows.Forms.Padding(5, 0, 5, 0);
@@ -130,17 +126,17 @@ namespace Restaurante
             this.label1.Size = new System.Drawing.Size(72, 20);
             this.label1.TabIndex = 2;
             this.label1.Text = "Gesamt";
-            // 
+            //
             // textBox1
-            // 
+            //
             this.textBox1.Location = new System.Drawing.Point(729, 547);
             this.textBox1.Name = "textBox1";
             this.textBox1.Size = new System.Drawing.Size(128, 26);
             this.textBox1.TabIndex = 3;
-            
-            // 
+
+            //
             // listView1
-            // 
+            //
             this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
@@ -148,45 +144,45 @@ namespace Restaurante
             this.columnHeader4,this.columnHeader5,this.columnHeader12});
             this.listView1.GridLines = true;
             this.listView1.Location = new System.Drawing.Point(53, 75);
-           
+
             this.listView1.Margin = new System.Windows.Forms.Padding(5);
             this.listView1.Name = "listView1";
             this.listView1.Size = new System.Drawing.Size(804, 464);
             this.listView1.TabIndex = 1;
             this.listView1.UseCompatibleStateImageBehavior = false;
             this.listView1.View = System.Windows.Forms.View.Details;
-            // 
+            //
             // columnHeader1
-            // 
+            //
             this.columnHeader1.Text = "Artikel Nr";
             this.columnHeader1.Width = 100;
-            // 
+            //
             // columnHeader2
-            // 
+            //
             this.columnHeader2.Text = "Bezeichnung";
             this.columnHeader2.Width = 312;
-            // 
+            //
             // columnHeader3
-            // 
+            //
             this.columnHeader3.Text = "Preis";
             this.columnHeader3.Width = 118;
-            // 
+            //
             // columnHeader5
-            // 
+            //
             this.columnHeader4.Text = "Menge";
             this.columnHeader4.Width = 133;
-            // 
+            //
             // columnHeader5
-            // 
+            //
             this.columnHeader5.Text = "Total";
             this.columnHeader5.Width = 133;
             // columnHeader12
-            // 
+            //
             this.columnHeader12.Text = "MwSt";
             this.columnHeader12.Width = 67;
-            
+
             // button1
-            // 
+            //
             this.button1.Location = new System.Drawing.Point(53, 614);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(136, 45);
@@ -194,9 +190,9 @@ namespace Restaurante
             this.button1.Text = "Drucken (F3)";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
+            //
             // button2
-            // 
+            //
             this.button2.Location = new System.Drawing.Point(195, 614);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(148, 45);
@@ -204,10 +200,10 @@ namespace Restaurante
             this.button2.Text = "Zurück (Esc)";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // 
+            //
+            //
             // frmShowList
-            // 
+            //
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 671);
@@ -216,7 +212,7 @@ namespace Restaurante
             this.Controls.Add(this.button1);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
-            
+
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5);
             this.Name = "frmShowList";
@@ -225,74 +221,57 @@ namespace Restaurante
             this.ResumeLayout(false);
             isBestellung = true;
             this.PerformLayout();
-
         }
-        
+
         private int index;
-        static string connStr = Globals.connString;
-        MySqlConnection conn = new MySqlConnection(connStr);
-        MySqlCommand cmd;
-        MySqlDataReader rdr;
-        
+        private RestauranteData rData;
+
         public frmShowList()
         {
             InitializeComponent();
+            rData = new RestauranteData();
         }
-        public frmShowList(int reference, string title )
-        {
 
+        public frmShowList(int reference, string title)
+        {
             //TODO User ENUM Here decision on based on title BAD
-            if (title == "Artikel Liste") 
+            if (title == "Artikel Liste")
                 InitializeArtikel();
             else if (title == "Bestellung Details")
                 InitializeBestellung();
-            index=reference;
+            index = reference;
             this.Text = title;
-            
-            
         }
 
         private void frmShowList_Load(object sender, EventArgs e)
         {
             if (this.Text == "Artikel Liste")
             {
-                
                 PerformListFill();
             }
             else if (this.Text == "Bestellung Details")
             {
                 PerformListFill(true);
             }
-            
         }
+
         private void PerformListFill()
         {
-            
-            conn.Open();
             listView1.Items.Clear();
-            string sql = "SELECT * From dbbari.Speisekarte ";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("Speisekarte");
 
-                rdr = cmd.ExecuteReader();
-
-            }
-            catch (Exception ex)
+            if (reader.HasRows)
             {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
-                        ListViewItem item = new ListViewItem(rdr["ArtikelNr"].ToString());
-                        item.SubItems.Add(rdr["Bezeichnung"].ToString());
-                        item.SubItems.Add(rdr["zusatz"].ToString());
-                        item.SubItems.Add(rdr["Verkaufpreis"].ToString());
-                        item.SubItems.Add(rdr["MwSt"].ToString());
+                        ListViewItem item = new ListViewItem(reader["ArtikelNr"].ToString());
+                        item.SubItems.Add(reader["Bezeichnung"].ToString());
+                        item.SubItems.Add(reader["zusatz"].ToString());
+                        item.SubItems.Add(reader["Verkaufpreis"].ToString());
+                        item.SubItems.Add(reader["MwSt"].ToString());
 
                         listView1.Items.Add(item);
                     }
@@ -300,152 +279,89 @@ namespace Restaurante
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
-
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-          
+            reader.Close();
+            rData.closeReadConnection();
         }
+
         private void PerformListFill(bool check)
         {
-
-            conn.Open();
             listView1.Items.Clear();
-            string sql = "SELECT * From dbbari.Bestellung where RechnungNr="+index+";";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
-
-                rdr = cmd.ExecuteReader();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("Bestellung", "RechnungNr", index.ToString());
             double gesamt = 0;
-            if (rdr.HasRows)
+            if (reader.HasRows)
             {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
-                        double verkaufpreis=Convert.ToDouble(rdr["Verkaufpreis"].ToString());
-                        int menge=Convert.ToInt32(rdr["Menge"].ToString());
+                        double verkaufpreis = Convert.ToDouble(reader["Verkaufpreis"].ToString());
+                        int menge = Convert.ToInt32(reader["Menge"].ToString());
                         gesamt = gesamt + (menge * verkaufpreis);
-                        ListViewItem item = new ListViewItem(rdr["ArtikelNr"].ToString());
-                        item.SubItems.Add(rdr["Bezeichnung"].ToString());
+                        ListViewItem item = new ListViewItem(reader["ArtikelNr"].ToString());
+                        item.SubItems.Add(reader["Bezeichnung"].ToString());
                         item.SubItems.Add(verkaufpreis.ToString());
                         item.SubItems.Add(menge.ToString());
-                        item.SubItems.Add((verkaufpreis*menge).ToString());
-                        
-                            item.SubItems.Add(rdr["Mwst"].ToString());
-                            listView1.Items.Add(item);
+                        item.SubItems.Add((verkaufpreis * menge).ToString());
+
+                        item.SubItems.Add(reader["Mwst"].ToString());
+                        listView1.Items.Add(item);
                     }
                     catch (Exception ex)
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
-                textBox1.Text = gesamt.ToString(); 
-
+                textBox1.Text = gesamt.ToString();
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
+            reader.Close();
+            rData.closeReadConnection();
         }
+
         private string KundenTelefone, KundenName, KundenAddresse, KundenPLZ, KundenOrt, KundenHinweis;
         private double AnfahrtKosten, Rabbatt, MwstAnfahrt;
-        
+
         private int FindKunde(int rechnr)
         {
-            int idKundenNr=0;
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-            string sql = "SELECT idkundendaten FROM dbbari.abbrechnung Where idrechnung=" + rechnr + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
-            {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                idKundenNr = Convert.ToInt32(rdr["idkundendaten"].ToString());
-            }
+            int idKundenNr = 0;
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("abbrechnung", "idrechnung", rechnr.ToString(), "idkundendaten");
 
-            try
+            if (reader.Read())
             {
-                rdr.Close();
-                conn.Close();
+                idKundenNr = Convert.ToInt32(reader["idkundendaten"].ToString());
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
+            reader.Close();
+            rData.closeReadConnection();
 
             return idKundenNr;
         }
+
         private void loadKundendaten(int kundenid)
         {
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-            string sql = "SELECT * FROM dbbari.kundendaten Where idKundendaten=" + kundenid + ";";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("kundendaten", "idKundendaten", kundenid.ToString());
+
+            if (reader.Read())
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                KundenName = rdr["KundenName"].ToString();
-                KundenOrt = rdr["ort"].ToString();
-                KundenPLZ = rdr["PLZ"].ToString();
-                KundenAddresse = rdr["strasse"].ToString() + " ." + rdr["StrNo"].ToString();
-                KundenTelefone = rdr["kundennr"].ToString();
-                KundenHinweis = rdr["zusatz"].ToString();
-                AnfahrtKosten = Convert.ToDouble(rdr["AnfahrtKosten"].ToString());
+                KundenName = reader["KundenName"].ToString();
+                KundenOrt = reader["ort"].ToString();
+                KundenPLZ = reader["PLZ"].ToString();
+                KundenAddresse = reader["strasse"].ToString() + " ." + reader["StrNo"].ToString();
+                KundenTelefone = reader["kundennr"].ToString();
+                KundenHinweis = reader["zusatz"].ToString();
+                AnfahrtKosten = Convert.ToDouble(reader["AnfahrtKosten"].ToString());
                 MwstAnfahrt = AnfahrtKosten * 0.19;
                 // Mwst of Anfahrt in Mwst Total
-                Rabbatt = Convert.ToDouble(rdr["Rabatt"].ToString());
+                Rabbatt = Convert.ToDouble(reader["Rabatt"].ToString());
             }
 
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
+            reader.Close();
+            rData.closeReadConnection();
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             if (isBestellung)
@@ -504,18 +420,15 @@ namespace Restaurante
                     obj.Anfahrt_Kosten = AnfahrtKosten;
                     obj.Gesamt_Betrag = Convert.ToDouble(textBox1.Text);
                     obj.Print();
-
                 }
-                    
             }
             else
-            listView1.Print();
+                listView1.Print();
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             this.Close();
         }
-
     }
 }

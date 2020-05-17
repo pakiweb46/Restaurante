@@ -9,10 +9,12 @@ namespace Restaurante
         private static string connStr = Globals.connString;
         private MySqlConnection conn = new MySqlConnection(connStr);
         public string selectedFahrer;
+        private RestauranteData rData;
 
         public chooseView()
         {
             InitializeComponent();
+            rData = new RestauranteData();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -20,34 +22,22 @@ namespace Restaurante
             this.Hide();
         }
 
-        private MySqlCommand cmd;
-        private MySqlDataReader rdr;
-
         private void chooseView_Load(object sender, EventArgs e)
         {
             conn.Open();
             listView1.Items.Clear();
             listView1.Items.Add("Alle Sätze");
             listView1.Items.Add("Hausverkauf");
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("mitarbeiter", "Tatigkeit", "Fahrer");
 
-            string sql = "SELECT * From dbbari.mitarbeiter WHERE Tatigkeit='Fahrer' ";
-
-            cmd = new MySqlCommand(sql, conn);
-            try
+            if (reader.HasRows)
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
-                        ListViewItem item = new ListViewItem(rdr["MitarbeiterName"].ToString());
+                        ListViewItem item = new ListViewItem(reader["MitarbeiterName"].ToString());
 
                         listView1.Items.Add(item);
                     }
@@ -57,15 +47,8 @@ namespace Restaurante
                     }
                 }
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)

@@ -547,7 +547,7 @@ namespace Restaurante
         {
             AutoCompleteStringCollection colValues = new AutoCompleteStringCollection();
             rData.openReadConnection();
-            MySqlDataReader readerStadtPlan = rData.getAllData("stadtplan");
+            MySqlDataReader readerStadtPlan = rData.getDataReader("stadtplan");
             while (readerStadtPlan.Read())
             {
                 colValues.Add(readerStadtPlan["strasse"].ToString());

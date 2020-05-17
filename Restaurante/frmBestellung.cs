@@ -53,7 +53,7 @@ namespace Restaurante
         {
             listView1.Items.Clear();
             rData.openReadConnection();
-            MySqlDataReader rSpeiskeKarte = rData.getAllData("Speisekarte");
+            MySqlDataReader rSpeiskeKarte = rData.getDataReader("Speisekarte");
             if (rSpeiskeKarte.HasRows)
             {
                 while (rSpeiskeKarte.Read())
@@ -75,7 +75,7 @@ namespace Restaurante
             rSpeiskeKarte.Close();
             rData.closeReadConnection();
             rData.openReadConnection();
-            MySqlDataReader rZutaten = rData.getAllData("zutaten");
+            MySqlDataReader rZutaten = rData.getDataReader("zutaten");
             if (rZutaten.HasRows)
             {
                 while (rZutaten.Read())

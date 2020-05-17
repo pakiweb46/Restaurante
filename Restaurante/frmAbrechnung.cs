@@ -24,7 +24,6 @@ namespace Restaurante
         private MySqlConnection conn2 = new MySqlConnection(connStr);
         public int recordNr, recordCount, rollNo = 0;
         private MySqlCommand cmd;
-        private MySqlDataReader rdr;
         private RestauranteData rData;
         public bool monat = false, Jahr = false;
         public string datestring = System.DateTime.Now.ToShortDateString();
@@ -123,41 +122,34 @@ namespace Restaurante
 
         private void PerformListFill(string datum)
         {
-            try
-            {
-                conn.Open();
-                listView1.Items.Clear();
-                string sql = "SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno, dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum='" + datum + "';";
-                cmd = new MySqlCommand(sql, conn);
-                gesamt = 0;
+            listView1.Items.Clear();
+            rData.openReadConnection();
+            string filter = "dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno, dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr";
+            string joint = "dbbari.abbrechnung.idKundendaten = dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum = '" + datum + "'";
+            MySqlDataReader reader = rData.getDataReaderJoin("dbbari.Kundendaten", "dbbari.abbrechnung", joint, filter);
+            gesamt = 0;
 
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
+            if (reader.HasRows)
             {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
                         datestring = datum;
                         string tempKundernNr, tempKundenName, tempRestBetrag;
-                        ListViewItem item = new ListViewItem(rdr["idRechnung"].ToString());
-                        tempKundernNr = rdr["KundenNr"].ToString();
+                        ListViewItem item = new ListViewItem(reader["idRechnung"].ToString());
+                        tempKundernNr = reader["KundenNr"].ToString();
                         item.SubItems.Add(tempKundernNr);
-                        tempKundenName = rdr["idKundenDaten"].ToString() + " - " + rdr["KundenName"].ToString() + " - " + rdr["Strasse"].ToString() + "." + rdr["Strno"].ToString();
+                        tempKundenName = reader["idKundenDaten"].ToString() + " - " + reader["KundenName"].ToString() + " - " + reader["Strasse"].ToString() + "." + reader["Strno"].ToString();
                         item.SubItems.Add(tempKundenName);
-                        item.SubItems.Add(rdr["Datum"].ToString());
-                        item.SubItems.Add(rdr["Zeit"].ToString());
-                        tempRestBetrag = rdr["RestBetrag"].ToString();
+                        item.SubItems.Add(reader["Datum"].ToString());
+                        item.SubItems.Add(reader["Zeit"].ToString());
+                        tempRestBetrag = reader["RestBetrag"].ToString();
                         item.SubItems.Add(tempRestBetrag);
-                        item.SubItems.Add(rdr["Fahrer"].ToString());
+                        item.SubItems.Add(reader["Fahrer"].ToString());
                         gesamt += Convert.ToDouble(tempRestBetrag);
                         listView1.Items.Add(item);
-                        item.SubItems.Add(rdr["BestellNr"].ToString());
+                        item.SubItems.Add(reader["BestellNr"].ToString());
 
                         // --------------- Für Tages Übersicht-------------------
                         if (tempKundenName == "Abholer")
@@ -166,8 +158,8 @@ namespace Restaurante
                             Hausverkauf_Text += Convert.ToDouble(tempRestBetrag);
                         else
                             Ausserhaus_Text += Convert.ToDouble(tempRestBetrag);
-                        MwSt19_Text += Convert.ToDouble(rdr["Mwst19"].ToString());
-                        MwSt7_Text += Convert.ToDouble(rdr["Mwst7"].ToString());
+                        MwSt19_Text += Convert.ToDouble(reader["Mwst19"].ToString());
+                        MwSt7_Text += Convert.ToDouble(reader["Mwst7"].ToString());
                     }
                     catch (Exception ex)
                     {
@@ -175,15 +167,8 @@ namespace Restaurante
                     }
                 }
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
             textBox1.Text = String.Format("{0:0.00}", gesamt).ToString();
             textBox2.Text = listView1.Items.Count.ToString();
         }
@@ -192,40 +177,34 @@ namespace Restaurante
         {
             string datum = monat + "." + Jahr;
             //MessageBox.Show(datum);
-            conn.Open();
+            rData.openReadConnection();
+            string filter = "dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr";
+            string joint = "dbbari.abbrechnung.idKundendaten = dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum like '%" + datum + "'";
+            MySqlDataReader reader = rData.getDataReaderJoin("dbbari.Kundendaten", "dbbari.abbrechnung", joint, filter);
             listView1.Items.Clear();
-            string sql = "SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung WHERE dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum like '%" + datum + "';";
-            cmd = new MySqlCommand(sql, conn);
             gesamt = 0;
-            try
+
+            if (reader.HasRows)
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
                         datestring = datum;
                         string tempKundenName, tempRestBetrag, tempKundenNr;
-                        ListViewItem item = new ListViewItem(rdr["idRechnung"].ToString());
-                        tempKundenNr = rdr["KundenNr"].ToString();
+                        ListViewItem item = new ListViewItem(reader["idRechnung"].ToString());
+                        tempKundenNr = reader["KundenNr"].ToString();
                         item.SubItems.Add(tempKundenNr);
-                        tempKundenName = rdr["idKundenDaten"].ToString() + " - " + rdr["KundenName"].ToString() + " - " + rdr["Strasse"].ToString() + "." + rdr["Strno"].ToString();
+                        tempKundenName = reader["idKundenDaten"].ToString() + " - " + reader["KundenName"].ToString() + " - " + reader["Strasse"].ToString() + "." + reader["Strno"].ToString();
                         item.SubItems.Add(tempKundenName);
-                        item.SubItems.Add(rdr["Datum"].ToString());
-                        item.SubItems.Add(rdr["Zeit"].ToString());
-                        tempRestBetrag = rdr["RestBetrag"].ToString();
+                        item.SubItems.Add(reader["Datum"].ToString());
+                        item.SubItems.Add(reader["Zeit"].ToString());
+                        tempRestBetrag = reader["RestBetrag"].ToString();
                         item.SubItems.Add(tempRestBetrag);
-                        item.SubItems.Add(rdr["Fahrer"].ToString());
+                        item.SubItems.Add(reader["Fahrer"].ToString());
                         gesamt += Convert.ToDouble(tempRestBetrag);
                         listView1.Items.Add(item);
-                        item.SubItems.Add(rdr["BestellNr"].ToString());
+                        item.SubItems.Add(reader["BestellNr"].ToString());
                         // --------------- Für Monats Übersicht-------------------
 
                         if (tempKundenName == "Abholer")
@@ -234,8 +213,8 @@ namespace Restaurante
                             Hausverkauf_Text += Convert.ToDouble(tempRestBetrag);
                         else
                             Ausserhaus_Text += Convert.ToDouble(tempRestBetrag);
-                        MwSt19_Text += Convert.ToDouble(rdr["Mwst19"].ToString());
-                        MwSt7_Text += Convert.ToDouble(rdr["Mwst7"].ToString());
+                        MwSt19_Text += Convert.ToDouble(reader["Mwst19"].ToString());
+                        MwSt7_Text += Convert.ToDouble(reader["Mwst7"].ToString());
                     }
                     catch (Exception ex)
                     {
@@ -243,15 +222,8 @@ namespace Restaurante
                     }
                 }
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
             textBox1.Text = String.Format("{0:0.00}", gesamt).ToString();
             textBox2.Text = listView1.Items.Count.ToString();
         }
@@ -260,40 +232,34 @@ namespace Restaurante
         {
             string datum = Jahr.ToString();
             //MessageBox.Show(datum);
-            conn.Open();
+            rData.openReadConnection();
+            string filter = "dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr";
+            string joint = "dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum like '%" + datum + "'";
+            MySqlDataReader reader = rData.getDataReaderJoin("dbbari.Kundendaten", "dbbari.abbrechnung", joint, filter);
+
             listView1.Items.Clear();
-            string sql = "SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum like '%" + datum + "';";
-            cmd = new MySqlCommand(sql, conn);
             gesamt = 0;
-            try
+            if (reader.HasRows)
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
                         datestring = Jahr.ToString();
                         string tempKundenName, tempRestBetrag, tempKundenNr;
-                        ListViewItem item = new ListViewItem(rdr["idRechnung"].ToString());
-                        tempKundenNr = rdr["KundenNr"].ToString();
+                        ListViewItem item = new ListViewItem(reader["idRechnung"].ToString());
+                        tempKundenNr = reader["KundenNr"].ToString();
                         item.SubItems.Add(tempKundenNr);
-                        tempKundenName = rdr["idKundenDaten"].ToString() + " - " + rdr["KundenName"].ToString() + " - " + rdr["Strasse"].ToString() + "." + rdr["Strno"].ToString();
+                        tempKundenName = reader["idKundenDaten"].ToString() + " - " + reader["KundenName"].ToString() + " - " + reader["Strasse"].ToString() + "." + reader["Strno"].ToString();
                         item.SubItems.Add(tempKundenName);
-                        item.SubItems.Add(rdr["Datum"].ToString());
-                        item.SubItems.Add(rdr["Zeit"].ToString());
-                        tempRestBetrag = rdr["RestBetrag"].ToString();
+                        item.SubItems.Add(reader["Datum"].ToString());
+                        item.SubItems.Add(reader["Zeit"].ToString());
+                        tempRestBetrag = reader["RestBetrag"].ToString();
                         item.SubItems.Add(tempRestBetrag);
-                        item.SubItems.Add(rdr["Fahrer"].ToString());
+                        item.SubItems.Add(reader["Fahrer"].ToString());
                         gesamt += Convert.ToDouble(tempRestBetrag);
                         listView1.Items.Add(item);
-                        item.SubItems.Add(rdr["BestellNr"].ToString());
+                        item.SubItems.Add(reader["BestellNr"].ToString());
                         // --------------- Für Monats Übersicht-------------------
 
                         if (tempKundenName == "Abholer")
@@ -302,24 +268,17 @@ namespace Restaurante
                             Hausverkauf_Text += Convert.ToDouble(tempRestBetrag);
                         else
                             Ausserhaus_Text += Convert.ToDouble(tempRestBetrag);
-                        MwSt19_Text += Convert.ToDouble(rdr["Mwst19"].ToString());
-                        MwSt7_Text += Convert.ToDouble(rdr["Mwst7"].ToString());
+                        MwSt19_Text += Convert.ToDouble(reader["Mwst19"].ToString());
+                        MwSt7_Text += Convert.ToDouble(reader["Mwst7"].ToString());
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.ToString() + "Here");
+                        MessageBox.Show(ex.ToString());
                     }
                 }
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
             textBox1.Text = String.Format("{0:0.00}", gesamt).ToString();
             textBox2.Text = listView1.Items.Count.ToString();
         }
@@ -477,25 +436,6 @@ namespace Restaurante
         private void listView1_LostFocus(object sender, EventArgs e)
         {
             rollNo = 0;
-            /*
-            MySqlCommand cmd1 = new MySqlCommand(); ;
-            cmd1.Connection = conn;
-
-            cmd.Parameters.Clear();
-
-            try
-            {
-                cmd1.CommandText = "UPDATE dbbari.abbrechnung SET Fahrer=?catch WHERE idrechnung=" + Convert.ToInt32(listView1.SelectedItems[0].SubItems[0].Text) + ";";
-                cmd1.Prepare();
-                cmd1.Parameters.Add("catch", MySqlDbType.VarChar).Value = catchName;
-                cmd1.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            conn.Close();
-            MessageBox.Show("Lost Focus");*/
         }
 
         private void dateTimePicker1_ValueChanged(object sender, EventArgs e)
@@ -516,11 +456,6 @@ namespace Restaurante
                 lvObj.PrintDatetext = "Alle Sätze";
             else
                 lvObj.PrintDatetext = objChooseView.selectedFahrer;
-            //lvObj.FitToPage = true;
-            //   lvObj.summesatz = textBox1.Text;
-            //    lvObj.printsumme = true;
-            //    lvObj.Visible = false;
-            //   lvObj.setToA5();
             int a5index = 0;
             System.Drawing.Printing.PaperSize pkSize;
             for (int i = 0; i < lvObj.PrinterSettings.PaperSizes.Count; i++)
@@ -536,79 +471,6 @@ namespace Restaurante
                 lvObj.DefaultPageSettings.PaperSize = lvObj.PrinterSettings.PaperSizes[a5index];
 
             lvObj.Print();
-
-            //   MessageBox.Show(ex.Message.ToString()+"Fek");
-            /*clNr = new ColumnHeader();
-            clNr.Text = "Nr";
-           clNr.Width = 50;
-           clTelefone = new ColumnHeader();
-            clTelefone.Text = "Telefon";
-            clTelefone.Width = 132;
-            clAddress = new ColumnHeader();
-            clAddress.Text = "KNr - K.Name - Addresse";
-            clAddress.Width = 267;
-            clDatum = new ColumnHeader();
-            clDatum.Text = "Datum";
-            clDatum.Width = 112;
-            clZeit = new ColumnHeader();
-            clZeit.Text = "Zeit";
-            clZeit.Width = 82;
-            clBetrag = new ColumnHeader();
-            clBetrag.Text = "Betrag";
-            clBetrag.Width = 86;
-            clFahrer = new ColumnHeader();
-            clFahrer.Text = "Fahrer";
-            clFahrer.Width = 108;
-            lvObj = new PrintableListView2();
-            lvObj.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
-            clNr,clTelefone,clAddress,clDatum,clZeit,clBetrag,clFahrer});
-           // string Id,Telefone,address,datum,zeit,betrag,fahrer;
-            ListView.ListViewItemCollection coll = listView1.Items;
-
-            foreach (ListViewItem item in coll)
-            {
-                string[] temp =     {    item.SubItems[7].Text,item.SubItems[1].Text,item.SubItems[2].Text,item.SubItems[3].Text, item.SubItems[4].Text,item.SubItems[5].Text,  item.SubItems[6].Text};
-                itemClone = new ListViewItem(temp);
-                lvObj.Items.Add(itemClone);
-            }
-
-            lvObj.TitleFont = new Font("Arial", 14, FontStyle.Bold);
-            lvObj.Title = "U M S A T Z J O U R N A L";
-            lvObj.TitleFont2 = new Font("Arial", 14, FontStyle.Bold);
-            lvObj.Title2 = "Auftragübersicht für " + datestring;
-            lvObj.Title3 = "Datum : " + System.DateTime.Now.ToShortDateString() + ", Zeit :" + System.DateTime.Now.ToShortTimeString();
-            lvObj.TitleFont3 = new Font("Arial", 12, FontStyle.Italic);
-            lvObj.FitToPage = true;
-            lvObj.summesatz = textBox1.Text;
-            lvObj.printsumme = true;
-            lvObj.Visible = false;
-            lvObj.setToA5();
-
-            lvObj.Print();
-            //lvObj.PrintPreview();
-           // lvObj.setToA4();
-
-            lvObj.Dispose();
-           /* ----old-------------
-            * ListView.ColumnHeaderCollection abc = listView1.Columns;
-            listView1.TitleFont = new Font("Arial", 14, FontStyle.Bold);
-            listView1.Title = "U M S A T Z J O U R N A L";
-            listView1.TitleFont2 = new Font("Arial", 14, FontStyle.Bold);
-            listView1.Title2 = "Auftragübersicht für "+datestring;
-            listView1.Title3 = "Datum : " + System.DateTime.Now.ToShortDateString() + ", Zeit :" + System.DateTime.Now.ToShortTimeString();
-            listView1.TitleFont3 = new Font("Arial", 12, FontStyle.Italic);
-            listView1.FitToPage = true;
-            listView1.summesatz =  textBox1.Text;
-            listView1.printsumme = true;
-
-           // listView1.Columns.Remove(Fahrer);
-          // listView1.Columns.Remove(columnHeader1);
-            listView1.PrintPreview();
-            // printPreviewDialog1.Document = printDocument1;
-           // printPreviewDialog1.ShowDialog();
-          //  listView1.Columns.Add(Fahrer);
-            //listView1.Columns.Add(columnHeader1);
-            listView1.Visible = true;*/
         }
 
         private void printPreviewControl1_Click(object sender, EventArgs e)
@@ -688,60 +550,50 @@ namespace Restaurante
             {
                 PerformListFill(dateTimePicker1.Value.ToShortDateString());
             }
-            else if (objChooseView.selectedFahrer == "Abholer")
+            else if (objChooseView.selectedFahrer == "Abholer" || objChooseView.selectedFahrer == "Hausverkauf")
             {
-                string datum = dateTimePicker1.Value.ToShortDateString();
-                loadList("SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum='" + datum + "' and dbbari.Kundendaten.KundenName='" + objChooseView.selectedFahrer + "';");
-            }
-            else if (objChooseView.selectedFahrer == "Hausverkauf")
-            {
-                string datum = dateTimePicker1.Value.ToShortDateString();
-                loadList("SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum='" + datum + "' and dbbari.Kundendaten.KundenName='" + objChooseView.selectedFahrer + "';");
+                loadList(false, objChooseView.selectedFahrer);
             }
             else
             {
-                string datum = dateTimePicker1.Value.ToShortDateString();
-                loadList("SELECT dbbari.kundendaten.idkundendaten,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenName,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum='" + datum + "' and dbbari.abbrechnung.Fahrer='" + objChooseView.selectedFahrer + "';");
+                loadList(true, objChooseView.selectedFahrer);
             }
         }
 
-        private void loadList(string sql)
+        private void loadList(bool Fahrer, string selected)
         {
             string datum = dateTimePicker1.Value.ToShortDateString();
-            conn.Open();
-            listView1.Items.Clear();
+            rData.openReadConnection();
+            string subfilter = "and dbbari.Kundendaten.KundenName = '";
+            if (Fahrer)
+                subfilter = "and dbbari.abbrechnung.Fahrer='";
+            string filter = "dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr";
+            string joint = "dbbari.abbrechnung.idKundendaten = dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum = '" + datum + "' " + subfilter + selected + "'";
+            MySqlDataReader reader = rData.getDataReaderJoin("dbbari.Kundendaten", "dbbari.abbrechnung", joint, filter);
 
-            cmd = new MySqlCommand(sql, conn);
+            listView1.Items.Clear();
             gesamt = 0;
-            try
+            if (reader.HasRows)
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
                         datestring = datum;
                         string tempKundernNr, tempKundenName, tempRestBetrag;
-                        ListViewItem item = new ListViewItem(rdr["idRechnung"].ToString());
-                        tempKundernNr = rdr["KundenNr"].ToString();
+                        ListViewItem item = new ListViewItem(reader["idRechnung"].ToString());
+                        tempKundernNr = reader["KundenNr"].ToString();
                         item.SubItems.Add(tempKundernNr);
-                        tempKundenName = rdr["idKundenDaten"].ToString() + " - " + rdr["KundenName"].ToString() + " - " + rdr["Strasse"].ToString() + "." + rdr["Strno"].ToString();
+                        tempKundenName = reader["idKundenDaten"].ToString() + " - " + reader["KundenName"].ToString() + " - " + reader["Strasse"].ToString() + "." + reader["Strno"].ToString();
                         item.SubItems.Add(tempKundenName);
-                        item.SubItems.Add(rdr["Datum"].ToString());
-                        item.SubItems.Add(rdr["Zeit"].ToString());
-                        tempRestBetrag = rdr["RestBetrag"].ToString();
+                        item.SubItems.Add(reader["Datum"].ToString());
+                        item.SubItems.Add(reader["Zeit"].ToString());
+                        tempRestBetrag = reader["RestBetrag"].ToString();
                         item.SubItems.Add(tempRestBetrag);
-                        item.SubItems.Add(rdr["Fahrer"].ToString());
+                        item.SubItems.Add(reader["Fahrer"].ToString());
                         gesamt += Convert.ToDouble(tempRestBetrag);
                         listView1.Items.Add(item);
-                        item.SubItems.Add(rdr["BestellNr"].ToString());
+                        item.SubItems.Add(reader["BestellNr"].ToString());
                         // --------------- Für Tages Übersicht-------------------
                         if (tempKundenName == "Abholer")
                             Abholer_Text += Convert.ToDouble(tempRestBetrag);
@@ -749,24 +601,17 @@ namespace Restaurante
                             Hausverkauf_Text += Convert.ToDouble(tempRestBetrag);
                         else
                             Ausserhaus_Text += Convert.ToDouble(tempRestBetrag);
-                        MwSt19_Text += Convert.ToDouble(rdr["Mwst19"].ToString());
-                        MwSt7_Text += Convert.ToDouble(rdr["Mwst7"].ToString());
+                        MwSt19_Text += Convert.ToDouble(reader["Mwst19"].ToString());
+                        MwSt7_Text += Convert.ToDouble(reader["Mwst7"].ToString());
                     }
                     catch (Exception ex)
                     {
-                        MessageBox.Show(ex.ToString() + "Here");
+                        MessageBox.Show(ex.ToString());
                     }
                 }
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
             textBox1.Text = String.Format("{0:0.00}", gesamt).ToString();
             textBox2.Text = listView1.Items.Count.ToString();
         }
@@ -790,24 +635,16 @@ namespace Restaurante
             {
                 PerformListFill(dateTimePicker1.Value.ToShortDateString());
             }
-            else if (objChooseView.selectedFahrer == "Abholer")
+            else if (objChooseView.selectedFahrer == "Abholer" || objChooseView.selectedFahrer == "Hausverkauf")
             {
-                string datum = dateTimePicker1.Value.ToShortDateString();
-                loadList("SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum='" + datum + "' and dbbari.Kundendaten.KundenName='" + objChooseView.selectedFahrer + "';");
-            }
-            else if (objChooseView.selectedFahrer == "Hausverkauf")
-            {
-                string datum = dateTimePicker1.Value.ToShortDateString();
-                loadList("SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum='" + datum + "' and dbbari.Kundendaten.KundenName='" + objChooseView.selectedFahrer + "';");
+                loadList(false, objChooseView.selectedFahrer);
             }
             else
             {
-                string datum = dateTimePicker1.Value.ToShortDateString();
-                loadList("SELECT dbbari.kundendaten.idkundendaten,dbbari.Kundendaten.KundenName,dbbari.kundendaten.strasse,dbbari.kundendaten.strno,dbbari.Kundendaten.KundenNr,dbbari.abbrechnung.idrechnung,dbbari.abbrechnung.datum,dbbari.abbrechnung.Zeit,dbbari.abbrechnung.RestBetrag,dbbari.abbrechnung.Fahrer,dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7,dbbari.abbrechnung.BestellNr FROM dbbari.Kundendaten,dbbari.abbrechnung where dbbari.abbrechnung.idKundendaten=dbbari.Kundendaten.idKundendaten and dbbari.abbrechnung.datum='" + datum + "' and dbbari.abbrechnung.Fahrer='" + objChooseView.selectedFahrer + "';");
+                loadList(true, objChooseView.selectedFahrer);
             }
 
             FahrerAbrechnung obj = new FahrerAbrechnung(listView1.Items, gesamt);
-            //
             obj.ShowDialog();
         }
 

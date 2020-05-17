@@ -96,7 +96,7 @@ namespace Restaurante
             //colValues.AddRange(new string[] { "Berlin", "Hamburg", "Bremen", "Stuttgart", "Saarbrücken", "Frankfurt a.M." });
             strcount = rData.getCount("stadtplan");
             rData.openReadConnection();
-            MySqlDataReader reader = rData.getAllData("stadtplan");
+            MySqlDataReader reader = rData.getDataReader("stadtplan");
 
             while (reader.Read())
             {
@@ -289,7 +289,7 @@ namespace Restaurante
                 PerformDataFill(ref reader);
             }
             reader.Close();
-            rData.closeAllConnection();
+            rData.closeReadConnection();
         }
 
         private void button7_Click(object sender, EventArgs e)

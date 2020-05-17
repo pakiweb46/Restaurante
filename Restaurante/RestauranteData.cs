@@ -26,13 +26,30 @@ namespace Restaurante
             updateConnection.Close();
         }
 
-        public MySqlDataReader getAllData(string Table)
+        public ConnectionState getReadConnectionState()
         {
-            string sqlReadCard = "SELECT * From dbbari." + Table + ";";
-            MySqlDataReader readerSpeiseKarte;
-            command = new MySqlCommand(sqlReadCard, readConnection);
-            readerSpeiseKarte = command.ExecuteReader();
-            return readerSpeiseKarte;
+            return readConnection.State;
+        }
+
+        public ConnectionState getUpdateConnectionState()
+        {
+            return updateConnection.State;
+        }
+
+        public void openAllConnection()
+        {
+            readConnection.Open();
+            updateConnection.Open();
+        }
+
+        public void openReadConnection()
+        {
+            readConnection.Open();
+        }
+
+        public void closeReadConnection()
+        {
+            readConnection.Close();
         }
 
         public int getCount(string Table, string parameter, string value)
@@ -67,53 +84,36 @@ namespace Restaurante
             return count;
         }
 
-        public MySqlDataReader getDataReader(string Table, string Parameter, string Value)
+        public MySqlDataReader getDataReader(string Table, string Parameter, string Value, string filter = "*")
         {
-            string sql = "SELECT * FROM dbbari." + Table + " Where " + Parameter + "='" + Value + "';";
+            string sql = "SELECT " + filter + " FROM dbbari." + Table + " Where " + Parameter + "='" + Value + "';";
             MySqlDataReader reader;
             command = new MySqlCommand(sql, readConnection);
             reader = command.ExecuteReader();
             return reader;
         }
 
-        public MySqlDataReader getDataReader(string Table)
+        public MySqlDataReader getDataReader(string Table, string filter = "*")
         {
-            string sql = "SELECT * FROM dbbari." + Table + ";";
+            string sql = "SELECT " + filter + " FROM dbbari." + Table + ";";
             MySqlDataReader reader;
             command = new MySqlCommand(sql, readConnection);
             reader = command.ExecuteReader();
             return reader;
         }
 
-        public ConnectionState getReadConnectionState()
+        public MySqlDataReader getDataReaderJoin(string Table1, string Table2, string joinString, string filter = "*")
         {
-            return readConnection.State;
+            string sql = "SELECT " + filter + " FROM " + Table1 + "," + Table2 + " where " + joinString + ";";
+            MySqlDataReader reader;
+            command = new MySqlCommand(sql, readConnection);
+            reader = command.ExecuteReader();
+            return reader;
         }
 
-        public ConnectionState getUpdateConnectionState()
+        public MySqlDataReader searchDaten(string Table, string parameter, string muster, string filter = "*")
         {
-            return updateConnection.State;
-        }
-
-        public void openAllConnection()
-        {
-            readConnection.Open();
-            updateConnection.Open();
-        }
-
-        public void openReadConnection()
-        {
-            readConnection.Open();
-        }
-
-        public void closeReadConnection()
-        {
-            readConnection.Close();
-        }
-
-        public MySqlDataReader searchDaten(string Table, string parameter, string muster)
-        {
-            string sql = "SELECT * FROM dbbari." + Table + " WHERE " + parameter + " LIKE '" + muster + "';";
+            string sql = "SELECT " + filter + " FROM dbbari." + Table + " WHERE " + parameter + " LIKE '" + muster + "';";
             MySqlDataReader reader;
             command = new MySqlCommand(sql, readConnection);
             reader = command.ExecuteReader();

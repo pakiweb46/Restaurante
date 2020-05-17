@@ -18,6 +18,7 @@ namespace Restaurante
         private static string connStr = Globals.connString;
         private MySqlConnection conn = new MySqlConnection(connStr);
         private MySqlDataReader rdr;
+        private RestauranteData rData;
         private double Mwst7, Mwst19, summe, totalSumme, totalMwst7, totalMwst19;
         private int startTag, startMonat, startJahr, endTag, endMonat, endJahr, noOfDays, sno;
         private DateTime startDate, endDate, workingDate;
@@ -108,6 +109,7 @@ namespace Restaurante
             Title_text = string.Empty;
             Title_text2 = string.Empty;
             Title_text3 = string.Empty;
+            rData = new RestauranteData();
         }
 
         public Print_List(DateTime startDat, DateTime endDat) : base()
@@ -139,6 +141,7 @@ namespace Restaurante
                 ds.Document = this;
                 ds.ShowDialog();
             }
+            rData = new RestauranteData();
         }
 
         #region onbeginPrint
@@ -353,35 +356,19 @@ namespace Restaurante
             Mwst19 = 0;
             Mwst7 = 0;
             string datestring = date.ToShortDateString();
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
+            rData.openReadConnection();
+            string filter = "dbbari.abbrechnung.Betrag, dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7";
+            MySqlDataReader reader = rData.getDataReader("abbrechnung", "Datum", datestring, filter);
 
-            string sql = "SELECT dbbari.abbrechnung.Betrag, dbbari.abbrechnung.Mwst19,dbbari.abbrechnung.Mwst7 FROM dbbari.abbrechnung where dbbari.abbrechnung.Datum='" + datestring + "';";
-            cmd = new MySqlCommand(sql, conn);
-            try
+            if (reader.HasRows)
             {
-                if (rdr.IsClosed)
-                    rdr = cmd.ExecuteReader();
-                else
-                {
-                    rdr.Close();
-                    rdr = cmd.ExecuteReader();
-                }
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
-                        summe += Convert.ToDouble(rdr["Betrag"].ToString());
-                        Mwst7 += Convert.ToDouble(rdr["Mwst7"].ToString());
-                        Mwst19 += Convert.ToDouble(rdr["Mwst19"].ToString());
+                        summe += Convert.ToDouble(reader["Betrag"].ToString());
+                        Mwst7 += Convert.ToDouble(reader["Mwst7"].ToString());
+                        Mwst19 += Convert.ToDouble(reader["Mwst19"].ToString());
                     }
                     catch (Exception ex)
                     {
@@ -393,15 +380,8 @@ namespace Restaurante
                 totalMwst7 += Mwst7;
                 totalMwst19 += Mwst19;
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
         }
 
         private void loadUmsatz(int tag, int monat, int jahr)
