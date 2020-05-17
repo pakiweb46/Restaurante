@@ -56,7 +56,7 @@
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.button9 = new System.Windows.Forms.Button();
-            this.button10 = new System.Windows.Forms.Button();
+            this.btnAendern = new System.Windows.Forms.Button();
             this.label7 = new System.Windows.Forms.Label();
             this.tbAnfahrt = new System.Windows.Forms.TextBox();
             this.label8 = new System.Windows.Forms.Label();
@@ -320,13 +320,13 @@
             // 
             // button10
             // 
-            this.button10.Location = new System.Drawing.Point(356, 402);
-            this.button10.Name = "button10";
-            this.button10.Size = new System.Drawing.Size(135, 58);
-            this.button10.TabIndex = 25;
-            this.button10.Text = "Ändern (F6)";
-            this.button10.UseVisualStyleBackColor = true;
-            this.button10.Click += new System.EventHandler(this.button10_Click);
+            this.btnAendern.Location = new System.Drawing.Point(356, 402);
+            this.btnAendern.Name = "button10";
+            this.btnAendern.Size = new System.Drawing.Size(135, 58);
+            this.btnAendern.TabIndex = 25;
+            this.btnAendern.Text = "Ändern (F6)";
+            this.btnAendern.UseVisualStyleBackColor = true;
+            this.btnAendern.Click += new System.EventHandler(this.btnAendern_Click);
             // 
             // label7
             // 
@@ -370,7 +370,7 @@
             this.Controls.Add(this.label8);
             this.Controls.Add(this.tbAnfahrt);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.button10);
+            this.Controls.Add(this.btnAendern);
             this.Controls.Add(this.button9);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.button8);
@@ -437,7 +437,7 @@
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
         private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button10;
+        private System.Windows.Forms.Button btnAendern;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbAnfahrt;
         private System.Windows.Forms.Label label8;

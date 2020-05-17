@@ -163,7 +163,7 @@
             this.btnWeiter.TabIndex = 48;
             this.btnWeiter.Text = "Weiter (F2)";
             this.btnWeiter.UseVisualStyleBackColor = true;
-            this.btnWeiter.Click += new System.EventHandler(this.button1_Click);
+            this.btnWeiter.Click += new System.EventHandler(this.btnWeiter_Click);
             // 
             // checkBox1
             // 

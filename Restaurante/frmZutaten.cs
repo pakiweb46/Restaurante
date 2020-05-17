@@ -230,29 +230,14 @@ namespace Restaurante
 
         private void btnÄndern_Click(object sender, EventArgs e)
         {
-            conn.Open();
-            MySqlCommand cmd1 = new MySqlCommand(); ;
-            cmd1.Connection = conn;
-
-            cmd1.Parameters.Clear();
-
-            try
-            {
-                cmd1.CommandText = "UPDATE dbbari.Zutaten SET  ZutatName=?Bezeichnung, Preis=?VerkaufPreis, MwSt=?MwSt WHERE idZutaten=" + recordNr + ";";
-                cmd1.Prepare();
-                cmd1.Parameters.Add("Bezeichnung", MySqlDbType.VarChar).Value = tbBezeichnung.Text.Trim();
-                cmd1.Parameters.Add("VerkaufPreis", MySqlDbType.Double).Value = Convert.ToDouble(tbVerkaufPreis.Text.Trim());
-                cmd1.Parameters.Add("MwSt", MySqlDbType.VarChar).Value = tbMwSt.Text.Trim();
-                cmd1.ExecuteNonQuery();
-                MessageBox.Show("Zutat Daten sind Geändert");
-                lvArtikel.Items.Clear();
-                PerformListFill();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "Insert Error");
-            }
-            conn.Close();
+            string[] variable = { "ZutatName", "Preis", "MwSt" };
+            string[] value = { tbBezeichnung.Text.Trim(),
+                               tbVerkaufPreis.Text.Trim(),
+                               tbMwSt.Text.Trim() };
+            rData.updateData("Zutaten", variable, value, "idZutaten", recordNr.ToString());
+            MessageBox.Show("Zutat Daten sind Geändert");
+            lvArtikel.Items.Clear();
+            PerformListFill();
         }
 
         private void lvArtikel_MouseDoubleClick(object sender, EventArgs e)

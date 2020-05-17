@@ -175,7 +175,7 @@ namespace Restaurante
             }
             else if (e.KeyCode == Keys.F6)
             {
-                button10.PerformClick();// Ändern
+                btnAendern.PerformClick();// Ändern
             }
             else if (e.KeyCode == Keys.F5)
             {
@@ -300,27 +300,7 @@ namespace Restaurante
 
         private int getMaxId()
         {
-            int maxid = -1;
-            conn.Open();
-            MySqlDataReader reader;
-            string sql = "SELECT max(idKundendaten) FROM dbbari.kundendaten ;";
-            cmd = new MySqlCommand(sql, conn);
-            reader = cmd.ExecuteReader();
-            if (reader.Read())
-            {
-                maxid = Convert.ToInt32(reader[0].ToString());
-            }
-
-            try
-            {
-                reader.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            conn.Close();
-            return maxid;  // -1 ist fehler
+            return rData.getMax("kundendaten", "idKundendaten"); //-1 fehler
         }
 
         private int getMaxId(int magicno)
@@ -523,35 +503,21 @@ namespace Restaurante
         {
         }
 
-        private void button10_Click(object sender, EventArgs e)
+        private void btnAendern_Click(object sender, EventArgs e)
         {
-            MySqlCommand cmd1 = new MySqlCommand(); ;
-            cmd1.Connection = conn;
-
-            cmd.Parameters.Clear();
-
-            try
-            {
-                cmd1.CommandText = "UPDATE dbbari.kundendaten SET KundenNr=?KundenNr , Anrede=?Anrede, KundenName=?KundenName, Strasse=?Strasse, StrNo=?StrNo,  zusatz=?zusatz, PLZ=?PLZ, Ort=?Ort, Anfahrtkosten=?Anfahrtkosten, Rabatt=?Rabatt WHERE idKundendaten=" + recordNr + ";";
-                cmd1.Prepare();
-                cmd1.Parameters.Add("KundenNr", MySqlDbType.VarChar).Value = tbKundenNr.Text.Trim();
-                cmd1.Parameters.Add("Anrede", MySqlDbType.VarChar).Value = tbAnrede.Text.Trim();
-                cmd1.Parameters.Add("KundenName", MySqlDbType.VarChar).Value = tbKundenName.Text.Trim();
-                cmd1.Parameters.Add("Strasse", MySqlDbType.VarChar).Value = tbStraße.Text.Trim();
-                cmd1.Parameters.Add("StrNo", MySqlDbType.VarChar).Value = tbStrNo.Text.Trim();
-                cmd1.Parameters.Add("zusatz", MySqlDbType.VarChar).Value = tbZusatz.Text.Trim();
-                cmd1.Parameters.Add("PLZ", MySqlDbType.Int64).Value = Convert.ToInt64(tbPLZ.Text.Trim());
-                cmd1.Parameters.Add("Ort", MySqlDbType.VarChar).Value = tbOrt.Text.Trim();
-                cmd1.Parameters.Add("Anfahrtkosten", MySqlDbType.Double).Value = Convert.ToDouble(tbAnfahrt.Text.Trim());
-                cmd1.Parameters.Add("Rabatt", MySqlDbType.Double).Value = Convert.ToDouble(tbRabatt.Text.Trim());
-
-                cmd1.ExecuteNonQuery();
-                MessageBox.Show("Daten sind Geändert");
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
+            string[] variable = { "KundenNr", "Anrede", "KundenName", "Strasse", "StrNo", "zusatz", "PLZ", "Ort", "Anfahrtkosten", "Rabatt" };
+            string[] value = { tbKundenNr.Text.Trim(),
+                                tbAnrede.Text.Trim(),
+                                tbKundenName.Text.Trim(),
+                                tbStraße.Text.Trim(),
+                                tbStrNo.Text.Trim(),
+                                tbZusatz.Text.Trim(),
+                                tbPLZ.Text.Trim(),
+                                tbOrt.Text.Trim(),
+                                tbAnfahrt.Text.Trim(),
+                                tbRabatt.Text.Trim() };
+            rData.updateData("kundendaten", variable, value, "idKundendaten", recordNr.ToString());
+            MessageBox.Show("Daten sind Geändert");
         }
     }
 }

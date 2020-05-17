@@ -44,7 +44,7 @@ namespace Restaurante
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnWeiter_Click(object sender, EventArgs e)
         {
             // pass data to frmBestellung
 
@@ -801,23 +801,23 @@ namespace Restaurante
                 if (readerKunde.Read())
                 {
                     if (tbAnfahrt.Text != readerKunde["Anfahrtkosten"].ToString())
-                        rData.updateAnfahrtKosten(Knummer, Convert.ToDouble(tbAnfahrt.Text.Trim()));
+                        rData.updateSingleData("kundendaten","Anfahrtkosten", tbAnfahrt.Text.Trim(),"idKundendaten", Knummer);
                     if (tbName.Text != readerKunde["KundenName"].ToString())
-                        rData.updateKundenName(Knummer, tbName.Text.Trim());
+                        rData.updateSingleData("kundendaten", "KundenName", tbName.Text.Trim(), "idKundendaten",Knummer);
                     if (tbOrt.Text != readerKunde["Ort"].ToString())
-                        rData.updateOrt(Knummer, tbOrt.Text.Trim());
+                        rData.updateSingleData("kundendaten", "Ort", tbOrt.Text.Trim(), "idKundendaten", Knummer);
                     if (tbPLZ.Text != readerKunde["PLZ"].ToString())
-                        rData.updatePLZ(Knummer, Convert.ToInt64(tbPLZ.Text.Trim()));
+                        rData.updateSingleData("kundendaten", "PLZ", tbPLZ.Text.Trim(), "idKundendaten", Knummer);
                     if (tbStrasse.Text != readerKunde["Strasse"].ToString())
-                        rData.updateStrasse(Knummer, tbStrasse.Text.Trim());
+                        rData.updateSingleData("kundendaten", "Strasse", tbStrasse.Text.Trim(), "idKundendaten", Knummer);
                     if (tbStrNo.Text != readerKunde["StrNo"].ToString())
-                        rData.updateSNo(Knummer, tbStrNo.Text.Trim());
+                        rData.updateSingleData("kundendaten", "StrNo", tbStrNo.Text.Trim(), "idKundendaten", Knummer);
                     if (tbTelefon.Text != readerKunde["KundenNr"].ToString())
-                        rData.updateKundenNummer(Knummer, tbTelefon.Text.Trim());
+                        rData.updateSingleData("kundendaten", "KundenNr", tbTelefon.Text.Trim(), "idKundendaten", Knummer);
                     if (tbZusatz.Text != readerKunde["Zusatz"].ToString())
-                        rData.updateZusatz(Knummer, tbZusatz.Text.Trim());
+                        rData.updateSingleData("kundendaten", "Zusatz", tbZusatz.Text.Trim(), "idKundendaten", Knummer);
                     if (tbRabatt.Text != readerKunde["Rabatt"].ToString())
-                        rData.updateRabatt(Knummer, Convert.ToDouble(tbRabatt.Text.Trim()));
+                        rData.updateSingleData("kundendaten", "Rabatt", tbRabatt.Text.Trim(), "idKundendaten", Knummer);
                 }
                 readerKunde.Close();
                 rData.closeReadConnection();

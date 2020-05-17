@@ -254,31 +254,16 @@ namespace Restaurante
 
         private void btnÄndern_Click(object sender, EventArgs e)
         {
-            conn.Open();
-            MySqlCommand cmd1 = new MySqlCommand(); ;
-            cmd1.Connection = conn;
-
-            cmd1.Parameters.Clear();
-
-            try
-            {
-                cmd1.CommandText = "UPDATE dbbari.speisekarte SET ArtikelNr=?ArtikelNr , Bezeichnung=?Bezeichnung, Zusatz=?Zusatz, VerkaufPreis=?VerkaufPreis, MwSt=?MwSt WHERE idSpeiseKarte=" + recordNr + ";";
-                cmd1.Prepare();
-                cmd1.Parameters.Add("ArtikelNr", MySqlDbType.VarChar).Value = tbArtikel.Text.Trim();
-                cmd1.Parameters.Add("Bezeichnung", MySqlDbType.VarChar).Value = tbBezeichnung.Text.Trim();
-                cmd1.Parameters.Add("Zusatz", MySqlDbType.VarChar).Value = tbZusatz.Text.Trim();
-                cmd1.Parameters.Add("VerkaufPreis", MySqlDbType.Double).Value = Convert.ToDouble(tbVerkaufPreis.Text.Trim());
-                cmd1.Parameters.Add("MwSt", MySqlDbType.VarChar).Value = tbMwSt.Text.Trim();
-                cmd1.ExecuteNonQuery();
-                MessageBox.Show("Artikel Daten sind Geändert");
-                lvArtikel.Items.Clear();
-                conn.Close();
-                PerformListFill();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message + "Insert Error");
-            }
+            string[] variable = { "ArtikelNr", "Bezeichnung", "Zusatz", "VerkaufPreis", "MwSt" };
+            string[] value = { tbArtikel.Text.Trim(),
+                               tbBezeichnung.Text.Trim(),
+                               tbZusatz.Text.Trim(),
+                               tbVerkaufPreis.Text.Trim(),
+                               tbMwSt.Text.Trim() };
+            rData.updateData("speisekarte", variable, value, "idSpeiseKarte", recordNr.ToString());
+            MessageBox.Show("Artikel Daten sind Geändert");
+            lvArtikel.Items.Clear();
+            PerformListFill();
         }
 
         private void lvArtikel_MouseDoubleClick(object sender, EventArgs e)

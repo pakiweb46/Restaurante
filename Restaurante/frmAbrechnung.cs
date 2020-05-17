@@ -318,29 +318,7 @@ namespace Restaurante
                 rollNo = 0;
                 catchName = mitarbeiter[rollNo];
             }
-
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-            //Add this to UpdateFahrer
-            MySqlCommand cmd1 = new MySqlCommand(); ;
-            cmd1.Connection = conn;
-
-            cmd.Parameters.Clear();
-
-            try
-            {
-                // idrechnung from list
-                cmd1.CommandText = "UPDATE dbbari.abbrechnung SET Fahrer=?catch WHERE idrechnung=" + Convert.ToInt32(listView1.SelectedItems[0].SubItems[0].Text) + ";";
-                cmd1.Prepare();
-                cmd1.Parameters.Add("catch", MySqlDbType.VarChar).Value = catchName;
-                cmd1.ExecuteNonQuery();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message);
-            }
-            conn.Close();
-
+            rData.updateSingleData("abbrechnung", "Fahrer", catchName, "idrechnung", listView1.SelectedItems[0].SubItems[0].Text);
             return catchName;
         }
 

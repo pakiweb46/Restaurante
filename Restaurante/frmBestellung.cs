@@ -25,7 +25,6 @@ namespace Restaurante
         private string oldArtikel;
         private string pfand = "OHNE";
         private RestauranteData rData;
-        private MySqlDataReader rdr1;
         private string selectedArtikleNo;
         private string selectedZutat;
         private double totalTax7, totalTax19, restmwst;
@@ -418,86 +417,18 @@ namespace Restaurante
         // new Bestell nummer
         private int getBestellNr(string datum)
         {
-            MySqlCommand cmd1 = new MySqlCommand();
-            int returnvalue = 0;
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-
-            cmd1.Connection = conn;
-
-            cmd1.CommandText = "Select Max(BestellNr) from dbbari.abbrechnung where datum='" + datum + "';";
-            try
-            {
-                rdr1 = cmd1.ExecuteReader();
-                if (rdr1.HasRows)
-                {
-                    rdr1.Read();
-
-                    if (rdr1[0].ToString() == "0")
-                        returnvalue = 1;
-                    else if (rdr1[0].ToString() == "")
-                        returnvalue = 1;
-                    else
-                    {
-                        returnvalue = Convert.ToInt32(rdr1[0].ToString()) + 1;
-                    }
-                }
-                else
-                {
-                    returnvalue = 1;
-                }
-            }
-            catch (Exception Ex)
-            {
-                MessageBox.Show(Ex.Message);
-                returnvalue = 1;
-            }
-            rdr1.Close();
-            conn.Close();
-
-            return returnvalue;
+            if ( rData.getMax("abbrechnung", "BestellNr", "datum", datum) < 1)
+                return 1;
+            else
+                return rData.getMax("abbrechnung", "BestellNr", "datum", datum)+1;
         }
 
         private int getBestellNr_online(string datum) // TODO:: The Function of getBestellNr Online ? is that ever used
         {
-            MySqlCommand cmd1 = new MySqlCommand();
-            int returnvalue = 0;
-            if (conn.State.ToString() == "Closed")
-                conn.Open();
-
-            cmd1.Connection = conn;
-
-            cmd1.CommandText = "Select Max(BestellNr) from dbbari.abbr where datum='" + datum + "';";
-            try
-            {
-                rdr1 = cmd1.ExecuteReader();
-                if (rdr1.HasRows)
-                {
-                    rdr1.Read();
-
-                    if (rdr1[0].ToString() == "0")
-                        returnvalue = 1;
-                    else if (rdr1[0].ToString() == "")
-                        returnvalue = 1;
-                    else
-                    {
-                        returnvalue = Convert.ToInt32(rdr1[0].ToString()) + 1;
-                    }
-                }
-                else
-                {
-                    returnvalue = 1;
-                }
-            }
-            catch (Exception Ex)
-            {
-                MessageBox.Show(Ex.Message);
-                returnvalue = 1;
-            }
-            rdr1.Close();
-            conn.Close();
-
-            return returnvalue;
+            if (rData.getMax("abbr", "BestellNr", "datum", datum) < 1)
+                return 1;
+            else
+                return rData.getMax("abbrechnung", "BestellNr", "datum", datum)+1;
         }
 
         private bool getIsPrevioisArtiklePfand()

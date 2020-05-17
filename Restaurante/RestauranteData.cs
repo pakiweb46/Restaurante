@@ -136,14 +136,14 @@ namespace Restaurante
             return min;
         }
 
-        public int getMin(string Table, string parameter, string para, string val, string op = "=")
+        public int getMin(string Table, string MaxPara, string para, string val, string op = "=")
         {
             int min = -1;
             string singleQoute = "";
             if (op == "=")
                 singleQoute = "'";
             openReadConnection();
-            string sql = "SELECT Min(" + parameter + ") FROM dbbari." + Table + " WHERE " + para + op + singleQoute + val + singleQoute + ";";
+            string sql = "SELECT Min(" + MaxPara + ") FROM dbbari." + Table + " WHERE " + para + op + singleQoute + val + singleQoute + ";";
             MySqlDataReader reader;
             command = new MySqlCommand(sql, readConnection);
             reader = command.ExecuteReader();
@@ -171,14 +171,14 @@ namespace Restaurante
             return min;
         }
 
-        public int getMax(string Table, string parameter, string para, string val, string op = "=")
+        public int getMax(string Table, string MaxPara, string para, string val, string op = "=")
         {
             int min = -1;
             string singleQoute = "";
             if (op == "=")
                 singleQoute = "'";
             openReadConnection();
-            string sql = "SELECT Max(" + parameter + ") FROM dbbari." + Table + " WHERE " + para + op + singleQoute + val + singleQoute + ";";
+            string sql = "SELECT Max(" + MaxPara + ") FROM dbbari." + Table + " WHERE " + para + op + singleQoute + val + singleQoute + ";";
             MySqlDataReader reader;
             command = new MySqlCommand(sql, readConnection);
             reader = command.ExecuteReader();
@@ -192,121 +192,29 @@ namespace Restaurante
 
         public bool updateSingleData(string Table, string variable, string value, string parameter, string searchValue)
         {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari." + Table + " SET " + variable + "=" + value + " WHERE " + parameter + "= " + searchValue + "; ";
-            command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updateAnfahrtKosten(string KundenID, Double Anfahrt)
-        {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET Anfahrtkosten=?Anfahrtkosten WHERE idKundendaten=" + KundenID + ";";
-            command.Prepare();
-            command.Parameters.Add("Anfahrtkosten", MySqlDbType.Double).Value = Anfahrt;
-            command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updateKundenName(string KundenID, string KundenName)
-        {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET KundenName=?KundenName WHERE idKundendaten=" + KundenID + ";";
-            command.Prepare();
-            command.Parameters.Add("KundenName", MySqlDbType.VarChar).Value = KundenName;
-            command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updateKundenNummer(string KundenID, string KundenNr)
-        {
             updateConnection.Open();
             command = new MySqlCommand();
             command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET KundenNr=?KundenNr WHERE idKundendaten=" + KundenID + ";"; ;
-            command.Prepare();
-            command.Parameters.Add("KundenNr", MySqlDbType.VarChar).Value = KundenNr;
+            command.CommandText = "UPDATE dbbari." + Table + " SET " + variable + "='" + value + "' WHERE " + parameter + "= '" + searchValue + "'; ";
             command.ExecuteNonQuery();
             updateConnection.Close();
             return true;
         }
 
-        public bool updateOrt(string KundenID, string Ort)
+        public bool updateData(string Table, string[] variable, string[] value, string parameter, string searchValue)
         {
+            updateConnection.Open();
             command = new MySqlCommand();
             command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET Ort=?Ort WHERE idKundendaten=" + KundenID + ";";
-            command.Prepare();
-            command.Parameters.Add("Ort", MySqlDbType.VarChar).Value = Ort;
+            string sql = "UPDATE dbbari." + Table + " SET ";
+            for (int i = 0; i < variable.Length; i++)
+            {
+                sql += variable[i] + "='" + value[i] + "',";
+            }
+            sql = sql.Substring(0, sql.Length - 1) + " WHERE " + parameter + " = '" + searchValue + "'; ";
+            command.CommandText = sql;
             command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updatePLZ(string KundenID, long PLZ)
-        {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET PLZ=?PLZ WHERE idKundendaten=" + KundenID + ";"; ;
-            command.Prepare();
-            command.Parameters.Add("PLZ", MySqlDbType.Int64).Value = PLZ;
-            command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updateRabatt(string KundenID, Double rabatt)
-        {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET rabatt=?rabatt WHERE idKundendaten=" + KundenID + ";"; ;
-            command.Prepare();
-            command.Parameters.Add("rabatt", MySqlDbType.Double).Value = rabatt;
-            command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updateSNo(string KundenID, string SNO)
-        {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET StrNo=?StrNo WHERE idKundendaten=" + KundenID + ";"; ;
-            command.Prepare();
-            command.Parameters.Add("StrNo", MySqlDbType.VarChar).Value = SNO;
-            command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updateStrasse(string KundenID, string Strasse)
-        {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET Strasse=?Strasse WHERE idKundendaten=" + KundenID + ";"; ;
-            command.Prepare();
-            command.Parameters.Add("Strasse", MySqlDbType.VarChar).Value = Strasse;
-            command.ExecuteNonQuery();
-            return true;
-        }
-
-        public bool updateZusatz(string KundenID, string zusatz)
-        {
-            command = new MySqlCommand();
-            command.Connection = updateConnection;
-            command.Parameters.Clear();
-            command.CommandText = "UPDATE dbbari.kundendaten SET zusatz=?zusatz WHERE idKundendaten=" + KundenID + ";"; ;
-            command.Prepare();
-            command.Parameters.Add("zusatz", MySqlDbType.VarChar).Value = zusatz;
-            command.ExecuteNonQuery();
+            updateConnection.Close();
             return true;
         }
     }
