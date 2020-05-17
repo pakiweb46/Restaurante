@@ -43,14 +43,26 @@ namespace Restaurante
         public const string LINE2_TELE_B = " Tel. : 0381 21055633";
         public const string LINE3_TELE2_B = "";
         public const string LINE4_OPENTIME_B = "";
+        enum KUNDENDATEN{//to delete
+            idKundendaten,
+            KundenNr,
+            Anrede,
+            KundenName,
+            Strasse,
+            StrNo,
+            Zusatz,
+            PLZ,
+            Ort,
+            Anfahrtkosten,
+            Rabatt
 
-
+        }
     }
 }
 // TODO
 // Database Initiliazation routine if no database is there
-// Design patten definieren
 // MWST AND RABATT CALCULATION
+// Storno Rechnung beim stornieren eine Bestellung muss auch eine Rechnug erstellt werden.
 // LICENSE STRATIGY
 // Printklasse Zenteralizieren
 // Data Klasse einbauen

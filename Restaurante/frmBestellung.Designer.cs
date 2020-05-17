@@ -239,7 +239,6 @@
             this.lvBestellung.TitleFont3 = new System.Drawing.Font("Arial", 12F);
             this.lvBestellung.UseCompatibleStateImageBehavior = false;
             this.lvBestellung.View = System.Windows.Forms.View.Details;
-            this.lvBestellung.SelectedIndexChanged += new System.EventHandler(this.lvBestellung_SelectedIndexChanged_1);
             this.lvBestellung.GotFocus += new System.EventHandler(this.lvBestellung_GotFocus);
             this.lvBestellung.KeyDown += new System.Windows.Forms.KeyEventHandler(this.lvBestellung_KeyDown);
             this.lvBestellung.LostFocus += new System.EventHandler(this.lvBestellung_LostFocus);
