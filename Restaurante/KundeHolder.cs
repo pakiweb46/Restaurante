@@ -1,26 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Drawing;
-using System.Drawing.Printing;
-using System.Drawing.Drawing2D;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Windows.Forms;
-using MySql.Data;
-using MySql.Data.MySqlClient;
-using LieferDienst;
+
 namespace Restaurante
 {
-    class KundeHolder
+    internal class KundeHolder
     {
-        #region  Property Variables
+        #region Property Variables
+
         /// <summary>
         /// Property variable kundendaten
         /// </summary>
         /// <remarks></remarks>
         private string KundenName;
+
         private string KundenOrt;
         private string KundenPLZ;
         private string KundenAddresse;
@@ -30,90 +23,108 @@ namespace Restaurante
         private double MwstAnfahrt;
         private double Gesamt;
         private double Rabatt;
-        #endregion
+
+        #endregion Property Variables
+
         #region Class Variable
-        MySqlConnection conn = new MySqlConnection(connStr);
-        MySqlCommand cmd;
-        MySqlDataReader rdr;
-        #endregion
+
+        private MySqlConnection conn = new MySqlConnection(connStr);
+        private MySqlCommand cmd;
+        private MySqlDataReader rdr;
+
+        #endregion Class Variable
+
         #region class Properties
+
         public string sKundenName
         {
             get { return KundenName; }
             set { KundenName = value; }
         }
+
         public string sKundenOrt
         {
             get { return KundenOrt; }
             set { KundenOrt = value; }
         }
+
         public string sKundenPLZ
         {
             get { return KundenPLZ; }
             set { KundenPLZ = value; }
         }
+
         public string sKundenAddresse
         {
             get { return KundenAddresse; }
             set { KundenAddresse = value; }
         }
+
         public string sKundenTelefone
         {
             get { return KundenTelefone; }
             set { KundenTelefone = value; }
         }
+
         public string sKundenHinweis
         {
             get { return sKundenHinweis; }
             set { sKundenHinweis = value; }
         }
+
         public double sAnfahrtKosten
         {
             get { return AnfahrtKosten; }
             set { AnfahrtKosten = value; }
         }
+
         public double sMwstAnfahrt
         {
             get { return MwstAnfahrt; }
             set { MwstAnfahrt = value; }
         }
+
         public double sGesamt
         {
             get { return Gesamt; }
             set { Gesamt = value; }
         }
+
         public double sRabatt
         {
             get { return Rabatt; }
             set { Rabatt = value; }
         }
-        #endregion
+
+        #endregion class Properties
+
         #region Class Constructor
+
         public KundeHolder()
         {
-            KundenName=string.Empty;
-            KundenOrt=string.Empty;
-            KundenPLZ=string.Empty;
-            KundenAddresse=string.Empty;
-            KundenTelefone=string.Empty;
-            KundenHinweis=string.Empty;
-            AnfahrtKosten=0;
-            MwstAnfahrt=0;
-            Gesamt=0;
-            Rabatt=0;
+            KundenName = string.Empty;
+            KundenOrt = string.Empty;
+            KundenPLZ = string.Empty;
+            KundenAddresse = string.Empty;
+            KundenTelefone = string.Empty;
+            KundenHinweis = string.Empty;
+            AnfahrtKosten = 0;
+            MwstAnfahrt = 0;
+            Gesamt = 0;
+            Rabatt = 0;
         }
 
-        #endregion
+        #endregion Class Constructor
 
         #region functions
+
         /// <summary>
         /// Functions for Kundendaten
         /// </summary>
-        static string connStr = Globals.connString;
+        private static string connStr = Globals.connString;
+
         private void loadKundendaten(int kundenid)
         {
-            
-
             if (conn.State.ToString() == "Closed")
                 conn.Open();
             string sql = "SELECT * FROM dbbari.kundendaten Where idKundendaten=" + kundenid + ";";
@@ -151,9 +162,8 @@ namespace Restaurante
             {
                 MessageBox.Show(ex.ToString());
             }
-
         }
 
-        #endregion
+        #endregion functions
     }
 }

@@ -1,50 +1,43 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
-
 
 namespace Restaurante
 {
-    class RestauranteData
+    internal class RestauranteData
     {
-
-
         private MySqlCommand command;
         private MySqlConnection readConnection = new MySqlConnection(Globals.connString);
         private MySqlConnection updateConnection = new MySqlConnection(Globals.connString);
+
         public RestauranteData()
         {
-
         }
+
         ~RestauranteData()
         {
             readConnection.Close();
             updateConnection.Close();
         }
+
         public void closeAllConnection()
         {
             readConnection.Close();
             updateConnection.Close();
         }
 
-
         public MySqlDataReader getAllData(string Table)
         {
-            string sqlReadCard = "SELECT * From dbbari."+Table+";";
+            string sqlReadCard = "SELECT * From dbbari." + Table + ";";
             MySqlDataReader readerSpeiseKarte;
             command = new MySqlCommand(sqlReadCard, readConnection);
             readerSpeiseKarte = command.ExecuteReader();
             return readerSpeiseKarte;
         }
 
-
         public int getCount(string Table, string parameter, string value)
         {
-            string sql = "SELECT count(*) FROM dbbari."+Table+" Where " + parameter + "='" + value + "';";
+            string sql = "SELECT count(*) FROM dbbari." + Table + " Where " + parameter + "='" + value + "';";
             int count = 0;
             openReadConnection();
             MySqlDataReader reader;
@@ -71,6 +64,7 @@ namespace Restaurante
         {
             return readConnection.State;
         }
+
         public ConnectionState getUpdateConnectionState()
         {
             return updateConnection.State;
@@ -86,6 +80,7 @@ namespace Restaurante
         {
             readConnection.Open();
         }
+
         public void closeReadConnection()
         {
             readConnection.Close();
@@ -93,7 +88,7 @@ namespace Restaurante
 
         public MySqlDataReader searchDaten(string Table, string parameter, string muster)
         {
-            string sql = "SELECT * FROM dbbari."+Table+" WHERE " + parameter + " LIKE '" + muster + "';";
+            string sql = "SELECT * FROM dbbari." + Table + " WHERE " + parameter + " LIKE '" + muster + "';";
             MySqlDataReader reader;
             command = new MySqlCommand(sql, readConnection);
             reader = command.ExecuteReader();
@@ -109,6 +104,7 @@ namespace Restaurante
             command.ExecuteNonQuery();
             return true;
         }
+
         public bool updateAnfahrtKosten(string KundenID, Double Anfahrt)
         {
             command = new MySqlCommand();
@@ -206,6 +202,7 @@ namespace Restaurante
             command.ExecuteNonQuery();
             return true;
         }
+
         public bool updateZusatz(string KundenID, string zusatz)
         {
             command = new MySqlCommand();

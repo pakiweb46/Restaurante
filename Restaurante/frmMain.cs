@@ -1,24 +1,19 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Windows.Forms;
-using MySql.Data.MySqlClient;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Forms;
+
 namespace Restaurante
 {
     public partial class frmMain : Form
     {
-           public double Anfahrtfrei=20;
-    
+        public double Anfahrtfrei = 20;
+
         public frmMain()
         {
             InitializeComponent();
         }
+
         private void button6_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -32,64 +27,55 @@ namespace Restaurante
             MyAuftrag.ShowDialog();
             MyAuftrag.Close();
             this.Show();
-            
-
         }
 
         private void frmMain_Load(object sender, EventArgs e)
         {
             this.KeyPreview = true;
-            this.KeyDown+=new KeyEventHandler(frmMain_KeyDown);
+            this.KeyDown += new KeyEventHandler(frmMain_KeyDown);
             // Go direct to Auftragerfassen
             btnAuftragErfassen.PerformClick();
         }
+
         private void frmMain_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F1)
             {
                 btnKundenDaten.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F2)
             {
                 btnSpeiseKarte.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F3)
             {
-                btnAuftragErfassen.PerformClick(); 
-
+                btnAuftragErfassen.PerformClick();
             }
             else if (e.KeyCode == Keys.F4)
             {
                 btnTagesabrechnung.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F5)
             {
                 btnMitarbeiter.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F6)
             {
                 btnSontiges.PerformClick();
-
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 btnBeenden.PerformClick();
-
             }
-            
         }
+
         private void btnKundenDaten_Click(object sender, EventArgs e)
         {
-
             this.Hide();
             frmKundenDaten frmKundenDaten_instance = new frmKundenDaten();
             frmKundenDaten_instance.ShowDialog();
             frmKundenDaten_instance.Close();
-            this.Show();   
+            this.Show();
         }
 
         private void btnSpeiseKarte_Click(object sender, EventArgs e)
@@ -117,26 +103,25 @@ namespace Restaurante
             myMitarbeiter.ShowDialog();
             myMitarbeiter.Close();
             this.Show();
-
         }
 
         private void btnSontiges_Click(object sender, EventArgs e)
         {
             this.Hide();
-            frmShowList myReservierung = new frmShowList(1,"Artikel Liste");
+            frmShowList myReservierung = new frmShowList(1, "Artikel Liste");
             myReservierung.ShowDialog();
             myReservierung.Close();
             this.Show();
-           
         }
-        public void DatabaseBackup(string ExeLocation, string DBName,string Path)
+
+        public void DatabaseBackup(string ExeLocation, string DBName, string Path)
         {
             try
             {
                 string tmestr = "";
                 tmestr = DBName + "-" + DateTime.Now.ToShortDateString() + ".sql";
                 tmestr = tmestr.Replace("/", "-");
-                tmestr = Path +"\\" + tmestr;
+                tmestr = Path + "\\" + tmestr;
                 try
                 {
                     StreamWriter file = new StreamWriter(tmestr);
@@ -158,17 +143,15 @@ namespace Restaurante
                 }
                 catch (Exception ex)
                 {
-                  
                     MessageBox.Show(ex.Message);
                 }
-               
             }
-
             catch (IOException ex)
             {
                 MessageBox.Show(ex.Message.ToString());
             }
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             string folderPath = "";
@@ -179,11 +162,8 @@ namespace Restaurante
             {
                 folderPath = folderBrowserDialog1.SelectedPath;
 
-
                 DatabaseBackup("C:/Program Files/MySQL/MySQL Server 5.5/bin/mysqldump.exe", "dbbari", folderPath);
             }
         }
-
-      
     }
 }

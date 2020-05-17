@@ -1,26 +1,22 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Drawing;
-using System.Linq;
-using System.Text;
 using System.Windows.Forms;
-using MySql.Data;
-using MySql.Data.MySqlClient;
-using LieferDienst;
+
 namespace Restaurante
 {
     public partial class frmMitarbeiter : Form
     {
-        static Color FocusColor = Color.Cyan;
-        static Color BlurColor = Color.White;
-        // MYSQL String 
-        static string connStr = Globals.connString;
-        MySqlConnection conn = new MySqlConnection(connStr);
+        private static Color FocusColor = Color.Cyan;
+        private static Color BlurColor = Color.White;
+
+        // MYSQL String
+        private static string connStr = Globals.connString;
+
+        private MySqlConnection conn = new MySqlConnection(connStr);
         public int recordNr, recordCount;
-        MySqlCommand cmd;
-        MySqlDataReader rdr;
+        private MySqlCommand cmd;
+        private MySqlDataReader rdr;
 
         public frmMitarbeiter()
         {
@@ -38,7 +34,6 @@ namespace Restaurante
                 if (rdr.Read())
                 {
                     recordCount = Convert.ToInt16(rdr[0].ToString());
-
                 }
                 rdr.Close();
             }
@@ -46,8 +41,8 @@ namespace Restaurante
             {
                 MessageBox.Show(ex.ToString());
             }
-           
         }
+
         public static bool IsInteger(string theValue)
         {
             try
@@ -65,20 +60,22 @@ namespace Restaurante
         {
             tbStraße.BackColor = FocusColor;
         }
+
         private void text_GotFocus(object sender, EventArgs e)
         {
             //tbStrNo.BackColor = System.Drawing.Color.LightSeaGreen;
             Control control = (TextBox)sender;
             control.BackColor = FocusColor;
         }
+
         private void text_LostFocus(object sender, EventArgs e)
         {
             Control control = (TextBox)sender;
             control.BackColor = BlurColor;
         }
+
         private void textBox3_TextChanged(object sender, EventArgs e)
         {
-        
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -90,7 +87,7 @@ namespace Restaurante
         {
             listView1.Visible = false;
             KeyPreview = true;
-            this.KeyDown+=new KeyEventHandler(frmMitarbeiter_KeyDown);
+            this.KeyDown += new KeyEventHandler(frmMitarbeiter_KeyDown);
             recordNr = getMinId();
             tbStraße.AutoCompleteCustomSource = StrassenVonDatenBank();
             button3.Enabled = false;
@@ -99,6 +96,7 @@ namespace Restaurante
             comboBox1.Items.Add("Küchen Hilfe");
             comboBox1.Items.Add("Reinigung");
         }
+
         private int getMinId()
         {
             int minid = -1;
@@ -115,7 +113,6 @@ namespace Restaurante
             if (rdr.Read())
             {
                 minid = Convert.ToInt32(rdr[0].ToString());
-
             }
 
             try
@@ -164,45 +161,39 @@ namespace Restaurante
             while (rdr.Read())
             {
                 colValues.Add(rdr["strasse"].ToString());
-
             }
             rdr.Close();
             return colValues;
-
         }
+
         private void frmMitarbeiter_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F1)
             {
                 button2.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F4)
             {
                 button1.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F7)
             {
                 button3.PerformClick();
-
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 button4.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F5)
             {
                 button9.PerformClick();
-
             }
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             string sql;
-            if ( textBox3.Text != "") // Update Record
+            if (textBox3.Text != "") // Update Record
             {
                 sql = "SELECT * FROM dbbari.mitarbeiter Where MitarbeiterName='" + textBox3.Text.Trim() + "';";
                 cmd = new MySqlCommand(sql, conn);
@@ -210,7 +201,6 @@ namespace Restaurante
                 try
                 {
                     rdr = cmd.ExecuteReader();
-
                 }
                 catch (Exception ex)
                 {
@@ -229,11 +219,9 @@ namespace Restaurante
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
                 else // Füge Neuen Record
                 {
-
                     try
                     {
                         rdr.Close();
@@ -264,14 +252,11 @@ namespace Restaurante
                     }
                     else
                     {
-
                         MySqlCommand cmd1 = new MySqlCommand();
 
                         try
                         {
-
                             cmd1.Connection = conn;
-
 
                             cmd1.CommandText = "INSERT INTO dbbari.mitarbeiter VALUES (NULL, @MitarbeiterName , @Strasse, @StrNo, @PLZ, @Ort, @Tatigkeit, @Adminrechte, @zusatz)";
                             cmd1.Prepare();
@@ -283,8 +268,8 @@ namespace Restaurante
                             cmd1.Parameters.AddWithValue("PLZ", Convert.ToInt64(textBox7.Text.Trim()));
                             cmd1.Parameters.AddWithValue("Ort", textBox8.Text.Trim());
                             cmd1.Parameters.AddWithValue("Tatigkeit", comboBox1.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Adminrechte", Convert.ToInt32(getCheckBoxStatus())); 
-                                cmd1.ExecuteNonQuery();
+                            cmd1.Parameters.AddWithValue("Adminrechte", Convert.ToInt32(getCheckBoxStatus()));
+                            cmd1.ExecuteNonQuery();
                             MessageBox.Show("Mitarbeiter ist gespeichert");
                         }
                         catch (Exception ex)
@@ -293,9 +278,9 @@ namespace Restaurante
                         }
                     }
                 }
-
             }
         }
+
         private int getCheckBoxStatus()
         {
             if (checkBox1.Checked)
@@ -303,6 +288,7 @@ namespace Restaurante
             else
                 return 0;
         }
+
         private void PerformDataFill()
         {
             myClearForm();
@@ -315,6 +301,7 @@ namespace Restaurante
 
             button3.Enabled = true;
         }
+
         private void myClearForm()
         {
             textBox3.Clear();
@@ -324,8 +311,8 @@ namespace Restaurante
             textBox8.Clear();
             tbStraße.Clear();
             checkBox1.Checked = false;
-
         }
+
         private int getMaxId()
         {
             int maxid = -1;
@@ -341,9 +328,7 @@ namespace Restaurante
             }
             if (rdr.Read())
             {
-
                 maxid = Convert.ToInt32(rdr[0].ToString());
-
             }
 
             try
@@ -357,6 +342,7 @@ namespace Restaurante
 
             return maxid;  // -1 ist fehler
         }
+
         private void button3_Click(object sender, EventArgs e)
         {
             DialogResult result;
@@ -379,8 +365,8 @@ namespace Restaurante
                     MessageBox.Show(ex.ToString());
                 }
             }
-           
         }
+
         private int getMinId(int magicNo)
         {
             int minid = -1;
@@ -393,9 +379,7 @@ namespace Restaurante
                 if (rdr.Read())
                 {
                     minid = Convert.ToInt32(rdr[0].ToString());
-
                 }
-
 
                 rdr.Close();
             }
@@ -406,6 +390,7 @@ namespace Restaurante
 
             return minid;  // -1 ist fehler
         }
+
         private int getMaxId(int magicno)
         {
             int maxid = -1;
@@ -417,9 +402,7 @@ namespace Restaurante
 
                 if (rdr.Read())
                 {
-
                     maxid = Convert.ToInt32(rdr[0].ToString());
-
                 }
                 rdr.Close();
             }
@@ -430,14 +413,14 @@ namespace Restaurante
 
             return maxid;  // -1 ist fehler
         }
-        
+
         private void button8_Click(object sender, EventArgs e)
         {
             if (recordNr != getMaxId())
             {
                 recordNr = getMinId(recordNr); // gets minimum id which is greater than record number
             }
-            
+
             string sql = "SELECT * FROM dbbari.mitarbeiter Where idMitarbeiter=" + recordNr + ";";
             cmd = new MySqlCommand(sql, conn);
             try
@@ -460,8 +443,7 @@ namespace Restaurante
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
-            } 
-
+            }
         }
 
         private void button7_Click(object sender, EventArgs e)
@@ -562,7 +544,6 @@ namespace Restaurante
         {
             string sql;
 
-
             if (textBox3.Text != "")
             {
                 int found = 0; // Number of matching records found
@@ -572,7 +553,6 @@ namespace Restaurante
 
                 try
                 {
-
                     rdr = cmd.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -582,7 +562,6 @@ namespace Restaurante
                 if (rdr.Read())
                 {
                     found = Convert.ToInt16(rdr[0].ToString());
-
                 }
                 rdr.Close();
                 if (found == 1)
@@ -593,7 +572,6 @@ namespace Restaurante
 
                     try
                     {
-
                         rdr = cmd.ExecuteReader();
                     }
                     catch (Exception ex)
@@ -619,15 +597,13 @@ namespace Restaurante
                 {
                     // Complete string match where more items have same name
                     listView1.Visible = true;
-                   
+
                     sql = "SELECT * FROM dbbari.mitarbeiter Where MitarbeiterName='" + textBox3.Text.Trim() + "';";
                     cmd = new MySqlCommand(sql, conn);
 
                     try
                     {
-
                         rdr = cmd.ExecuteReader();
-
                     }
                     catch (Exception ex)
                     {
@@ -640,7 +616,6 @@ namespace Restaurante
                             ListViewItem item = new ListViewItem(rdr["MitarbeiterName"].ToString());
                             item.SubItems.Add(rdr["idMitarbeiter"].ToString());
                             listView1.Items.Add(item);
-
                         }
                     }
                     try
@@ -655,15 +630,13 @@ namespace Restaurante
                 }
                 else
                 {
-                    // not full matching found match String segments 
+                    // not full matching found match String segments
                     sql = "SELECT * FROM dbbari.mitarbeiter Where MitarbeiterName Like '%" + textBox3.Text.Trim() + "%';";
                     cmd = new MySqlCommand(sql, conn);
                     listView1.Visible = true;
                     try
                     {
-
                         rdr = cmd.ExecuteReader();
-
                     }
                     catch (Exception ex)
                     {
@@ -674,17 +647,14 @@ namespace Restaurante
                         MessageBox.Show("Mehere daten gefunden wählen sie aus der liste");
                         while (rdr.Read())
                         {
-
                             ListViewItem item = new ListViewItem(rdr["MitarbeiterName"].ToString());
                             item.SubItems.Add(rdr["idMitarbeiter"].ToString());
                             listView1.Items.Add(item);
-
                         }
                     }
                     else
                     {
                         MessageBox.Show("Daten nicht gefunden");
-
                     }
                     try
                     {
@@ -694,18 +664,12 @@ namespace Restaurante
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
-
             }
             else
             {
                 MessageBox.Show("Für Suchen Bitte geben sie der Name ein");
-
             }
-            
-            
-            
         }
 
         private void listView1_SelectedIndexChanged(object sender, EventArgs e)
@@ -713,12 +677,9 @@ namespace Restaurante
             ListView.SelectedListViewItemCollection selecteditem =
                 this.listView1.SelectedItems;
 
-
             foreach (ListViewItem item in selecteditem)
             {
-
                 recordNr = Convert.ToInt32(item.SubItems[1].Text);
-
             }
 
             //Search nach kunden Id and fill form
@@ -747,16 +708,11 @@ namespace Restaurante
             }
             listView1.Items.Clear();
             listView1.Visible = false;
-
         }
 
         private void button9_Click(object sender, EventArgs e)
         {
-            myClearForm(); 
-
+            myClearForm();
         }
-
-
     }
-
 }

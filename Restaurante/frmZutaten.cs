@@ -1,22 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using LieferDienst;
+
 namespace Restaurante
 {
     public partial class frmZutaten : Form
     {
-        static string connStr = Globals.connString;
+        private static string connStr = Globals.connString;
         private int recordNr;
-        MySqlConnection conn = new MySqlConnection(connStr);
-        MySqlCommand cmd,cmd2;
-        MySqlDataReader rdr;
+        private MySqlConnection conn = new MySqlConnection(connStr);
+        private MySqlCommand cmd, cmd2;
+        private MySqlDataReader rdr;
 
         public frmZutaten()
         {
@@ -31,45 +25,41 @@ namespace Restaurante
             this.KeyDown += new KeyEventHandler(frmZutaten_KeyDown);
             PerformListFill();
         }
+
         private void frmZutaten_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F4)
             {
                 btnSpeichern.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F6)
             {
                 btnÄndern.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F7)
             {
                 btnLöschen.PerformClick();
-
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 btnZuruck.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F5)
             {
                 button9.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F1)
             {
                 PerformSearch();
             }
-
         }
+
         private void PerformSearch()
         {
             //if (conn.State.ToString() == "Close")
             conn.Open();
             string sql;
-            
+
             if (tbBezeichnung.Text != "")
             {
                 int found = 0; // Number of matching records found
@@ -79,7 +69,6 @@ namespace Restaurante
 
                 try
                 {
-
                     rdr = cmd2.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -89,7 +78,6 @@ namespace Restaurante
                 if (rdr.Read())
                 {
                     found = Convert.ToInt16(rdr[0].ToString());
-
                 }
                 rdr.Close();
                 if (found == 1)
@@ -99,7 +87,6 @@ namespace Restaurante
 
                     try
                     {
-
                         rdr = cmd2.ExecuteReader();
                     }
                     catch (Exception ex)
@@ -130,9 +117,7 @@ namespace Restaurante
 
                     try
                     {
-
                         rdr = cmd2.ExecuteReader();
-
                     }
                     catch (Exception ex)
                     {
@@ -146,8 +131,6 @@ namespace Restaurante
                             item.SubItems.Add(rdr["ZutatName"].ToString());
                             item.SubItems.Add(rdr["Preis"].ToString());
                             lvArtikel.Items.Add(item);
-
-
                         }
                     }
                     try
@@ -163,7 +146,6 @@ namespace Restaurante
                 else
                 {
                     MessageBox.Show("Daten nicht gefunden");
-
                 }
                 try
                 {
@@ -173,18 +155,15 @@ namespace Restaurante
                 {
                     MessageBox.Show(ex.ToString());
                 }
-
             }
-
-
             else
             {
                 MessageBox.Show("Für Suchen Bitte geben sie Kunden Nummer oder Kunden Name ein");
-
             }
             if (conn.State.ToString() != "Closed")
                 conn.Close();
         }
+
         private void button4_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -193,8 +172,8 @@ namespace Restaurante
         private void button9_Click(object sender, EventArgs e)
         {
             myClearForm();
-
         }
+
         private void myClearForm()
         {
             tbArtikel.Clear();
@@ -206,8 +185,8 @@ namespace Restaurante
 
         private void button8_Click(object sender, EventArgs e)
         {
-
         }
+
         private void PerformDataFill()
         {
             myClearForm();
@@ -216,14 +195,13 @@ namespace Restaurante
             tbBezeichnung.Text = rdr["ZutatName"].ToString();
             tbMwSt.Text = rdr["Mwst"].ToString();
             tbVerkaufPreis.Text = rdr["Preis"].ToString();
-
         }
-        
+
         private void button1_Click(object sender, EventArgs e)
         {
             string sql;
-            if(conn.State.ToString()=="Closed")
-            conn.Open();
+            if (conn.State.ToString() == "Closed")
+                conn.Open();
             if (tbBezeichnung.Text != "") // Update Record
             {
                 sql = "SELECT * FROM dbbari.zutaten Where ZutatName='" + tbBezeichnung.Text + "';";
@@ -232,7 +210,6 @@ namespace Restaurante
                 try
                 {
                     rdr = cmd.ExecuteReader();
-
                 }
                 catch (Exception ex)
                 {
@@ -251,11 +228,9 @@ namespace Restaurante
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
                 else // Füge Neuen Record
                 {
-
                     try
                     {
                         rdr.Close();
@@ -284,7 +259,6 @@ namespace Restaurante
                         MySqlCommand cmd1 = new MySqlCommand();
                         try
                         {
-
                             cmd1.Connection = conn;
                             cmd1.Parameters.Clear();
                             cmd1.CommandText = "INSERT INTO dbbari.Zutaten VALUES (NULL,  @Bezeichnung, @VerkaufPreis, @MwSt)";
@@ -294,7 +268,6 @@ namespace Restaurante
                             cmd1.Parameters.AddWithValue("MwSt", Convert.ToDouble(tbMwSt.Text.Trim()));
                             cmd1.ExecuteNonQuery();
                             MessageBox.Show("Zutat Eingefügt");
-
                         }
                         catch (Exception ex)
                         {
@@ -311,9 +284,9 @@ namespace Restaurante
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
         }
+
         private void PerformListFill()
         {
             string sql;
@@ -323,9 +296,7 @@ namespace Restaurante
             cmd = new MySqlCommand(sql, conn);
             try
             {
-
                 rdr = cmd.ExecuteReader();
-
             }
             catch (Exception ex)
             {
@@ -346,9 +317,7 @@ namespace Restaurante
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
-
             }
             try
             {
@@ -401,7 +370,6 @@ namespace Restaurante
             try
             {
                 rdr = cmd.ExecuteReader();
-
             }
             catch (Exception ex)
             {
@@ -409,7 +377,6 @@ namespace Restaurante
             }
             if (rdr.Read())
             {
-
                 recordNr = Convert.ToInt32(rdr[0].ToString());
                 PerformDataFill();
                 try
@@ -421,13 +388,11 @@ namespace Restaurante
                 {
                     MessageBox.Show(ex.ToString());
                 }
-
             }
         }
 
         private void lvArtikel_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void btnLöschen_Click(object sender, EventArgs e)
@@ -449,7 +414,6 @@ namespace Restaurante
                         button9.PerformClick();
                         conn.Close();
                         PerformListFill();
-
                     }
                     catch (Exception ex)
                     {
@@ -457,38 +421,23 @@ namespace Restaurante
                     }
                 }
             }
-
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-
         }
 
         private void btnZuruck_Click(object sender, EventArgs e)
         {
             this.Close();
-
         }
-
-       
-        
-        
-
-        
-
-      
-
-
     }
 }

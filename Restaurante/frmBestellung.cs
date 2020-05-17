@@ -2,6 +2,7 @@
 using System;
 using System.Drawing;
 using System.Windows.Forms;
+
 namespace Restaurante
 {
     // TODO::IMprovements 1. button names  rename to some thing context relavent not button1 etc
@@ -24,14 +25,13 @@ namespace Restaurante
         private string oldArtikel;
         private string pfand = "OHNE";
         private RestauranteData rData;
-        private MySqlDataReader  rdr1;
+        private MySqlDataReader rdr1;
         private string selectedArtikleNo;
         private string selectedZutat;
         private double totalTax7, totalTax19, restmwst;
         // speichert die gesamt pfand.
 
         //s   private Speisekarte speise = new Speisekarte()
-
 
         // Haltet Data
         public frmBestellung(string kno)
@@ -103,7 +103,7 @@ namespace Restaurante
             /*TODO:: MWST Rechnung is wrong brutto price/1,07 for netto price and brutto price -netto price is the MWST* 1705 Mwst done
             /* Here calculated with direct price *0,07 which is wrong as the prices are brutto prices*/
             /* same is true for pfand so pfand can be simple artikel */
-            double artBruttoPrice,artNettoPrice;
+            double artBruttoPrice, artNettoPrice;
             grundpreis = 0;
 
             //  if(tbPreis.Text!="" && tbMenge.Text!="") // Checked Need to change
@@ -627,8 +627,8 @@ namespace Restaurante
             }
             reader.Close();
             rData.closeReadConnection();
-
         }
+
         //TODO:: No need of global pfand
         //tODO :: what does old artikel has function of
 
@@ -923,7 +923,7 @@ namespace Restaurante
         {
             rData.openReadConnection();
             MySqlDataReader reader = rData.getDataReader("Zutaten", "ZutatName", selectedZutat);
-            
+
             if (reader.Read())
             {
                 double tempVar;
@@ -1375,7 +1375,6 @@ namespace Restaurante
                     rData.closeReadConnection();
                     tbArtikel.Focus();
                     tbArtikel.Text = oldArtikel;
-                    
                 }
                 else if (e.KeyCode == Keys.Tab)
                 {
@@ -1416,6 +1415,7 @@ namespace Restaurante
         {
             paneltbArtikel.BackColor = SystemColors.Control;
         }
+
         private void tbMenge_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -1426,6 +1426,7 @@ namespace Restaurante
         {
             AddArtikle();
         }
+
         private void Zettel_Drucken()
         {
             string[] Artikel_Nummer = new string[lvBestellung.Items.Count];

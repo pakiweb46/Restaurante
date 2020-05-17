@@ -1,23 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using LieferDienst;
+
 namespace Restaurante
 {
     public partial class frmSpeiseKarte : Form
     {
-        static string connStr = Globals.connString;
+        private static string connStr = Globals.connString;
         private int recordNr;
-        MySqlConnection conn = new MySqlConnection(connStr);
-        MySqlCommand cmd,cmd2;
-        MySqlDataReader rdr;
-  
+        private MySqlConnection conn = new MySqlConnection(connStr);
+        private MySqlCommand cmd, cmd2;
+        private MySqlDataReader rdr;
+
         public frmSpeiseKarte()
         {
             InitializeComponent();
@@ -32,27 +26,27 @@ namespace Restaurante
 
             lvArtikel.Visible = false;
             KeyPreview = true;
-            this.KeyDown+=new KeyEventHandler(frmSpeiseKarte_KeyDown);
+            this.KeyDown += new KeyEventHandler(frmSpeiseKarte_KeyDown);
             PerformListFill();
         }
+
         private void PerformSearch(string ArtikelNr)
         {
             //if (conn.State.ToString() == "Close")
-                conn.Open();
+            conn.Open();
             string sql;
             if (tbArtikel.Text != "")
             {
                 sql = "SELECT * FROM dbbari.speisekarte Where ArtikelNr='" + ArtikelNr + "';";
                 cmd2 = new MySqlCommand(sql, conn);
-                
+
                 try
                 {
                     rdr = cmd2.ExecuteReader();
-
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString()+"h1");
+                    MessageBox.Show(ex.ToString() + "h1");
                 }
                 if (rdr.Read())
                 {
@@ -67,11 +61,9 @@ namespace Restaurante
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show(ex.ToString()+"h2");
+                    MessageBox.Show(ex.ToString() + "h2");
                 }
-
             }
-
             else if (tbBezeichnung.Text != "")
             {
                 int found = 0; // Number of matching records found
@@ -81,7 +73,6 @@ namespace Restaurante
 
                 try
                 {
-
                     rdr = cmd2.ExecuteReader();
                 }
                 catch (Exception ex)
@@ -91,7 +82,6 @@ namespace Restaurante
                 if (rdr.Read())
                 {
                     found = Convert.ToInt16(rdr[0].ToString());
-
                 }
                 rdr.Close();
                 if (found == 1)
@@ -101,7 +91,6 @@ namespace Restaurante
 
                     try
                     {
-
                         rdr = cmd2.ExecuteReader();
                     }
                     catch (Exception ex)
@@ -132,9 +121,7 @@ namespace Restaurante
 
                     try
                     {
-
                         rdr = cmd2.ExecuteReader();
-
                     }
                     catch (Exception ex)
                     {
@@ -148,8 +135,6 @@ namespace Restaurante
                             item.SubItems.Add(rdr["Bezeichnung"].ToString());
                             item.SubItems.Add(rdr["verkaufpreis"].ToString());
                             lvArtikel.Items.Add(item);
-
-
                         }
                     }
                     try
@@ -165,7 +150,6 @@ namespace Restaurante
                 else
                 {
                     MessageBox.Show("Daten nicht gefunden");
-
                 }
                 try
                 {
@@ -175,19 +159,15 @@ namespace Restaurante
                 {
                     MessageBox.Show(ex.ToString());
                 }
-
             }
-
-
             else
             {
                 MessageBox.Show("Für Suchen Bitte geben sie Kunden Nummer oder Kunden Name ein");
-
             }
             if (conn.State.ToString() != "Closed")
                 conn.Close();
         }
-        
+
         private void frmSpeiseKarte_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.F1)
@@ -197,29 +177,25 @@ namespace Restaurante
             else if (e.KeyCode == Keys.F4)
             {
                 btnSpeichern.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F6)
             {
                 btnÄndern.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F7)
             {
                 btnLöschen.PerformClick();
-
             }
             else if (e.KeyCode == Keys.Escape)
             {
                 btnZuruck.PerformClick();
-
             }
             else if (e.KeyCode == Keys.F5)
             {
                 button9.PerformClick();
-
             }
         }
+
         private void button4_Click(object sender, EventArgs e)
         {
             this.Close();
@@ -228,8 +204,8 @@ namespace Restaurante
         private void button9_Click(object sender, EventArgs e)
         {
             myClearForm();
-
         }
+
         private void myClearForm()
         {
             tbArtikel.Clear();
@@ -242,7 +218,6 @@ namespace Restaurante
 
         private void button8_Click(object sender, EventArgs e)
         {
-
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -257,7 +232,6 @@ namespace Restaurante
                 try
                 {
                     rdr = cmd.ExecuteReader();
-
                 }
                 catch (Exception ex)
                 {
@@ -276,11 +250,9 @@ namespace Restaurante
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
                 else // Füge Neuen Record
                 {
-
                     try
                     {
                         rdr.Close();
@@ -309,7 +281,6 @@ namespace Restaurante
                         MySqlCommand cmd1 = new MySqlCommand();
                         try
                         {
-
                             cmd1.Connection = conn;
                             cmd1.Parameters.Clear();
                             cmd1.CommandText = "INSERT INTO dbbari.speisekarte VALUES (NULL, @ArtikelNr , @Bezeichnung, @Zusatz, @VerkaufPreis, @MwSt, @pfandvar)";
@@ -319,14 +290,13 @@ namespace Restaurante
                             cmd1.Parameters.AddWithValue("Zusatz", tbZusatz.Text.Trim());
                             cmd1.Parameters.AddWithValue("VerkaufPreis", Convert.ToDouble(tbVerkaufPreis.Text.Trim()));
                             cmd1.Parameters.AddWithValue("MwSt", Convert.ToDouble(tbMwSt.Text.Trim()));
-                            if (pfandBox.SelectedText!="")
-                            cmd1.Parameters.AddWithValue("pfandvar", pfandBox.SelectedText);
+                            if (pfandBox.SelectedText != "")
+                                cmd1.Parameters.AddWithValue("pfandvar", pfandBox.SelectedText);
                             else
                                 cmd1.Parameters.AddWithValue("pfandvar", "OHNE");
-                            
+
                             cmd1.ExecuteNonQuery();
                             MessageBox.Show("Artikel Eingefügt");
-                            
                         }
                         catch (Exception ex)
                         {
@@ -343,9 +313,9 @@ namespace Restaurante
                 {
                     MessageBox.Show(ex.Message);
                 }
-
             }
         }
+
         private void PerformDataFill()
         {
             myClearForm();
@@ -355,21 +325,18 @@ namespace Restaurante
             tbMwSt.Text = rdr["Mwst"].ToString();
             tbZusatz.Text = rdr["zusatz"].ToString();
             tbVerkaufPreis.Text = rdr["VerkaufPreis"].ToString();
-            
         }
-        
+
         private void PerformListFill()
         {
-        string sql;
-        sql = "SELECT * From dbbari.Speisekarte ";
+            string sql;
+            sql = "SELECT * From dbbari.Speisekarte ";
             conn.Open();
             lvArtikel.Items.Clear();
             cmd = new MySqlCommand(sql, conn);
             try
             {
-
                 rdr = cmd.ExecuteReader();
-
             }
             catch (Exception ex)
             {
@@ -390,9 +357,7 @@ namespace Restaurante
                     {
                         MessageBox.Show(ex.ToString());
                     }
-
                 }
-
             }
             try
             {
@@ -411,7 +376,7 @@ namespace Restaurante
             conn.Open();
             MySqlCommand cmd1 = new MySqlCommand(); ;
             cmd1.Connection = conn;
-            
+
             cmd.Parameters.Clear();
 
             try
@@ -431,7 +396,7 @@ namespace Restaurante
             }
             catch (Exception ex)
             {
-                MessageBox.Show(ex.Message+"Insert Error");
+                MessageBox.Show(ex.Message + "Insert Error");
             }
         }
 
@@ -440,48 +405,44 @@ namespace Restaurante
             string sql;
             int lstIndex;
             conn.Open();
-           lstIndex=Convert.ToInt32(lvArtikel.SelectedIndices[0].ToString());            
-                sql = "SELECT * FROM dbbari.speisekarte Where ArtikelNr='" + lvArtikel.Items[lstIndex].Text.Trim()+ "';";
-                cmd = new MySqlCommand(sql, conn);
+            lstIndex = Convert.ToInt32(lvArtikel.SelectedIndices[0].ToString());
+            sql = "SELECT * FROM dbbari.speisekarte Where ArtikelNr='" + lvArtikel.Items[lstIndex].Text.Trim() + "';";
+            cmd = new MySqlCommand(sql, conn);
 
+            try
+            {
+                rdr = cmd.ExecuteReader();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+            if (rdr.Read())
+            {
+                recordNr = Convert.ToInt32(rdr[0].ToString());
+                PerformDataFill();
                 try
                 {
-                    rdr = cmd.ExecuteReader();
-
+                    rdr.Close();
+                    conn.Close();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString());
                 }
-                if (rdr.Read())
-                {
-                    
-                    recordNr = Convert.ToInt32(rdr[0].ToString());
-                    PerformDataFill();
-                    try
-                    {
-                        rdr.Close();
-                        conn.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-
-                }
             }
+        }
 
         private void lvArtikel_SelectedIndexChanged(object sender, EventArgs e)
         {
-
         }
 
         private void btnLöschen_Click(object sender, EventArgs e)
         {
             if (tbArtikel.Text != "" && tbBezeichnung.Text != "")
             {
-                if (conn.State.ToString() == "Closed")        conn.Open();
-            
+                if (conn.State.ToString() == "Closed") conn.Open();
+
                 DialogResult result;
                 result = MessageBox.Show("Sind sie sicher dass Artikel '" + tbBezeichnung.Text + "' Löchen Möchten! ", "Vorsicht", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (result == DialogResult.Yes)
@@ -495,7 +456,6 @@ namespace Restaurante
                         button9.PerformClick();
                         conn.Close();
                         PerformListFill();
-
                     }
                     catch (Exception ex)
                     {
@@ -504,31 +464,23 @@ namespace Restaurante
                 }
             }
         }
-        
 
         private void button1_Click_1(object sender, EventArgs e)
         {
             frmZutaten obj = new frmZutaten();
             obj.ShowDialog();
-           
-
         }
 
         private void button6_Click(object sender, EventArgs e)
         {
-
         }
 
         private void button5_Click(object sender, EventArgs e)
         {
-
         }
 
         private void button7_Click(object sender, EventArgs e)
         {
-
         }
-        
-
     }
 }
