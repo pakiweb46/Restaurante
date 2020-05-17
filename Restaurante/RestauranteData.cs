@@ -50,6 +50,21 @@ namespace Restaurante
             closeReadConnection();
             return count;
         }
+        public int getCount(string Table)
+        {
+            string sql = "SELECT count(*) FROM dbbari." + Table + ";";
+            int count = 0;
+            openReadConnection();
+            MySqlDataReader reader;
+            command = new MySqlCommand(sql, readConnection);
+            reader = command.ExecuteReader();
+            if (reader.Read())
+            {
+                count = Convert.ToInt16(reader[0].ToString());
+            }
+            closeReadConnection();
+            return count;
+        }
 
         public MySqlDataReader getDataReader(string Table, string Parameter, string Value)
         {
@@ -60,6 +75,14 @@ namespace Restaurante
             return reader;
         }
 
+        public MySqlDataReader getDataReader(string Table)
+        {
+            string sql = "SELECT * FROM dbbari." + Table + ";";
+            MySqlDataReader reader;
+            command = new MySqlCommand(sql, readConnection);
+            reader = command.ExecuteReader();
+            return reader;
+        }
         public ConnectionState getReadConnectionState()
         {
             return readConnection.State;

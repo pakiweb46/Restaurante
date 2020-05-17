@@ -329,28 +329,7 @@ namespace Restaurante
                         // find current zutaten preis
                         double difference = Recalculate(item.Index);
                         tbGesamt.Text = (Convert.ToDouble(tbGesamt.Text) - difference).ToString();
-                        tbTotalMwst.Text = (Convert.ToDouble(tbTotalMwst.Text) - restmwst).ToString();//
-
-                        /*         // remove
-                              tbGesamt.Text = (Convert.ToDouble(tbGesamt.Text) - difference).ToString();
-                              double ItemPreis = Math.Round(Convert.ToDouble(item.SubItems[4].Text), 3);
-                              double itemMwst = Math.Round(Convert.ToDouble(item.SubItems[5].Text), 3);
-                              double itemMwst7 = Math.Round(ItemPreis * 0.07, 3);
-                              double itemMwst19 = Math.Round(ItemPreis * 0.19, 3);
-                              double totalMwst = Math.Round(Convert.ToDouble(tbTotalMwst.Text), 3);
-                              if (itemMwst == itemMwst7) // 7%
-                                  TotalMwst7 = TotalMwst7 - itemMwst;
-                              else if (itemMwst == itemMwst19) //19%
-                                  TotalMwst19 -= itemMwst;
-
-                              tbTotalMwst.Text = (totalMwst - itemMwst).ToString();
-
-                              item.Remove();
-                          */       //MessageBox.Show((ItemPreis * 0.07).ToString());
-
-                        //recalculate zutaten preis
-
-                        //subtract the difference from tbgesamt
+                        tbTotalMwst.Text = (Convert.ToDouble(tbTotalMwst.Text) - restmwst).ToString();
                         if (item.Index >= currentIndex)
                             MessageBox.Show("Current Item");
                     }

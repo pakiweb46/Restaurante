@@ -9,12 +9,14 @@ namespace Restaurante
         private static string connStr = Globals.connString;
         private int recordNr;
         private MySqlConnection conn = new MySqlConnection(connStr);
-        private MySqlCommand cmd, cmd2;
-        private MySqlDataReader rdr;
+        private MySqlCommand cmd;
+
+        private RestauranteData rData;
 
         public frmSpeiseKarte()
         {
             InitializeComponent();
+            rData = new RestauranteData();
         }
 
         private void frmSpeiseKarte_Load(object sender, EventArgs e)
@@ -32,132 +34,58 @@ namespace Restaurante
 
         private void PerformSearch(string ArtikelNr)
         {
-            //if (conn.State.ToString() == "Close")
-            conn.Open();
-            string sql;
+            
             if (tbArtikel.Text != "")
             {
-                sql = "SELECT * FROM dbbari.speisekarte Where ArtikelNr='" + ArtikelNr + "';";
-                cmd2 = new MySqlCommand(sql, conn);
+                rData.openReadConnection();
+                MySqlDataReader reader = rData.getDataReader("speisekarte", "ArtikelNr", ArtikelNr);
+                if (reader.Read())
+                {
+                    recordNr = Convert.ToInt32(reader[0].ToString());
 
-                try
-                {
-                    rdr = cmd2.ExecuteReader();
+                    PerformDataFill(ref reader);
                 }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString() + "h1");
-                }
-                if (rdr.Read())
-                {
-                    recordNr = Convert.ToInt32(rdr[0].ToString());
-
-                    PerformDataFill();
-                }
-
-                try
-                {
-                    rdr.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString() + "h2");
-                }
+                reader.Close();
+                rData.closeReadConnection();
             }
             else if (tbBezeichnung.Text != "")
             {
-                int found = 0; // Number of matching records found
-                sql = "SELECT count(*) FROM dbbari.speisekarte Where Bezeichnung='" + tbBezeichnung.Text.Trim() + "';";
-
-                cmd2 = new MySqlCommand(sql, conn);
-
-                try
-                {
-                    rdr = cmd2.ExecuteReader();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                if (rdr.Read())
-                {
-                    found = Convert.ToInt16(rdr[0].ToString());
-                }
-                rdr.Close();
+                int found = rData.getCount("speisekarte", "Bezeichnung", tbBezeichnung.Text.Trim());
                 if (found == 1)
                 {
-                    sql = "SELECT * FROM dbbari.speisekarte Where Bezeichnung='" + tbBezeichnung.Text.Trim() + "';";
-                    cmd2 = new MySqlCommand(sql, conn);
-
-                    try
+                    rData.openReadConnection();
+                    MySqlDataReader reader = rData.getDataReader("speisekarte", "Bezeichnung", tbBezeichnung.Text.Trim());
+                    if (reader.Read())
                     {
-                        rdr = cmd2.ExecuteReader();
+                        recordNr = Convert.ToInt32(reader[0].ToString());
+                        PerformDataFill(ref reader);
                     }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    if (rdr.Read())
-                    {
-                        recordNr = Convert.ToInt32(rdr[0].ToString());
-                        PerformDataFill();
-                    }
-
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    reader.Close();
+                    rData.closeReadConnection();
                 }
                 else if (found > 1)
                 {
                     // Complete string match where more items have same name
                     //listView1.Visible = true;
-                    sql = "SELECT * FROM dbbari.speisekarte Where Bezeichnung='" + tbBezeichnung.Text.Trim() + "';";
-                    cmd2 = new MySqlCommand(sql, conn);
-
-                    try
+                    rData.openReadConnection();
+                    MySqlDataReader reader = rData.getDataReader("speisekarte", "Bezeichnung", tbBezeichnung.Text.Trim());
+                    if (reader.HasRows)
                     {
-                        rdr = cmd2.ExecuteReader();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
-                    if (rdr.HasRows)
-                    {
-                        while (rdr.Read())
+                        while (reader.Read())
                         {
-                            ListViewItem item = new ListViewItem(rdr["ArtikelNr"].ToString());
-                            item.SubItems.Add(rdr["Bezeichnung"].ToString());
-                            item.SubItems.Add(rdr["verkaufpreis"].ToString());
+                            ListViewItem item = new ListViewItem(reader["ArtikelNr"].ToString());
+                            item.SubItems.Add(reader["Bezeichnung"].ToString());
+                            item.SubItems.Add(reader["verkaufpreis"].ToString());
                             lvArtikel.Items.Add(item);
                         }
                     }
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    reader.Close();
+                    rData.closeReadConnection();
                     MessageBox.Show("Mehere daten gefunden wählen sie aus der liste");
                 }
                 else
                 {
                     MessageBox.Show("Daten nicht gefunden");
-                }
-                try
-                {
-                    rdr.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
                 }
             }
             else
@@ -222,45 +150,20 @@ namespace Restaurante
 
         private void button1_Click(object sender, EventArgs e)
         {
-            string sql;
-            conn.Open();
             if (tbArtikel.Text != "") // Update Record
             {
-                sql = "SELECT * FROM dbbari.speisekarte Where ArtikelNr='" + tbArtikel.Text.Trim() + "';";
-                cmd = new MySqlCommand(sql, conn);
-
-                try
-                {
-                    rdr = cmd.ExecuteReader();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-                if (rdr.Read())
+                rData.openReadConnection();
+                MySqlDataReader reader = rData.getDataReader("speisekarte", "ArtikelNr", tbArtikel.Text.Trim());
+                if (reader.Read())
                 {
                     MessageBox.Show("Artikel Exsistiert Schon");
-                    recordNr = Convert.ToInt32(rdr[0].ToString());
-                    PerformDataFill();
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                    recordNr = Convert.ToInt32(reader[0].ToString());
+                    PerformDataFill(ref reader);
+                   
                 }
                 else // Füge Neuen Record
                 {
-                    try
-                    {
-                        rdr.Close();
-                    }
-                    catch (Exception ex)
-                    {
-                        MessageBox.Show(ex.ToString());
-                    }
+                  
                     if (tbBezeichnung.Text == "")
                     {
                         MessageBox.Show("Bitte geben sie den ArtikelBezeichnung");
@@ -281,6 +184,7 @@ namespace Restaurante
                         MySqlCommand cmd1 = new MySqlCommand();
                         try
                         {
+                            conn.Open();
                             cmd1.Connection = conn;
                             cmd1.Parameters.Clear();
                             cmd1.CommandText = "INSERT INTO dbbari.speisekarte VALUES (NULL, @ArtikelNr , @Bezeichnung, @Zusatz, @VerkaufPreis, @MwSt, @pfandvar)";
@@ -297,60 +201,49 @@ namespace Restaurante
 
                             cmd1.ExecuteNonQuery();
                             MessageBox.Show("Artikel Eingefügt");
+                            
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);
                         }
+                        conn.Close();
+
                     }
                 }
-                try
-                {
-                    conn.Close();
-                    PerformListFill();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.Message);
-                }
+                reader.Close();
+                rData.closeReadConnection();
+                PerformListFill();
+                
             }
         }
 
-        private void PerformDataFill()
+        private void PerformDataFill(ref MySqlDataReader reader)
         {
             myClearForm();
-            recordNr = Convert.ToInt32(rdr[0].ToString());
-            tbArtikel.Text = rdr["ArtikelNr"].ToString();
-            tbBezeichnung.Text = rdr["Bezeichnung"].ToString();
-            tbMwSt.Text = rdr["Mwst"].ToString();
-            tbZusatz.Text = rdr["zusatz"].ToString();
-            tbVerkaufPreis.Text = rdr["VerkaufPreis"].ToString();
+            recordNr = Convert.ToInt32(reader[0].ToString());
+            tbArtikel.Text = reader["ArtikelNr"].ToString();
+            tbBezeichnung.Text = reader["Bezeichnung"].ToString();
+            tbMwSt.Text = reader["Mwst"].ToString();
+            tbZusatz.Text = reader["zusatz"].ToString();
+            tbVerkaufPreis.Text = reader["VerkaufPreis"].ToString();
         }
 
         private void PerformListFill()
         {
-            string sql;
-            sql = "SELECT * From dbbari.Speisekarte ";
-            conn.Open();
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("Speisekarte");
             lvArtikel.Items.Clear();
-            cmd = new MySqlCommand(sql, conn);
-            try
+           
+            if (reader.HasRows)
             {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.HasRows)
-            {
-                while (rdr.Read())
+                while (reader.Read())
                 {
                     try
                     {
-                        ListViewItem item = new ListViewItem(rdr["ArtikelNr"].ToString());
-                        item.SubItems.Add(rdr["Bezeichnung"].ToString());
-                        item.SubItems.Add(rdr["Verkaufpreis"].ToString());
+                        ListViewItem item = new ListViewItem(reader["ArtikelNr"].ToString());
+                        item.SubItems.Add(reader["Bezeichnung"].ToString());
+                        item.SubItems.Add(reader["Verkaufpreis"].ToString());
                         lvArtikel.Items.Add(item);
                     }
                     catch (Exception ex)
@@ -359,15 +252,8 @@ namespace Restaurante
                     }
                 }
             }
-            try
-            {
-                rdr.Close();
-                conn.Close();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
+            reader.Close();
+            rData.closeReadConnection();
             lvArtikel.Visible = true;
         }
 
@@ -402,35 +288,17 @@ namespace Restaurante
 
         private void lvArtikel_MouseDoubleClick(object sender, EventArgs e)
         {
-            string sql;
-            int lstIndex;
-            conn.Open();
-            lstIndex = Convert.ToInt32(lvArtikel.SelectedIndices[0].ToString());
-            sql = "SELECT * FROM dbbari.speisekarte Where ArtikelNr='" + lvArtikel.Items[lstIndex].Text.Trim() + "';";
-            cmd = new MySqlCommand(sql, conn);
+            int lstIndex = Convert.ToInt32(lvArtikel.SelectedIndices[0].ToString());
+            rData.openReadConnection();
+            MySqlDataReader reader = rData.getDataReader("speisekarte", "ArtikelNr", lvArtikel.Items[lstIndex].Text.Trim());
+            if (reader.Read())
+            {
+                recordNr = Convert.ToInt32(reader[0].ToString());
+                PerformDataFill(ref reader);
+            }
+            reader.Close();
+            rData.closeReadConnection();
 
-            try
-            {
-                rdr = cmd.ExecuteReader();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.ToString());
-            }
-            if (rdr.Read())
-            {
-                recordNr = Convert.ToInt32(rdr[0].ToString());
-                PerformDataFill();
-                try
-                {
-                    rdr.Close();
-                    conn.Close();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString());
-                }
-            }
         }
 
         private void lvArtikel_SelectedIndexChanged(object sender, EventArgs e)
