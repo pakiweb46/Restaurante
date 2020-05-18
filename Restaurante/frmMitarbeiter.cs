@@ -169,7 +169,7 @@ namespace Restaurante
                     else
                     {
                         try
-                        {                           
+                        {
                             string[] values = {  txtMitarbeiterName.Text.Trim(),
                                                 tbStraße.Text.Trim(),
                                                 txtStrNo.Text.Trim(),

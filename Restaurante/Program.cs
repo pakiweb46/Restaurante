@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Globalization;
 
 namespace Restaurante
 {
@@ -44,7 +43,7 @@ namespace Restaurante
         public const string LINE2_TELE_B = " Tel. : 0381 21055633";
         public const string LINE3_TELE2_B = "";
         public const string LINE4_OPENTIME_B = "";
-       
+
         private enum KUNDENDATEN
         {//to delete
             idKundendaten,

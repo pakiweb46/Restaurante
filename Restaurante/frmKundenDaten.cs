@@ -141,7 +141,6 @@ namespace Restaurante
                         {
                             MessageBox.Show(ex.Message);
                         }
-                     
                     }
                 }
                 reader.Close();

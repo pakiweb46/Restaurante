@@ -187,7 +187,7 @@ namespace Restaurante
             reader = command.ExecuteReader();
             if (reader.Read())
             {
-                if( reader[0].ToString().Length>0 )
+                if (reader[0].ToString().Length > 0)
                     max = Convert.ToInt32(reader[0].ToString());
             }
             closeReadConnection();
@@ -222,7 +222,7 @@ namespace Restaurante
             return true;
         }
 
-        public int addData(string Table, string[] values, bool Null=true)
+        public int addData(string Table, string[] values, bool Null = true)
         {
             updateConnection.Open();
             command = new MySqlCommand();
@@ -234,7 +234,7 @@ namespace Restaurante
             }
             for (int i = 0; i < values.Length; i++)
             {
-                sql += "'"+values[i] + "',";
+                sql += "'" + values[i] + "',";
             }
             sql = sql.Substring(0, sql.Length - 1) + "); ";
             command.CommandText = sql;

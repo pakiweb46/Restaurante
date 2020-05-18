@@ -24,6 +24,7 @@ namespace Restaurante
 
         //ob kundendaten sind vollständig
         private RestauranteData rData;
+
         private IFormatProvider providerEn;
 
         public NeuAuftrag()
@@ -508,7 +509,7 @@ namespace Restaurante
                 }
                 else
                 {
-                  try
+                    try
                     {
                         string[] values = { tbTelefon.Text.Trim(),
                                              "Herrn",
@@ -796,9 +797,9 @@ namespace Restaurante
                 if (readerKunde.Read())
                 {
                     if (tbAnfahrt.Text != readerKunde["Anfahrtkosten"].ToString())
-                        rData.updateSingleData("kundendaten","Anfahrtkosten", tbAnfahrt.Text.Trim(),"idKundendaten", Knummer);
+                        rData.updateSingleData("kundendaten", "Anfahrtkosten", tbAnfahrt.Text.Trim(), "idKundendaten", Knummer);
                     if (tbName.Text != readerKunde["KundenName"].ToString())
-                        rData.updateSingleData("kundendaten", "KundenName", tbName.Text.Trim(), "idKundendaten",Knummer);
+                        rData.updateSingleData("kundendaten", "KundenName", tbName.Text.Trim(), "idKundendaten", Knummer);
                     if (tbOrt.Text != readerKunde["Ort"].ToString())
                         rData.updateSingleData("kundendaten", "Ort", tbOrt.Text.Trim(), "idKundendaten", Knummer);
                     if (tbPLZ.Text != readerKunde["PLZ"].ToString())

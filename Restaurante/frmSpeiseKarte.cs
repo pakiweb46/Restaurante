@@ -16,7 +16,6 @@ namespace Restaurante
         private RestauranteData rData;
         private IFormatProvider providerEn;
 
-
         public frmSpeiseKarte()
         {
             InitializeComponent();
@@ -183,7 +182,6 @@ namespace Restaurante
                     }
                     else
                     {
-                        
                         try
                         {
                             string pfandvar;
@@ -206,7 +204,6 @@ namespace Restaurante
                         {
                             MessageBox.Show(ex.Message);
                         }
-                        
                     }
                 }
                 reader.Close();

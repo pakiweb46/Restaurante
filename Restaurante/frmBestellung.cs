@@ -419,10 +419,10 @@ namespace Restaurante
         // new Bestell nummer
         private int getBestellNr(string datum)
         {
-            if ( rData.getMax("abbrechnung", "BestellNr", "datum", datum) < 1)
+            if (rData.getMax("abbrechnung", "BestellNr", "datum", datum) < 1)
                 return 1;
             else
-                return rData.getMax("abbrechnung", "BestellNr", "datum", datum)+1;
+                return rData.getMax("abbrechnung", "BestellNr", "datum", datum) + 1;
         }
 
         private int getBestellNr_online(string datum) // TODO:: The Function of getBestellNr Online ? is that ever used
@@ -430,7 +430,7 @@ namespace Restaurante
             if (rData.getMax("abbr", "BestellNr", "datum", datum) < 1)
                 return 1;
             else
-                return rData.getMax("abbrechnung", "BestellNr", "datum", datum)+1;
+                return rData.getMax("abbrechnung", "BestellNr", "datum", datum) + 1;
         }
 
         private bool getIsPrevioisArtiklePfand()
@@ -882,7 +882,7 @@ namespace Restaurante
                 else
                     tbGesamt.Text = tempVar.ToString();
                 valueremoved -= tempVar;
-                
+
                 //   tbTotalMwst.Text = (Convert.ToDouble(tbTotalMwst.Text) - tempMwst).ToString();
                 txtRabatt.Text = ((Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100).ToString();
                 txtDifference.Text = (Convert.ToDouble(tbGesamt.Text) - Convert.ToDouble(txtRabatt.Text)).ToString();
@@ -1034,7 +1034,7 @@ namespace Restaurante
                         else if (lvBestellung.Items[i].SubItems[0].Text == "-")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            string[] values = { idRech.ToString(), 
+                            string[] values = { idRech.ToString(),
                                                 lvBestellung.Items[i].SubItems[0].Text,
                                                 lvBestellung.Items[i].SubItems[1].Text,
                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3).ToString(providerEn),
@@ -1057,7 +1057,6 @@ namespace Restaurante
                         }
                         else
                         {
-                            
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
                             string[] values = { idRech.ToString(), lvBestellung.Items[i].SubItems[0].Text,
                                                 lvBestellung.Items[i].SubItems[1].Text,
@@ -1098,7 +1097,7 @@ namespace Restaurante
                         Fahrer = "Hausverkauf";
                     else
                         Fahrer = "Kein Fahrer";
-                    Double Rabatt = Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand) *Rabbatt / 100;
+                    Double Rabatt = Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand) * Rabbatt / 100;
                     string[] valuesTop = { System.DateTime.Now.ToShortDateString(),
                                         System.DateTime.Now.ToShortTimeString(),
                                         Convert.ToDouble(String.Format("{0:00.00}", txtDifference.Text)).ToString(providerEn),
@@ -1111,7 +1110,7 @@ namespace Restaurante
                                         BestellNr.ToString(providerEn)
                                         };
                     idRech = rData.addData("abbr", valuesTop);
-                    
+
                     // MessageBox.Show(idRech.ToString());
                     //TODO:: Alternative method of adding "zutaten may be a new data set for Extras and not that
                     // much hard coded + - Calculcation
@@ -1308,7 +1307,7 @@ namespace Restaurante
                         Speicher_Online();
 
                     int idRech;
-                    string Fahrer; 
+                    string Fahrer;
                     if (kundenreference == "0")
                         Fahrer = "Hausverkauf";
                     else
@@ -1325,7 +1324,7 @@ namespace Restaurante
                                         Math.Round(totalTax19, 3).ToString(providerEn),
                                         BestellNr.ToString(providerEn),
                                         };
-                    idRech= rData.addData("abbrechnung", valuesTop);
+                    idRech = rData.addData("abbrechnung", valuesTop);
 
                     // MessageBox.Show(idRech.ToString());
                     for (int i = 0; i < lvBestellung.Items.Count; i++)
