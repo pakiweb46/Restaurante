@@ -29,20 +29,20 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmAbrechnung));
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btnStorno = new System.Windows.Forms.Button();
+            this.btnJahresAbrechnung = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
+            this.btnMonatAbrechnung = new System.Windows.Forms.Button();
+            this.btnAbbruch = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this.dateTimePicker1 = new System.Windows.Forms.DateTimePicker();
             this.label3 = new System.Windows.Forms.Label();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.btnTagessicht = new System.Windows.Forms.Button();
+            this.btnUbersicht = new System.Windows.Forms.Button();
+            this.btnBerichte = new System.Windows.Forms.Button();
+            this.btnFAbrechnung = new System.Windows.Forms.Button();
             this.listView1 = new Restaurante.PrintableListView2();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -58,54 +58,54 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(845, 344);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(147, 51);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "Storno(F7)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnStorno.Location = new System.Drawing.Point(845, 344);
+            this.btnStorno.Name = "button1";
+            this.btnStorno.Size = new System.Drawing.Size(147, 51);
+            this.btnStorno.TabIndex = 1;
+            this.btnStorno.Text = "Storno(F7)";
+            this.btnStorno.UseVisualStyleBackColor = true;
+            this.btnStorno.Click += new System.EventHandler(this.btnStorno_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(845, 506);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(147, 51);
-            this.button2.TabIndex = 2;
-            this.button2.Text = "Jahres Abbrechnung";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnJahresAbrechnung.Location = new System.Drawing.Point(845, 506);
+            this.btnJahresAbrechnung.Name = "button2";
+            this.btnJahresAbrechnung.Size = new System.Drawing.Size(147, 51);
+            this.btnJahresAbrechnung.TabIndex = 2;
+            this.btnJahresAbrechnung.Text = "Jahres Abbrechnung";
+            this.btnJahresAbrechnung.UseVisualStyleBackColor = true;
+            this.btnJahresAbrechnung.Click += new System.EventHandler(this.btnJahresAbrechnung_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(849, 20);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(147, 51);
-            this.button3.TabIndex = 3;
-            this.button3.Text = "Drucken (F3)";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(849, 20);
+            this.btnDrucken.Name = "button3";
+            this.btnDrucken.Size = new System.Drawing.Size(147, 51);
+            this.btnDrucken.TabIndex = 3;
+            this.btnDrucken.Text = "Drucken (F3)";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(845, 425);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(147, 51);
-            this.button4.TabIndex = 4;
-            this.button4.Text = "Monats Abbrechnung";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnMonatAbrechnung.Location = new System.Drawing.Point(845, 425);
+            this.btnMonatAbrechnung.Name = "button4";
+            this.btnMonatAbrechnung.Size = new System.Drawing.Size(147, 51);
+            this.btnMonatAbrechnung.TabIndex = 4;
+            this.btnMonatAbrechnung.Text = "Monats Abbrechnung";
+            this.btnMonatAbrechnung.UseVisualStyleBackColor = true;
+            this.btnMonatAbrechnung.Click += new System.EventHandler(this.btnMonatAbrechnung_Click);
             // 
             // button5
             // 
-            this.button5.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.button5.Location = new System.Drawing.Point(845, 587);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(147, 51);
-            this.button5.TabIndex = 5;
-            this.button5.Text = "Abbruch (F4)";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btnAbbruch.Font = new System.Drawing.Font("Microsoft Sans Serif", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnAbbruch.Location = new System.Drawing.Point(845, 587);
+            this.btnAbbruch.Name = "button5";
+            this.btnAbbruch.Size = new System.Drawing.Size(147, 51);
+            this.btnAbbruch.TabIndex = 5;
+            this.btnAbbruch.Text = "Abbruch (F4)";
+            this.btnAbbruch.UseVisualStyleBackColor = true;
+            this.btnAbbruch.Click += new System.EventHandler(this.btnAbbruch_Click);
             // 
             // label1
             // 
@@ -156,43 +156,43 @@
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(849, 182);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(147, 51);
-            this.button6.TabIndex = 14;
-            this.button6.Text = "Tagesübersicht";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.btnTagessicht.Location = new System.Drawing.Point(849, 182);
+            this.btnTagessicht.Name = "button6";
+            this.btnTagessicht.Size = new System.Drawing.Size(147, 51);
+            this.btnTagessicht.TabIndex = 14;
+            this.btnTagessicht.Text = "Tagesübersicht";
+            this.btnTagessicht.UseVisualStyleBackColor = true;
+            this.btnTagessicht.Click += new System.EventHandler(this.btnTagessicht_Click);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(849, 101);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(147, 51);
-            this.button7.TabIndex = 15;
-            this.button7.Text = "Übersicht";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.btnUbersicht.Location = new System.Drawing.Point(849, 101);
+            this.btnUbersicht.Name = "button7";
+            this.btnUbersicht.Size = new System.Drawing.Size(147, 51);
+            this.btnUbersicht.TabIndex = 15;
+            this.btnUbersicht.Text = "Übersicht";
+            this.btnUbersicht.UseVisualStyleBackColor = true;
+            this.btnUbersicht.Click += new System.EventHandler(this.btnUbersicht_Click);
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(849, 263);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(147, 51);
-            this.button8.TabIndex = 16;
-            this.button8.Text = "Berichte";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.btnBerichte.Location = new System.Drawing.Point(849, 263);
+            this.btnBerichte.Name = "button8";
+            this.btnBerichte.Size = new System.Drawing.Size(147, 51);
+            this.btnBerichte.TabIndex = 16;
+            this.btnBerichte.Text = "Berichte";
+            this.btnBerichte.UseVisualStyleBackColor = true;
+            this.btnBerichte.Click += new System.EventHandler(this.btnBerichte_Click);
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(849, 655);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(147, 51);
-            this.button9.TabIndex = 17;
-            this.button9.Text = "Fahrer Abbrechnung";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.btnFAbrechnung.Location = new System.Drawing.Point(849, 655);
+            this.btnFAbrechnung.Name = "button9";
+            this.btnFAbrechnung.Size = new System.Drawing.Size(147, 51);
+            this.btnFAbrechnung.TabIndex = 17;
+            this.btnFAbrechnung.Text = "Fahrer Abbrechnung";
+            this.btnFAbrechnung.UseVisualStyleBackColor = true;
+            this.btnFAbrechnung.Click += new System.EventHandler(this.btnFAbrechnung_Click);
             // 
             // listView1
             // 
@@ -294,20 +294,20 @@
             this.ClientSize = new System.Drawing.Size(1008, 729);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
+            this.Controls.Add(this.btnFAbrechnung);
+            this.Controls.Add(this.btnBerichte);
+            this.Controls.Add(this.btnUbersicht);
+            this.Controls.Add(this.btnTagessicht);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.dateTimePicker1);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button5);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnAbbruch);
+            this.Controls.Add(this.btnMonatAbrechnung);
+            this.Controls.Add(this.btnDrucken);
+            this.Controls.Add(this.btnJahresAbrechnung);
+            this.Controls.Add(this.btnStorno);
             this.Controls.Add(this.listView1);
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -331,11 +331,11 @@
         private System.Windows.Forms.ColumnHeader columnHeader4;
         private System.Windows.Forms.ColumnHeader columnHeader5;
         private System.Windows.Forms.ColumnHeader columnHeader6;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnStorno;
+        private System.Windows.Forms.Button btnJahresAbrechnung;
+        private System.Windows.Forms.Button btnDrucken;
+        private System.Windows.Forms.Button btnMonatAbrechnung;
+        private System.Windows.Forms.Button btnAbbruch;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label2;
@@ -343,10 +343,10 @@
         //private System.EventHandler listView1_SelectedIndexChanged;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.ColumnHeader Fahrer;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button btnTagessicht;
+        private System.Windows.Forms.Button btnUbersicht;
+        private System.Windows.Forms.Button btnBerichte;
+        private System.Windows.Forms.Button btnFAbrechnung;
         private System.Windows.Forms.ColumnHeader Nr;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox2;

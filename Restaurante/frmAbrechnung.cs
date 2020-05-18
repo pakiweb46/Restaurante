@@ -77,7 +77,7 @@ namespace Restaurante
             rData = new RestauranteData();
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnAbbruch_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -287,15 +287,15 @@ namespace Restaurante
         {
             if (e.KeyCode == Keys.F7)
             {
-                button1.PerformClick();// Storno
+                btnStorno.PerformClick();// Storno
             }
             else if (e.KeyCode == Keys.F3)
             {
-                button3.PerformClick();//Drucken
+                btnDrucken.PerformClick();//Drucken
             }
             else if (e.KeyCode == Keys.F4)
             {
-                button5.PerformClick();// Abbruch
+                btnAbbruch.PerformClick();// Abbruch
             }
             else if (e.KeyCode == Keys.F9)
             {
@@ -322,43 +322,43 @@ namespace Restaurante
             return catchName;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnMonatAbrechnung_Click(object sender, EventArgs e)
         {
-            if (button4.FlatStyle == FlatStyle.Standard && Jahr == false)
+            if (btnMonatAbrechnung.FlatStyle == FlatStyle.Standard && Jahr == false)
             {
-                button4.FlatStyle = FlatStyle.Flat;
-                button4.BackColor = Color.LightGreen;
+                btnMonatAbrechnung.FlatStyle = FlatStyle.Flat;
+                btnMonatAbrechnung.BackColor = Color.LightGreen;
                 monat = true;
-                button6.Text = "Monatsübersicht";
+                btnTagessicht.Text = "Monatsübersicht";
                 PerformListFill(dateTimePicker1.Value.Month.ToString(), dateTimePicker1.Value.Year.ToString());
             }
             else if (monat)
             {
                 monat = false;
                 PerformListFill(dateTimePicker1.Value.ToShortDateString());
-                button6.Text = "Tagesübersicht";
-                button4.FlatStyle = FlatStyle.Standard;
-                button4.UseVisualStyleBackColor = true;
+                btnTagessicht.Text = "Tagesübersicht";
+                btnMonatAbrechnung.FlatStyle = FlatStyle.Standard;
+                btnMonatAbrechnung.UseVisualStyleBackColor = true;
             }
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnJahresAbrechnung_Click(object sender, EventArgs e)
         {
-            if (button2.FlatStyle == FlatStyle.Standard && monat == false)
+            if (btnJahresAbrechnung.FlatStyle == FlatStyle.Standard && monat == false)
             {
-                button2.FlatStyle = FlatStyle.Flat;
-                button2.BackColor = Color.LightGreen;
+                btnJahresAbrechnung.FlatStyle = FlatStyle.Flat;
+                btnJahresAbrechnung.BackColor = Color.LightGreen;
                 Jahr = true;
-                button6.Text = "Jahresübersicht";
+                btnTagessicht.Text = "Jahresübersicht";
                 PerformListFill(Convert.ToInt32(dateTimePicker1.Value.Year.ToString()));
             }
             else if (Jahr)
             {
                 Jahr = false;
                 PerformListFill(dateTimePicker1.Value.ToShortDateString());
-                button6.Text = "Tagesübersicht";
-                button2.FlatStyle = FlatStyle.Standard;
-                button2.UseVisualStyleBackColor = true;
+                btnTagessicht.Text = "Tagesübersicht";
+                btnJahresAbrechnung.FlatStyle = FlatStyle.Standard;
+                btnJahresAbrechnung.UseVisualStyleBackColor = true;
             }
         }
 
@@ -420,7 +420,7 @@ namespace Restaurante
         {
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnDrucken_Click(object sender, EventArgs e)
         {
             lvObj = new PrintListView(listView1);
             lvObj.TitleHeadFont = new Font("Arial", 14, FontStyle.Bold);
@@ -455,7 +455,7 @@ namespace Restaurante
         {
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnStorno_Click(object sender, EventArgs e)
         {
             DialogResult result;
             result = MessageBox.Show("Sind sie sicher dass Sie möchten Stornieren daten hier gelöscht sind nicht wiederufbar ", "Vorsicht", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -497,7 +497,7 @@ namespace Restaurante
             }
         }
 
-        private void button6_Click(object sender, EventArgs e)// Tages übersicht
+        private void btnTagessicht_Click(object sender, EventArgs e)// Tages übersicht
 
         {
             PrintTagesUebersicht Tobj = new PrintTagesUebersicht("Tagesübersicht");
@@ -519,7 +519,7 @@ namespace Restaurante
             Tobj.PrintDocument();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void btnUbersicht_Click(object sender, EventArgs e)
         {
             objChooseView = new chooseView();
             objChooseView.ShowDialog();
@@ -598,13 +598,13 @@ namespace Restaurante
         {
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void btnBerichte_Click(object sender, EventArgs e)
         {
             dateSelection frmdate = new dateSelection(dateTimePicker1.Value, dateTimePicker1.Value.AddDays(-1 * (dateTimePicker1.Value.Day - 1)));
             frmdate.ShowDialog();
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void btnFAbrechnung_Click(object sender, EventArgs e)
         {
             chooseView objChooseView = new chooseView();
             objChooseView.ShowDialog();
