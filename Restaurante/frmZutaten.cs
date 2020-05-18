@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Globalization;
 using System.Windows.Forms;
 
 //TODO:: NEXT Previous doesnt function
@@ -12,11 +13,12 @@ namespace Restaurante
         private MySqlConnection conn = new MySqlConnection(connStr);
         private MySqlCommand cmd;
         private RestauranteData rData;
-
+        private IFormatProvider providerEn;
         public frmZutaten()
         {
             InitializeComponent();
             rData = new RestauranteData();
+            providerEn = CultureInfo.CreateSpecificCulture("en-GB");
         }
 
         private void frmZutaten_Load(object sender, EventArgs e)
@@ -172,18 +174,13 @@ namespace Restaurante
                     }
                     else
                     {
-                        MySqlCommand cmd1 = new MySqlCommand();
                         try
                         {
-                            conn.Open();
-                            cmd1.Connection = conn;
-                            cmd1.Parameters.Clear();
-                            cmd1.CommandText = "INSERT INTO dbbari.Zutaten VALUES (NULL,  @Bezeichnung, @VerkaufPreis, @MwSt)";
-                            cmd1.Prepare();
-                            cmd1.Parameters.AddWithValue("Bezeichnung", tbBezeichnung.Text.Trim());
-                            cmd1.Parameters.AddWithValue("VerkaufPreis", Convert.ToDouble(tbVerkaufPreis.Text.Trim()));
-                            cmd1.Parameters.AddWithValue("MwSt", Convert.ToDouble(tbMwSt.Text.Trim()));
-                            cmd1.ExecuteNonQuery();
+                            string[] values = { tbBezeichnung.Text.Trim(),
+                                                Convert.ToDouble(tbVerkaufPreis.Text.Trim()).ToString(providerEn),
+                                                Convert.ToDouble(tbMwSt.Text.Trim()).ToString(providerEn)
+                                                };
+                            rData.addData("Zutaten", values);
                             MessageBox.Show("Zutat Eingefügt");
                         }
                         catch (Exception ex)

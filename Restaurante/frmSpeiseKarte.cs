@@ -1,5 +1,6 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
+using System.Globalization;
 using System.Windows.Forms;
 
 //TODO:: NEXT PREVIOUS NOT FUNCTIONING
@@ -13,11 +14,14 @@ namespace Restaurante
         private MySqlCommand cmd;
 
         private RestauranteData rData;
+        private IFormatProvider providerEn;
+
 
         public frmSpeiseKarte()
         {
             InitializeComponent();
             rData = new RestauranteData();
+            providerEn = CultureInfo.CreateSpecificCulture("en-GB");
         }
 
         private void frmSpeiseKarte_Load(object sender, EventArgs e)
@@ -179,32 +183,30 @@ namespace Restaurante
                     }
                     else
                     {
-                        MySqlCommand cmd1 = new MySqlCommand();
+                        
                         try
                         {
-                            conn.Open();
-                            cmd1.Connection = conn;
-                            cmd1.Parameters.Clear();
-                            cmd1.CommandText = "INSERT INTO dbbari.speisekarte VALUES (NULL, @ArtikelNr , @Bezeichnung, @Zusatz, @VerkaufPreis, @MwSt, @pfandvar)";
-                            cmd1.Prepare();
-                            cmd1.Parameters.AddWithValue("ArtikelNr", tbArtikel.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Bezeichnung", tbBezeichnung.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Zusatz", tbZusatz.Text.Trim());
-                            cmd1.Parameters.AddWithValue("VerkaufPreis", Convert.ToDouble(tbVerkaufPreis.Text.Trim()));
-                            cmd1.Parameters.AddWithValue("MwSt", Convert.ToDouble(tbMwSt.Text.Trim()));
+                            string pfandvar;
                             if (pfandBox.SelectedText != "")
-                                cmd1.Parameters.AddWithValue("pfandvar", pfandBox.SelectedText);
+                                pfandvar = pfandBox.SelectedText;
                             else
-                                cmd1.Parameters.AddWithValue("pfandvar", "OHNE");
+                                pfandvar = "OHNE";
 
-                            cmd1.ExecuteNonQuery();
+                            string[] values = { tbArtikel.Text.Trim(),
+                                                tbBezeichnung.Text.Trim(),
+                                                tbZusatz.Text.Trim(),
+                                                Convert.ToDouble(tbVerkaufPreis.Text.Trim()).ToString(providerEn),
+                                                Convert.ToDouble(tbMwSt.Text.Trim()).ToString(providerEn),
+                                                pfandvar
+                                                };
+                            rData.addData("speisekarte", values);
                             MessageBox.Show("Artikel Eingefügt");
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);
                         }
-                        conn.Close();
+                        
                     }
                 }
                 reader.Close();

@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Restaurante
@@ -28,6 +29,7 @@ namespace Restaurante
         private string selectedArtikleNo;
         private string selectedZutat;
         private double totalTax7, totalTax19, restmwst;
+        public IFormatProvider providerEn;
         // speichert die gesamt pfand.
 
         //s   private Speisekarte speise = new Speisekarte()
@@ -37,6 +39,7 @@ namespace Restaurante
         {
             InitializeComponent();
             rData = new RestauranteData();
+            providerEn = CultureInfo.CreateSpecificCulture("en-GB");
             this.kundenreference = kno;
             try
             {
@@ -264,23 +267,23 @@ namespace Restaurante
             Zettel_Drucken(); // Save and print the reciept
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnSpeichern_Click(object sender, EventArgs e)
         {
             BestellNr = getBestellNr(System.DateTime.Now.ToShortDateString());
             Speicher_Daten(); // Save the Data
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnLeeren_Click(object sender, EventArgs e)
         {
             myClearForm();
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnAbbruch_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void button5_Click(object sender, EventArgs e) // delete selected from the list
+        private void btnLoeschen_Click(object sender, EventArgs e) // delete selected from the list
         {
             ListView.SelectedListViewItemCollection items = lvBestellung.SelectedItems;
             foreach (ListViewItem item in items)
@@ -342,6 +345,7 @@ namespace Restaurante
 
         // check if artikle is grillpfanne or balldino artikel may be add data set to artikel to let
         // know to which shop it belongs
+        // TODO:: Andere logic verwenden
         private bool checkArtikel(string artikelText)
         {
             bool retValue;
@@ -380,15 +384,15 @@ namespace Restaurante
             }
             else if (e.KeyCode == Keys.F10)
             {
-                button2.PerformClick(); // Speichern
+                btnSpeichern.PerformClick(); // Speichern
             }
             else if (e.KeyCode == Keys.F4)
             {
-                button4.PerformClick();
+                btnAbbruch.PerformClick();
             }
             else if (e.KeyCode == Keys.F5)
             {
-                button3.PerformClick(); // Felder leeren
+                btnLeeren.PerformClick(); // Felder leeren
             }
         }
 
@@ -401,9 +405,7 @@ namespace Restaurante
             valremMwst = 0;
             valueadded = 0;
             gesamt_pfand = 0;
-            label5.Text = valueadded.ToString();
             valueremoved = 0;
-            label6.Text = valueremoved.ToString();
             tbTotalMwst.Text = String.Format("{0:0.00}", MwstAnfahrt);
             LoadOptionVariable();
             listView1.Enabled = false;
@@ -670,7 +672,7 @@ namespace Restaurante
             }
             else if (e.KeyCode == Keys.F7)
             {
-                button5.PerformClick();
+                btnLoeschen.PerformClick();
             }
         }
 
@@ -843,8 +845,6 @@ namespace Restaurante
                 val.SubItems.Add("1");
                 tbMwSt.Text = reader["Mwst"].ToString();
                 tempVar = Convert.ToDouble(reader["Preis"].ToString());
-
-                label6.Text = valueremoved.ToString();
                 val.SubItems.Add(tempVar.ToString());
                 val.SubItems.Add(tempVar.ToString());
 
@@ -882,7 +882,7 @@ namespace Restaurante
                 else
                     tbGesamt.Text = tempVar.ToString();
                 valueremoved -= tempVar;
-                label6.Text = valueremoved.ToString();
+                
                 //   tbTotalMwst.Text = (Convert.ToDouble(tbTotalMwst.Text) - tempMwst).ToString();
                 txtRabatt.Text = ((Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100).ToString();
                 txtDifference.Text = (Convert.ToDouble(tbGesamt.Text) - Convert.ToDouble(txtRabatt.Text)).ToString();
@@ -998,86 +998,74 @@ namespace Restaurante
                     cmd1.Connection = conn;
                     cmd2.Connection = conn;
                     cmd1.Parameters.Clear();
-
-                    cmd1.CommandText = "INSERT INTO dbbari.abbrechnung VALUES (NULL, @Datum , @Zeit, @RestBetrag, @Betrag, @Rabatt,  @idKundendaten,@Fahrer,@Mwst7,@Mwst19,@BestellNr)";
-                    cmd1.Prepare();
-                    cmd1.Parameters.AddWithValue("Datum", System.DateTime.Now.ToShortDateString());
-                    cmd1.Parameters.AddWithValue("Zeit", System.DateTime.Now.ToShortTimeString());
-                    cmd1.Parameters.AddWithValue("RestBetrag", Math.Round(Convert.ToDouble(txtDifference.Text), 3));
-                    cmd1.Parameters.AddWithValue("Betrag", Math.Round(Convert.ToDouble(tbGesamt.Text), 3));
-                    cmd1.Parameters.AddWithValue("Rabatt", (Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100); // Need to be given real Rabatt
-                    cmd1.Parameters.AddWithValue("idKundendaten", kundenreference);
-                    cmd1.Parameters.AddWithValue("Mwst7", Math.Round(totalTax7, 3));
-                    cmd1.Parameters.AddWithValue("Mwst19", Math.Round(totalTax19, 3));
-                    cmd1.Parameters.AddWithValue("BestellNr", BestellNr);
+                    string Fahrer;
                     if (kundenreference == "0")
-                        cmd1.Parameters.AddWithValue("Fahrer", "Hausverkauf");
+                        Fahrer = "Hausverkauf";
                     else
-                        cmd1.Parameters.AddWithValue("Fahrer", "Kein Fahrer");
-
-                    cmd1.ExecuteNonQuery();
-
-                    cmd1.CommandText = "select last_insert_id()";
-                    idRech = Convert.ToInt32(cmd1.ExecuteScalar());
+                        Fahrer = "Kein Fahrer";
+                    Double Rabatt = (Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100;
+                    string[] valuesTop = { System.DateTime.Now.ToShortDateString(),
+                                        System.DateTime.Now.ToShortTimeString(),
+                                        Convert.ToDouble(String.Format("{0:00.00}", txtDifference.Text)).ToString(providerEn),
+                                        Convert.ToDouble(String.Format("{0:00.00}", tbGesamt.Text)).ToString(providerEn),
+                                        Rabatt.ToString(providerEn),
+                                        kundenreference,
+                                        Fahrer,
+                                        Math.Round(totalTax7, 3).ToString(providerEn),
+                                        Math.Round(totalTax19, 3).ToString(providerEn),
+                                        BestellNr.ToString(providerEn)
+                                        };
+                    idRech = rData.addData("abbrechnung", valuesTop);
                     // MessageBox.Show(idRech.ToString());
                     for (int i = 0; i < lvBestellung.Items.Count; i++)
                     {
                         if (lvBestellung.Items[i].SubItems[0].Text == "+")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3).ToString(providerEn),
+                                                lvBestellung.Items[i].SubItems[2].Text,
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                         }
                         else if (lvBestellung.Items[i].SubItems[0].Text == "-")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(), 
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3).ToString(providerEn),
+                                                lvBestellung.Items[i].SubItems[2].Text,
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                         }
                         else if (lvBestellung.Items[i].SubItems[0].Text == "+-")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", 0);
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3).ToString(providerEn),
+                                                "0",
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                         }
                         else
                         {
+                            
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Convert.ToDouble(String.Format("{0:00.00}", lvBestellung.Items[i].SubItems[5].Text)));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(), lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3).ToString(providerEn),
+                                                lvBestellung.Items[i].SubItems[2].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text),3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                         }
                     }
 
@@ -1105,111 +1093,77 @@ namespace Restaurante
                 try
                 {
                     int idRech;
-                    MySqlCommand cmd1 = new MySqlCommand();
-                    MySqlCommand cmd2 = new MySqlCommand();
-                    cmd1.Connection = conn;
-                    cmd2.Connection = conn;
-                    cmd1.Parameters.Clear();
-
-                    cmd1.CommandText = "INSERT INTO dbbari.abbr VALUES (NULL, @Datum , @Zeit, @RestBetrag, @Betrag, @Rabatt,  @idKundendaten,@Fahrer,@Mwst7,@Mwst19,@BestellNr)";
-                    cmd1.Prepare();
-                    cmd1.Parameters.AddWithValue("Datum", System.DateTime.Now.ToShortDateString());
-                    cmd1.Parameters.AddWithValue("Zeit", System.DateTime.Now.ToShortTimeString());
-                    cmd1.Parameters.AddWithValue("RestBetrag", Math.Round(Convert.ToDouble(txtDifference.Text), 3));
-                    cmd1.Parameters.AddWithValue("Betrag", Math.Round(Convert.ToDouble(tbGesamt.Text), 3));
-                    cmd1.Parameters.AddWithValue("Rabatt", (Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100); // Need to be given real Rabatt
-                    cmd1.Parameters.AddWithValue("idKundendaten", kundenreference);
-                    cmd1.Parameters.AddWithValue("Mwst7", Math.Round(totalTax7, 3));
-                    cmd1.Parameters.AddWithValue("Mwst19", Math.Round(totalTax19, 3));
-                    cmd1.Parameters.AddWithValue("BestellNr", BestNr);
-                    if (kundenreference == "0")  //TODO:: No need to hardcode this stuff unsure if it is used
-                        cmd1.Parameters.AddWithValue("Fahrer", "Hausverkauf");
+                    string Fahrer;
+                    if (kundenreference == "0")
+                        Fahrer = "Hausverkauf";
                     else
-                        cmd1.Parameters.AddWithValue("Fahrer", "Kein Fahrer");
-
-                    cmd1.ExecuteNonQuery();
-
-                    cmd1.CommandText = "select last_insert_id()";
-                    idRech = Convert.ToInt32(cmd1.ExecuteScalar());
+                        Fahrer = "Kein Fahrer";
+                    Double Rabatt = Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand) *Rabbatt / 100;
+                    string[] valuesTop = { System.DateTime.Now.ToShortDateString(),
+                                        System.DateTime.Now.ToShortTimeString(),
+                                        Convert.ToDouble(String.Format("{0:00.00}", txtDifference.Text)).ToString(providerEn),
+                                        Convert.ToDouble(String.Format("{0:00.00}", tbGesamt.Text)).ToString(providerEn),
+                                        Rabatt.ToString(providerEn),
+                                        kundenreference,
+                                        Fahrer,
+                                        Math.Round(totalTax7, 3).ToString(providerEn),
+                                        Math.Round(totalTax19, 3).ToString(providerEn),
+                                        BestellNr.ToString(providerEn)
+                                        };
+                    idRech = rData.addData("abbr", valuesTop);
+                    
                     // MessageBox.Show(idRech.ToString());
                     //TODO:: Alternative method of adding "zutaten may be a new data set for Extras and not that
                     // much hard coded + - Calculcation
                     for (int i = 0; i < lvBestellung.Items.Count; i++)
                     {
-                        /*    if (lvBestellung.Items[i].SubItems[0].Text == "+" || lvBestellung.Items[i].SubItems[0].Text == "-")
-                            {
-                                //Skip this
-                                //MessageBox.Show(lvBestellung.Items[i].SubItems[1].Text);
-                            }
-                            else
-                            {
-                                cmd2.CommandText = "INSERT INTO dbbari.Bestell VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                                cmd2.Prepare();
-                                cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                                cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                                cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                                cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text), 3));
-                                cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                                cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                                cmd2.ExecuteNonQuery();
-                                cmd2.Parameters.Clear();
-                                MessageBox.Show("Saving online"+idRech);
-                            }*/
                         if (lvBestellung.Items[i].SubItems[0].Text == "+")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestell VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3).ToString(providerEn),
+                                                Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text).ToString(),
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestell", values);
                         }
                         else if (lvBestellung.Items[i].SubItems[0].Text == "-")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestell VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3).ToString(providerEn),
+                                                Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text).ToString(),
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestell", values);
                         }
                         else if (lvBestellung.Items[i].SubItems[0].Text == "+-")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestell VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", 0);
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3).ToString(providerEn),
+                                                "0",
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestell", values);
                         }
                         else
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestell VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Convert.ToDouble(String.Format("{0:00.00}", lvBestellung.Items[i].SubItems[5].Text)));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3).ToString(providerEn),
+                                                Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text).ToString(),
+                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestell", values);
                         }
                     }
 
@@ -1354,48 +1308,39 @@ namespace Restaurante
                         Speicher_Online();
 
                     int idRech;
-                    MySqlCommand cmd1 = new MySqlCommand();
-                    MySqlCommand cmd2 = new MySqlCommand();
-                    cmd1.Connection = conn;
-                    cmd2.Connection = conn;
-                    cmd1.Parameters.Clear();
-
-                    cmd1.CommandText = "INSERT INTO dbbari.abbrechnung VALUES (NULL, @Datum , @Zeit, @RestBetrag, @Betrag, @Rabatt,  @idKundendaten,@Fahrer,@Mwst7,@Mwst19,@BestellNr)";
-                    cmd1.Prepare();
-                    cmd1.Parameters.AddWithValue("Datum", System.DateTime.Now.ToShortDateString());
-                    cmd1.Parameters.AddWithValue("Zeit", System.DateTime.Now.ToShortTimeString());
-                    cmd1.Parameters.AddWithValue("RestBetrag", Convert.ToDouble(String.Format("{0:00.00}", txtDifference.Text)));
-                    cmd1.Parameters.AddWithValue("Betrag", Convert.ToDouble(String.Format("{0:00.00}", tbGesamt.Text))); // Gesamt inclusive Anfahrtkosten
-                    cmd1.Parameters.AddWithValue("Rabatt", (Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100); // Need to be given real Rabatt in Zahlen nicht in %
-                    cmd1.Parameters.AddWithValue("idKundendaten", kundenreference);
-                    cmd1.Parameters.AddWithValue("Mwst7", Math.Round(totalTax7, 3));
-                    cmd1.Parameters.AddWithValue("Mwst19", Math.Round(totalTax19, 3));
-                    cmd1.Parameters.AddWithValue("BestellNr", BestellNr);
+                    string Fahrer; 
                     if (kundenreference == "0")
-                        cmd1.Parameters.AddWithValue("Fahrer", "Hausverkauf");
+                        Fahrer = "Hausverkauf";
                     else
-                        cmd1.Parameters.AddWithValue("Fahrer", "Kein Fahrer");
+                        Fahrer = "Kein Fahrer";
+                    Double Rabatt = Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand) * Rabbatt / 100;
+                    string[] valuesTop = { System.DateTime.Now.ToShortDateString(),
+                                        System.DateTime.Now.ToShortTimeString(),
+                                        Convert.ToDouble(String.Format("{0:00.00}", txtDifference.Text)).ToString(providerEn),
+                                        Convert.ToDouble(String.Format("{0:00.00}", tbGesamt.Text)).ToString(providerEn),
+                                        Rabatt.ToString(providerEn),
+                                        kundenreference,
+                                        Fahrer,
+                                        Math.Round(totalTax7, 3).ToString(providerEn),
+                                        Math.Round(totalTax19, 3).ToString(providerEn),
+                                        BestellNr.ToString(providerEn),
+                                        };
+                    idRech= rData.addData("abbrechnung", valuesTop);
 
-                    cmd1.ExecuteNonQuery();
-
-                    cmd1.CommandText = "select last_insert_id()";
-                    idRech = Convert.ToInt32(cmd1.ExecuteScalar());
                     // MessageBox.Show(idRech.ToString());
                     for (int i = 0; i < lvBestellung.Items.Count; i++)
                     {
                         if (lvBestellung.Items[i].SubItems[0].Text == "+")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3).ToString(providerEn),
+                                                lvBestellung.Items[i].SubItems[2].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                             // add artikle to printReciept obj
                             Artikel_Nummer[i] = "+";
                             Artikel_Text[i] = lvBestellung.Items[i].SubItems[0].Text + " " + lvBestellung.Items[i].SubItems[1].Text;
@@ -1405,16 +1350,14 @@ namespace Restaurante
                         else if (lvBestellung.Items[i].SubItems[0].Text == "-")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3).ToString(providerEn),
+                                                lvBestellung.Items[i].SubItems[2].Text,
+                                               Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                             // add artikle to printReciept obj
                             Artikel_Nummer[i] = "-";
                             Artikel_Text[i] = lvBestellung.Items[i].SubItems[0].Text + " " + lvBestellung.Items[i].SubItems[1].Text;
@@ -1424,16 +1367,14 @@ namespace Restaurante
                         else if (lvBestellung.Items[i].SubItems[0].Text == "+-")
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", 0);
-                            cmd2.Parameters.AddWithValue("MwSt", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[4].Text) - tempRabatt, 3).ToString(providerEn),
+                                                "0",
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text), 3).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                             // add artikle to printReciept obj
                             Artikel_Nummer[i] = "+-";
                             Artikel_Text[i] = lvBestellung.Items[i].SubItems[0].Text + " " + lvBestellung.Items[i].SubItems[1].Text;
@@ -1443,16 +1384,14 @@ namespace Restaurante
                         else
                         {
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
-                            cmd2.CommandText = "INSERT INTO Bestellung VALUES (NULL, @RechnungNr, @ArtikelNr, @Bezeichnung, @VerkaufPreis, @Menge, @MwSt)";
-                            cmd2.Prepare();
-                            cmd2.Parameters.AddWithValue("RechnungNr", idRech);
-                            cmd2.Parameters.AddWithValue("ArtikelNr", lvBestellung.Items[i].SubItems[0].Text);
-                            cmd2.Parameters.AddWithValue("Bezeichnung", lvBestellung.Items[i].SubItems[1].Text);
-                            cmd2.Parameters.AddWithValue("VerkaufPreis", Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3));
-                            cmd2.Parameters.AddWithValue("Menge", Convert.ToInt32(lvBestellung.Items[i].SubItems[2].Text));
-                            cmd2.Parameters.AddWithValue("MwSt", Convert.ToDouble(String.Format("{0:00.00}", lvBestellung.Items[i].SubItems[5].Text)));
-                            cmd2.ExecuteNonQuery();
-                            cmd2.Parameters.Clear();
+                            string[] values = { idRech.ToString(),
+                                                lvBestellung.Items[i].SubItems[0].Text,
+                                                lvBestellung.Items[i].SubItems[1].Text,
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3).ToString(providerEn),
+                                                lvBestellung.Items[i].SubItems[2].Text,
+                                                String.Format("{0:00.00}", lvBestellung.Items[i].SubItems[5].Text).ToString(providerEn)
+                                                };
+                            rData.addData("Bestellung", values);
                             // add artikle to printReciept obj
                             Artikel_Nummer[i] = lvBestellung.Items[i].SubItems[0].Text;
                             Artikel_Text[i] = lvBestellung.Items[i].SubItems[1].Text;

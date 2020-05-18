@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Restaurante
@@ -23,11 +24,13 @@ namespace Restaurante
 
         //ob kundendaten sind vollständig
         private RestauranteData rData;
+        private IFormatProvider providerEn;
 
         public NeuAuftrag()
         {
             InitializeComponent();
             rData = new RestauranteData();
+            providerEn = CultureInfo.CreateSpecificCulture("en-GB");
             recordNr = 0;
         }
 
@@ -505,28 +508,20 @@ namespace Restaurante
                 }
                 else
                 {
-                    MySqlCommand cmd1 = new MySqlCommand();
-
-                    try
+                  try
                     {
-                        cmd1.Connection = conn;
-                        cmd1.Parameters.Clear();
-                        cmd1.CommandText = "INSERT INTO dbbari.kundendaten VALUES (NULL, @KundenNr , @Anrede, @KundenName, @Strasse, @StrNo,  @zusatz, @PLZ, @Ort, @Anfahrtkosten, @Rabatt)";
-                        cmd1.Prepare();
-                        cmd1.Parameters.AddWithValue("KundenNr", tbTelefon.Text.Trim());
-                        cmd1.Parameters.AddWithValue("Anrede", "Herrn");
-                        cmd1.Parameters.AddWithValue("KundenName", tbName.Text.Trim());
-                        cmd1.Parameters.AddWithValue("Strasse", tbStrasse.Text.Trim());
-                        cmd1.Parameters.AddWithValue("StrNo", tbStrNo.Text.Trim());
-                        cmd1.Parameters.AddWithValue("zusatz", tbZusatz.Text.Trim());
-                        cmd1.Parameters.AddWithValue("PLZ", Convert.ToInt64(tbPLZ.Text.Trim()));
-                        cmd1.Parameters.AddWithValue("Ort", tbOrt.Text.Trim());
-                        cmd1.Parameters.AddWithValue("Anfahrtkosten", Convert.ToDouble(tbAnfahrt.Text.Trim()));
-                        cmd1.Parameters.AddWithValue("Rabatt", Convert.ToDouble(tbRabatt.Text.Trim()));
-
-                        cmd1.ExecuteNonQuery();
-                        cmd1.CommandText = "select last_insert_id()";
-                        kundenreference = Convert.ToInt32(cmd1.ExecuteScalar()).ToString();
+                        string[] values = { tbTelefon.Text.Trim(),
+                                             "Herrn",
+                                             tbName.Text.Trim(),
+                                             tbStrasse.Text.Trim(),
+                                             tbStrNo.Text.Trim(),
+                                             tbZusatz.Text.Trim(),
+                                             tbPLZ.Text.Trim(),
+                                             tbOrt.Text.Trim(),
+                                             Convert.ToDouble(tbAnfahrt.Text.Trim()).ToString(providerEn),
+                                             Convert.ToDouble(tbRabatt.Text.Trim()).ToString(providerEn)
+                                                };
+                        kundenreference = rData.addData("kundendaten", values).ToString();
                         NeuKunde = DialogResult.No;
                         MessageBox.Show("Neu daten sind gespeichert");
                     }

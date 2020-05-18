@@ -41,7 +41,7 @@
             // 
             // btnKundenDaten
             // 
-            this.btnKundenDaten.Location = new System.Drawing.Point(150, 12);
+            this.btnKundenDaten.Location = new System.Drawing.Point(24, 12);
             this.btnKundenDaten.Name = "btnKundenDaten";
             this.btnKundenDaten.Size = new System.Drawing.Size(336, 68);
             this.btnKundenDaten.TabIndex = 0;
@@ -51,7 +51,7 @@
             // 
             // btnSpeiseKarte
             // 
-            this.btnSpeiseKarte.Location = new System.Drawing.Point(150, 86);
+            this.btnSpeiseKarte.Location = new System.Drawing.Point(24, 89);
             this.btnSpeiseKarte.Name = "btnSpeiseKarte";
             this.btnSpeiseKarte.Size = new System.Drawing.Size(336, 68);
             this.btnSpeiseKarte.TabIndex = 1;
@@ -61,7 +61,7 @@
             // 
             // btnAuftragErfassen
             // 
-            this.btnAuftragErfassen.Location = new System.Drawing.Point(150, 160);
+            this.btnAuftragErfassen.Location = new System.Drawing.Point(24, 166);
             this.btnAuftragErfassen.Name = "btnAuftragErfassen";
             this.btnAuftragErfassen.Size = new System.Drawing.Size(336, 68);
             this.btnAuftragErfassen.TabIndex = 2;
@@ -71,7 +71,7 @@
             // 
             // btnTagesabrechnung
             // 
-            this.btnTagesabrechnung.Location = new System.Drawing.Point(150, 234);
+            this.btnTagesabrechnung.Location = new System.Drawing.Point(24, 243);
             this.btnTagesabrechnung.Name = "btnTagesabrechnung";
             this.btnTagesabrechnung.Size = new System.Drawing.Size(336, 68);
             this.btnTagesabrechnung.TabIndex = 3;
@@ -81,7 +81,7 @@
             // 
             // btnMitarbeiter
             // 
-            this.btnMitarbeiter.Location = new System.Drawing.Point(150, 308);
+            this.btnMitarbeiter.Location = new System.Drawing.Point(24, 320);
             this.btnMitarbeiter.Name = "btnMitarbeiter";
             this.btnMitarbeiter.Size = new System.Drawing.Size(336, 68);
             this.btnMitarbeiter.TabIndex = 4;
@@ -91,7 +91,7 @@
             // 
             // btnSontiges
             // 
-            this.btnSontiges.Location = new System.Drawing.Point(150, 382);
+            this.btnSontiges.Location = new System.Drawing.Point(24, 397);
             this.btnSontiges.Name = "btnSontiges";
             this.btnSontiges.Size = new System.Drawing.Size(336, 68);
             this.btnSontiges.TabIndex = 5;
@@ -101,7 +101,7 @@
             // 
             // btnBeenden
             // 
-            this.btnBeenden.Location = new System.Drawing.Point(150, 553);
+            this.btnBeenden.Location = new System.Drawing.Point(24, 551);
             this.btnBeenden.Name = "btnBeenden";
             this.btnBeenden.Size = new System.Drawing.Size(336, 68);
             this.btnBeenden.TabIndex = 6;
@@ -111,7 +111,7 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(150, 467);
+            this.button1.Location = new System.Drawing.Point(24, 474);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(336, 68);
             this.button1.TabIndex = 7;
@@ -124,10 +124,10 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 20F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
-            this.ClientSize = new System.Drawing.Size(606, 661);
-            this.Controls.Add(this.button1);
+            this.ClientSize = new System.Drawing.Size(367, 625);
             this.Controls.Add(this.btnBeenden);
             this.Controls.Add(this.btnSontiges);
+            this.Controls.Add(this.button1);
             this.Controls.Add(this.btnMitarbeiter);
             this.Controls.Add(this.btnTagesabrechnung);
             this.Controls.Add(this.btnAuftragErfassen);

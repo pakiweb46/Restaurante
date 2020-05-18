@@ -1,6 +1,7 @@
 ﻿using MySql.Data.MySqlClient;
 using System;
 using System.Drawing;
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace Restaurante
@@ -19,11 +20,13 @@ namespace Restaurante
         public int recordNr, recordCount;
         private MySqlCommand cmd;
         private RestauranteData rData;
+        public IFormatProvider providerEn;
 
         public frmKundenDaten()
         {
             InitializeComponent();
             rData = new RestauranteData();
+            providerEn = CultureInfo.CreateSpecificCulture("en-GB");
             // initialize indexer
             recordNr = 0;
             recordCount = rData.getCount("kundendaten");
@@ -118,36 +121,27 @@ namespace Restaurante
                     }
                     else
                     {
-                        MySqlCommand cmd1 = new MySqlCommand();
-
                         try
                         {
-                            conn.Open();
-                            cmd1.Connection = conn;
-
-                            cmd1.Parameters.Clear();
-
-                            cmd1.CommandText = "INSERT INTO dbbari.kundendaten VALUES (NULL, @KundenNr , @Anrede, @KundenName, @Strasse, @StrNo,  @zusatz, @PLZ, @Ort,@Anfahrtkosten, @Rabatt)";
-                            cmd1.Prepare();
-                            cmd1.Parameters.AddWithValue("KundenNr", tbKundenNr.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Anrede", tbAnrede.Text.Trim());
-                            cmd1.Parameters.AddWithValue("KundenName", tbKundenName.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Strasse", tbStraße.Text.Trim());
-                            cmd1.Parameters.AddWithValue("StrNo", tbStrNo.Text.Trim());
-                            cmd1.Parameters.AddWithValue("zusatz", tbZusatz.Text.Trim());
-                            cmd1.Parameters.AddWithValue("PLZ", Convert.ToInt64(tbPLZ.Text.Trim()));
-                            cmd1.Parameters.AddWithValue("Ort", tbOrt.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Anfahrtkosten", Convert.ToDouble(tbAnfahrt.Text.Trim()));
-                            cmd1.Parameters.AddWithValue("Rabatt", Convert.ToDouble(tbRabatt.Text.Trim()));
-
-                            cmd1.ExecuteNonQuery();
+                            string[] values = { tbKundenNr.Text.Trim(),
+                                                tbAnrede.Text.Trim(),
+                                                tbKundenName.Text.Trim(),
+                                                tbStraße.Text.Trim(),
+                                                tbStrNo.Text.Trim(),
+                                                 tbZusatz.Text.Trim(),
+                                                 tbPLZ.Text.Trim(),
+                                                 tbOrt.Text.Trim(),
+                                                 Convert.ToDouble(tbAnfahrt.Text.Trim()).ToString(providerEn),
+                                                 Convert.ToDouble(tbRabatt.Text.Trim()).ToString(providerEn)
+                                                };
+                            rData.addData("kundendaten", values);
                             MessageBox.Show("Kundendaten sind gespeichert");
                         }
                         catch (Exception ex)
                         {
                             MessageBox.Show(ex.Message);
                         }
-                        conn.Close();
+                     
                     }
                 }
                 reader.Close();

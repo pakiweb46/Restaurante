@@ -75,10 +75,10 @@ namespace Restaurante
             recordNr = getMinId();
             tbStraße.AutoCompleteCustomSource = StrassenVonDatenBank();
             button3.Enabled = false;
-            comboBox1.Items.Add("Fahrer");
-            comboBox1.Items.Add("Pizza Bäcker");
-            comboBox1.Items.Add("Küchen Hilfe");
-            comboBox1.Items.Add("Reinigung");
+            cmbTatigkeit.Items.Add("Fahrer");
+            cmbTatigkeit.Items.Add("Pizza Bäcker");
+            cmbTatigkeit.Items.Add("Küchen Hilfe");
+            cmbTatigkeit.Items.Add("Reinigung");
         }
 
         private int getMinId()
@@ -133,10 +133,10 @@ namespace Restaurante
 
         private void button1_Click(object sender, EventArgs e)
         {
-            if (textBox3.Text != "") // Update Record
+            if (txtMitarbeiterName.Text != "") // Update Record
             {
                 rData.openReadConnection();
-                MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
+                MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", txtMitarbeiterName.Text.Trim());
 
                 if (reader.Read())
                 {
@@ -146,47 +146,40 @@ namespace Restaurante
                 }
                 else // Füge Neuen Record
                 {
-                    if (textBox3.Text == "") // Name
+                    if (txtMitarbeiterName.Text == "") // Name
                     {
                         MessageBox.Show("Bitte geben sie die Name");
-                        textBox3.Focus();
+                        txtMitarbeiterName.Focus();
                     }
                     else if (tbStraße.Text == "")
                     {
                         MessageBox.Show("Bitte wählen sie die Strasse");
                         tbStraße.Focus();
                     }
-                    else if (textBox8.Text == "") // Ort
+                    else if (txtOrt.Text == "") // Ort
                     {
                         MessageBox.Show("Bitte geben sie den Ort");
-                        textBox8.Focus();
+                        txtOrt.Focus();
                     }
-                    else if (textBox7.Text == "" || !IsInteger(textBox7.Text))
+                    else if (txtPLZ.Text == "" || !IsInteger(txtPLZ.Text))
                     {
                         MessageBox.Show("Post Leitzahl soll ein Nummer sein");
-                        textBox7.Focus();
+                        txtPLZ.Focus();
                     }
                     else
                     {
-                        conn.Open();
-                        MySqlCommand cmd1 = new MySqlCommand();
-
                         try
-                        {
-                            cmd1.Connection = conn;
-
-                            cmd1.CommandText = "INSERT INTO dbbari.mitarbeiter VALUES (NULL, @MitarbeiterName , @Strasse, @StrNo, @PLZ, @Ort, @Tatigkeit, @Adminrechte, @zusatz)";
-                            cmd1.Prepare();
-
-                            cmd1.Parameters.AddWithValue("MitarbeiterName", textBox3.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Strasse", tbStraße.Text.Trim());
-                            cmd1.Parameters.AddWithValue("StrNo", textBox5.Text.Trim());
-                            cmd1.Parameters.AddWithValue("zusatz", textBox6.Text.Trim());
-                            cmd1.Parameters.AddWithValue("PLZ", Convert.ToInt64(textBox7.Text.Trim()));
-                            cmd1.Parameters.AddWithValue("Ort", textBox8.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Tatigkeit", comboBox1.Text.Trim());
-                            cmd1.Parameters.AddWithValue("Adminrechte", Convert.ToInt32(getCheckBoxStatus()));
-                            cmd1.ExecuteNonQuery();
+                        {                           
+                            string[] values = {  txtMitarbeiterName.Text.Trim(),
+                                                tbStraße.Text.Trim(),
+                                                txtStrNo.Text.Trim(),
+                                                txtzusatz.Text.Trim(),
+                                                txtPLZ.Text.Trim(),
+                                                txtOrt.Text.Trim(),
+                                                cmbTatigkeit.Text.Trim(),
+                                                Convert.ToInt32(getCheckBoxStatus()).ToString()
+                                                };
+                            rData.addData("mitarbeiter", values);
                             MessageBox.Show("Mitarbeiter ist gespeichert");
                         }
                         catch (Exception ex)
@@ -212,23 +205,23 @@ namespace Restaurante
         private void PerformDataFill(ref MySqlDataReader reader)
         {
             myClearForm();
-            textBox3.Text = reader["MitarbeiterName"].ToString();
-            textBox8.Text = reader["ort"].ToString();
-            textBox7.Text = reader["PLZ"].ToString();
+            txtMitarbeiterName.Text = reader["MitarbeiterName"].ToString();
+            txtOrt.Text = reader["ort"].ToString();
+            txtPLZ.Text = reader["PLZ"].ToString();
             tbStraße.Text = reader["strasse"].ToString();
-            textBox5.Text = reader["StrNo"].ToString();
-            textBox6.Text = reader["zusatz"].ToString();
+            txtStrNo.Text = reader["StrNo"].ToString();
+            txtzusatz.Text = reader["zusatz"].ToString();
 
             button3.Enabled = true;
         }
 
         private void myClearForm()
         {
-            textBox3.Clear();
-            textBox5.Clear();
-            textBox6.Clear();
-            textBox7.Clear();
-            textBox8.Clear();
+            txtMitarbeiterName.Clear();
+            txtStrNo.Clear();
+            txtzusatz.Clear();
+            txtPLZ.Clear();
+            txtOrt.Clear();
             tbStraße.Clear();
             checkBox1.Checked = false;
         }
@@ -343,13 +336,13 @@ namespace Restaurante
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if (textBox3.Text != "")
+            if (txtMitarbeiterName.Text != "")
             {
-                int found = rData.getCount("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
+                int found = rData.getCount("mitarbeiter", "MitarbeiterName", txtMitarbeiterName.Text.Trim());
                 if (found == 1)
                 {
                     rData.openReadConnection();
-                    MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
+                    MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", txtMitarbeiterName.Text.Trim());
 
                     if (reader.Read())
                     {
@@ -364,7 +357,7 @@ namespace Restaurante
                     // Complete string match where more items have same name
                     listView1.Visible = true;
                     rData.openReadConnection();
-                    MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", textBox3.Text.Trim());
+                    MySqlDataReader reader = rData.getDataReader("mitarbeiter", "MitarbeiterName", txtMitarbeiterName.Text.Trim());
 
                     if (reader.HasRows)
                     {
@@ -383,7 +376,7 @@ namespace Restaurante
                 {
                     // not full matching found match String segments
                     rData.openReadConnection();
-                    MySqlDataReader reader = rData.searchDaten("mitarbeiter", "MitarbeiterName", "%" + textBox3.Text.Trim() + "%");
+                    MySqlDataReader reader = rData.searchDaten("mitarbeiter", "MitarbeiterName", "%" + txtMitarbeiterName.Text.Trim() + "%");
                     listView1.Visible = true;
                     if (reader.HasRows)
                     {

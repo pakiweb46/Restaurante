@@ -130,7 +130,8 @@ namespace Restaurante
             reader = command.ExecuteReader();
             if (reader.Read())
             {
-                min = Convert.ToInt32(reader[0].ToString());
+                if (reader[0].ToString().Length > 0)
+                    min = Convert.ToInt32(reader[0].ToString());
             }
             closeReadConnection();
             return min;
@@ -149,7 +150,8 @@ namespace Restaurante
             reader = command.ExecuteReader();
             if (reader.Read())
             {
-                min = Convert.ToInt32(reader[0].ToString());
+                if (reader[0].ToString().Length > 0)
+                    min = Convert.ToInt32(reader[0].ToString());
             }
             closeReadConnection();
             return min;
@@ -157,7 +159,7 @@ namespace Restaurante
 
         public int getMax(string Table, string parameter)
         {
-            int min = -1;
+            int max = -1;
             openReadConnection();
             string sql = "SELECT Max(" + parameter + ") FROM dbbari." + Table + ";";
             MySqlDataReader reader;
@@ -165,15 +167,16 @@ namespace Restaurante
             reader = command.ExecuteReader();
             if (reader.Read())
             {
-                min = Convert.ToInt32(reader[0].ToString());
+                if (reader[0].ToString().Length > 0)
+                    max = Convert.ToInt32(reader[0].ToString());
             }
             closeReadConnection();
-            return min;
+            return max;
         }
 
         public int getMax(string Table, string MaxPara, string para, string val, string op = "=")
         {
-            int min = -1;
+            int max = -1;
             string singleQoute = "";
             if (op == "=")
                 singleQoute = "'";
@@ -184,10 +187,11 @@ namespace Restaurante
             reader = command.ExecuteReader();
             if (reader.Read())
             {
-                min = Convert.ToInt32(reader[0].ToString());
+                if( reader[0].ToString().Length>0 )
+                    max = Convert.ToInt32(reader[0].ToString());
             }
             closeReadConnection();
-            return min;
+            return max;
         }
 
         public bool updateSingleData(string Table, string variable, string value, string parameter, string searchValue)
@@ -216,6 +220,29 @@ namespace Restaurante
             command.ExecuteNonQuery();
             updateConnection.Close();
             return true;
+        }
+
+        public int addData(string Table, string[] values, bool Null=true)
+        {
+            updateConnection.Open();
+            command = new MySqlCommand();
+            command.Connection = updateConnection;
+            string sql = "INSERT INTO dbbari." + Table + " VALUES (";
+            if (Null)
+            {
+                sql += "NULL, ";
+            }
+            for (int i = 0; i < values.Length; i++)
+            {
+                sql += "'"+values[i] + "',";
+            }
+            sql = sql.Substring(0, sql.Length - 1) + "); ";
+            command.CommandText = sql;
+            command.ExecuteNonQuery();
+            command.CommandText = "select last_insert_id()";
+            int id = Convert.ToInt32(command.ExecuteScalar());
+            updateConnection.Close();
+            return id;
         }
     }
 }
