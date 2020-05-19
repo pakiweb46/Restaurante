@@ -37,7 +37,7 @@
             this.btnfldLeeren = new System.Windows.Forms.Button();
             this.btnSpeichern = new System.Windows.Forms.Button();
             this.btnWeiter = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
+            this.chkGooglePlan = new System.Windows.Forms.CheckBox();
             this.tbZusatz = new System.Windows.Forms.TextBox();
             this.tbOrt = new System.Windows.Forms.TextBox();
             this.tbPLZ = new System.Windows.Forms.TextBox();
@@ -167,15 +167,15 @@
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(9, 5);
-            this.checkBox1.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(159, 24);
-            this.checkBox1.TabIndex = 47;
-            this.checkBox1.Text = "Show Google Plan";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
+            this.chkGooglePlan.AutoSize = true;
+            this.chkGooglePlan.Location = new System.Drawing.Point(9, 5);
+            this.chkGooglePlan.Margin = new System.Windows.Forms.Padding(4, 5, 4, 5);
+            this.chkGooglePlan.Name = "checkBox1";
+            this.chkGooglePlan.Size = new System.Drawing.Size(159, 24);
+            this.chkGooglePlan.TabIndex = 47;
+            this.chkGooglePlan.Text = "Show Google Plan";
+            this.chkGooglePlan.UseVisualStyleBackColor = true;
+            this.chkGooglePlan.CheckedChanged += new System.EventHandler(this.chkGooglePlan_CheckedChanged);
             // 
             // tbZusatz
             // 
@@ -513,7 +513,7 @@
             // 
             // panelGoogle
             // 
-            this.panelGoogle.Controls.Add(this.checkBox1);
+            this.panelGoogle.Controls.Add(this.chkGooglePlan);
             this.panelGoogle.Location = new System.Drawing.Point(427, 317);
             this.panelGoogle.Name = "panelGoogle";
             this.panelGoogle.Size = new System.Drawing.Size(172, 35);
@@ -611,7 +611,7 @@
         private System.Windows.Forms.Button btnfldLeeren;
         private System.Windows.Forms.Button btnSpeichern;
         private System.Windows.Forms.Button btnWeiter;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox chkGooglePlan;
         private System.Windows.Forms.TextBox tbZusatz;
         private System.Windows.Forms.TextBox tbOrt;
         private System.Windows.Forms.TextBox tbPLZ;

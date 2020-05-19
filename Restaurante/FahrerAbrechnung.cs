@@ -33,12 +33,12 @@ namespace Restaurante
             textBox2.Text = itemscol.Count.ToString();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnzuruck_Click(object sender, EventArgs e)
         {
             this.Close();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnDrucken_Click(object sender, EventArgs e)
         {
             // Übersicht Druck Neue Klasse 
             AbrechnungDruck obj = new AbrechnungDruck();

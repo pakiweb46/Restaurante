@@ -114,10 +114,10 @@ namespace Restaurante
             webBrowser1.Print();
         }
 
-        private void checkBox1_CheckedChanged(object sender, EventArgs e)
+        private void chkGooglePlan_CheckedChanged(object sender, EventArgs e)
         {
             if (tbStrasse.Text != "" & System.Net.NetworkInformation.NetworkInterface.GetIsNetworkAvailable())
-                if (checkBox1.Checked)
+                if (chkGooglePlan.Checked)
                 {
                     //  webBrowser1.Navigate("http://www.einkauf-agent.de/gmaps.htm?Ziel=" + tbStrasse.Text + " " + tbStrNo.Text + " Hannover");
                     if (tbOrt.Text.Contains("Groß Buchholz"))

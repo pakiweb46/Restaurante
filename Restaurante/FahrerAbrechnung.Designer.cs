@@ -35,8 +35,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
+            this.btnzuruck = new System.Windows.Forms.Button();
             this.label4 = new System.Windows.Forms.Label();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
@@ -99,25 +99,25 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(658, 10);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(152, 32);
-            this.button1.TabIndex = 8;
-            this.button1.Text = "Übersicht Drucken";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(658, 10);
+            this.btnDrucken.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDrucken.Name = "button1";
+            this.btnDrucken.Size = new System.Drawing.Size(152, 32);
+            this.btnDrucken.TabIndex = 8;
+            this.btnDrucken.Text = "Übersicht Drucken";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(836, 10);
-            this.button2.Margin = new System.Windows.Forms.Padding(4);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(106, 32);
-            this.button2.TabIndex = 9;
-            this.button2.Text = "zurück";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnzuruck.Location = new System.Drawing.Point(836, 10);
+            this.btnzuruck.Margin = new System.Windows.Forms.Padding(4);
+            this.btnzuruck.Name = "button2";
+            this.btnzuruck.Size = new System.Drawing.Size(106, 32);
+            this.btnzuruck.TabIndex = 9;
+            this.btnzuruck.Text = "zurück";
+            this.btnzuruck.UseVisualStyleBackColor = true;
+            this.btnzuruck.Click += new System.EventHandler(this.btnzuruck_Click);
             // 
             // label4
             // 
@@ -143,8 +143,8 @@
             this.ClientSize = new System.Drawing.Size(956, 121);
             this.Controls.Add(this.textBox2);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnzuruck);
+            this.Controls.Add(this.btnDrucken);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label2);
@@ -170,8 +170,8 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnDrucken;
+        private System.Windows.Forms.Button btnzuruck;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.TextBox textBox2;
     }

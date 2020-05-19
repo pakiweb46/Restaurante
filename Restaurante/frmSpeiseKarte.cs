@@ -123,7 +123,7 @@ namespace Restaurante
             }
             else if (e.KeyCode == Keys.F5)
             {
-                button9.PerformClick();
+                btnEmpty.PerformClick();
             }
         }
 
@@ -132,7 +132,7 @@ namespace Restaurante
             this.Close();
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void btnEmpty_Click(object sender, EventArgs e)
         {
             myClearForm();
         }
@@ -147,7 +147,7 @@ namespace Restaurante
             tbArtikel.Focus();
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void btnNextRecord_Click(object sender, EventArgs e)
         {
         }
 
@@ -299,7 +299,7 @@ namespace Restaurante
                     {
                         cmd.ExecuteNonQuery();
                         MessageBox.Show("Daten sind gelöscht");
-                        button9.PerformClick();
+                        btnEmpty.PerformClick();
                         conn.Close();
                         PerformListFill();
                     }
@@ -311,21 +311,21 @@ namespace Restaurante
             }
         }
 
-        private void button1_Click_1(object sender, EventArgs e)
+        private void btnZutaten_Click_1(object sender, EventArgs e)
         {
             frmZutaten obj = new frmZutaten();
             obj.ShowDialog();
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void btnPreviousRecord_Click(object sender, EventArgs e)
         {
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnFirstRecord_Click(object sender, EventArgs e)
         {
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void btnLastRecord_Click(object sender, EventArgs e)
         {
         }
     }

@@ -33,8 +33,8 @@
             this.dateTimePicker2 = new System.Windows.Forms.DateTimePicker();
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
+            this.btnzuruck = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // dateTimePicker1
@@ -71,23 +71,23 @@
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(259, 107);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(114, 49);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Drucken";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(259, 107);
+            this.btnDrucken.Name = "button2";
+            this.btnDrucken.Size = new System.Drawing.Size(114, 49);
+            this.btnDrucken.TabIndex = 5;
+            this.btnDrucken.Text = "Drucken";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(379, 107);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(106, 49);
-            this.button1.TabIndex = 6;
-            this.button1.Text = "Zurück";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnzuruck.Location = new System.Drawing.Point(379, 107);
+            this.btnzuruck.Name = "button1";
+            this.btnzuruck.Size = new System.Drawing.Size(106, 49);
+            this.btnzuruck.TabIndex = 6;
+            this.btnzuruck.Text = "Zurück";
+            this.btnzuruck.UseVisualStyleBackColor = true;
+            this.btnzuruck.Click += new System.EventHandler(this.btnZuruck_Click);
             // 
             // dateSelection
             // 
@@ -95,8 +95,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(694, 168);
-            this.Controls.Add(this.button1);
-            this.Controls.Add(this.button2);
+            this.Controls.Add(this.btnzuruck);
+            this.Controls.Add(this.btnDrucken);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.dateTimePicker2);
@@ -116,7 +116,7 @@
         private System.Windows.Forms.DateTimePicker dateTimePicker2;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnDrucken;
+        private System.Windows.Forms.Button btnzuruck;
     }
 }

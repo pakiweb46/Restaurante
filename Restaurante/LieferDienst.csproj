@@ -135,11 +135,6 @@
     <Compile Include="chooseView.Designer.cs">
       <DependentUpon>chooseView.cs</DependentUpon>
     </Compile>
-    <Compile Include="DataClasses1.designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
-    </Compile>
     <Compile Include="dateSelection.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -240,9 +235,6 @@
     <EmbeddedResource Include="chooseView.resx">
       <DependentUpon>chooseView.cs</DependentUpon>
     </EmbeddedResource>
-    <None Include="DataClasses1.dbml.layout">
-      <DependentUpon>DataClasses1.dbml</DependentUpon>
-    </None>
     <EmbeddedResource Include="dateSelection.resx">
       <DependentUpon>dateSelection.cs</DependentUpon>
     </EmbeddedResource>
@@ -285,11 +277,6 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
-    <None Include="DataClasses1.dbml">
-      <Generator>MSLinqToSQLGenerator</Generator>
-      <LastGenOutput>DataClasses1.designer.cs</LastGenOutput>
-      <SubType>Designer</SubType>
-    </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

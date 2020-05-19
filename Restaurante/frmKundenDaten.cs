@@ -58,7 +58,7 @@ namespace Restaurante
             tbStraße.AutoCompleteCustomSource = StrassenVonDatenBank();
             tbAnfahrt.Text = "0";
             tbRabatt.Text = "0";
-            button3.Enabled = false;
+            btnLoeschen.Enabled = false;
         }
 
         private void tbStraße_GotFocus(object sender, EventArgs e)
@@ -79,7 +79,7 @@ namespace Restaurante
             control.BackColor = BlurColor;
         }
 
-        private void button1_Click(object sender, EventArgs e) // Button Speichern
+        private void btnSPeichern_Click(object sender, EventArgs e) // Button Speichern
         {
             if (tbKundenNr.Text != "") // Update Record
             {
@@ -152,19 +152,19 @@ namespace Restaurante
         {
             if (e.KeyCode == Keys.F1)
             {
-                button2.PerformClick(); // Suchen
+                btnSuchen.PerformClick(); // Suchen
             }
             else if (e.KeyCode == Keys.F4)
             {
-                button1.PerformClick(); // Specihern
+                btnSpeichern.PerformClick(); // Specihern
             }
             else if (e.KeyCode == Keys.F7)
             {
-                button3.PerformClick();
+                btnLoeschen.PerformClick();
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                button4.PerformClick();
+                btnHauptMenu.PerformClick();
             }
             else if (e.KeyCode == Keys.F6)
             {
@@ -172,11 +172,11 @@ namespace Restaurante
             }
             else if (e.KeyCode == Keys.F5)
             {
-                button9.PerformClick();// leeren
+                btnEmpty.PerformClick();// leeren
             }
         }
 
-        private void button2_Click(object sender, EventArgs e) // Button Suchen
+        private void btnSuchen_Click(object sender, EventArgs e) // Button Suchen
         {
             if (tbKundenNr.Text != "")
             {
@@ -259,7 +259,7 @@ namespace Restaurante
             }
         }
 
-        private void button8_Click(object sender, EventArgs e) // Forward
+        private void btnNextRecord_Click(object sender, EventArgs e) // Forward
         {
             if (recordNr != getMaxId())
             {
@@ -276,7 +276,7 @@ namespace Restaurante
             rData.closeReadConnection();
         }
 
-        private void button6_Click(object sender, EventArgs e) // Back Button
+        private void btnPreviousRecord_Click(object sender, EventArgs e) // Back Button
         {
             if (recordNr != getMinId())
                 recordNr = getMaxId(recordNr); // gets maximum id which is smaller than recordNr
@@ -312,7 +312,7 @@ namespace Restaurante
             return rData.getMin("kundendaten", "idKundendaten", "idKundendaten", magicNo.ToString(), ">");  // -1 ist fehler
         }
 
-        private void button7_Click(object sender, EventArgs e) // Goto End of record
+        private void btnLastRecord_Click(object sender, EventArgs e) // Goto End of record
         {
             // recordNr = recordCount;
             int maxid = getMaxId();
@@ -354,7 +354,7 @@ namespace Restaurante
             return colValues;
         }
 
-        private void button5_Click(object sender, EventArgs e) // Begin of Record
+        private void btnFirstRecord_Click(object sender, EventArgs e) // Begin of Record
         {
             int minid = getMinId();
             recordNr = minid;
@@ -442,10 +442,10 @@ namespace Restaurante
             tbZusatz.Text = reader["zusatz"].ToString();
             tbAnfahrt.Text = reader["Anfahrtkosten"].ToString();
             tbRabatt.Text = reader["Rabatt"].ToString();
-            button3.Enabled = true;
+            btnLoeschen.Enabled = true;
         }
 
-        private void button9_Click(object sender, EventArgs e) // Clear Button
+        private void btnEmpty_Click(object sender, EventArgs e) // Clear Button
         {
             myClearForm();
         }
@@ -464,11 +464,11 @@ namespace Restaurante
             tbAnfahrt.Text = "0";
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnHauptMenu_Click(object sender, EventArgs e)
         {
         }
 
-        private void button3_Click(object sender, EventArgs e) // Button Löschen Delete
+        private void btnLoeschen_Click(object sender, EventArgs e) // Button Löschen Delete
         {
             DialogResult result;
             result = MessageBox.Show("Sind sie sicher dass die Kunden Löchen Möchten!" + "\n" + "In Abbrechnung wird Gelöchte Kunde nicht Erscheinen ", "Vorsicht", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -479,7 +479,7 @@ namespace Restaurante
                 try
                 {
                     cmd.ExecuteNonQuery();
-                    button9.PerformClick();
+                    btnEmpty.PerformClick();
                     if (recordNr != getMinId())
                         recordNr = getMinId();
                     else

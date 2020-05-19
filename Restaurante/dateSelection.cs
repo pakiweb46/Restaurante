@@ -23,13 +23,13 @@ namespace Restaurante
                
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnZuruck_Click(object sender, EventArgs e)
         {
             this.Close();
 
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnDrucken_Click(object sender, EventArgs e)
         {
             try
             {

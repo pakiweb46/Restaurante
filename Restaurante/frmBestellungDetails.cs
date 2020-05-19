@@ -192,7 +192,7 @@ namespace Restaurante
             return retValue;
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnDrucken_Click(object sender, EventArgs e)
         {
             
             RecieptPrint obj = new RecieptPrint(listView1.Items.Count);
@@ -278,7 +278,7 @@ namespace Restaurante
 
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnZuruck_Click(object sender, EventArgs e)
         {
             this.Close();
         }

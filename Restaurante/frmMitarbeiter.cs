@@ -62,7 +62,7 @@ namespace Restaurante
         {
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnHauptmenu_Click(object sender, EventArgs e)
         {
             this.Close();
         }
@@ -74,7 +74,7 @@ namespace Restaurante
             this.KeyDown += new KeyEventHandler(frmMitarbeiter_KeyDown);
             recordNr = getMinId();
             tbStraße.AutoCompleteCustomSource = StrassenVonDatenBank();
-            button3.Enabled = false;
+            btnLoeschen.Enabled = false;
             cmbTatigkeit.Items.Add("Fahrer");
             cmbTatigkeit.Items.Add("Pizza Bäcker");
             cmbTatigkeit.Items.Add("Küchen Hilfe");
@@ -111,27 +111,27 @@ namespace Restaurante
         {
             if (e.KeyCode == Keys.F1)
             {
-                button2.PerformClick();
+                btnSuchen.PerformClick();
             }
             else if (e.KeyCode == Keys.F4)
             {
-                button1.PerformClick();
+                btnSpeichern.PerformClick();
             }
             else if (e.KeyCode == Keys.F7)
             {
-                button3.PerformClick();
+                btnLoeschen.PerformClick();
             }
             else if (e.KeyCode == Keys.Escape)
             {
-                button4.PerformClick();
+                btnHauptmenu.PerformClick();
             }
             else if (e.KeyCode == Keys.F5)
             {
-                button9.PerformClick();
+                btnEmptyField.PerformClick();
             }
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnSpeichern_Click(object sender, EventArgs e)
         {
             if (txtMitarbeiterName.Text != "") // Update Record
             {
@@ -196,7 +196,7 @@ namespace Restaurante
 
         private int getCheckBoxStatus()
         {
-            if (checkBox1.Checked)
+            if (chkAdminRight.Checked)
                 return 1;
             else
                 return 0;
@@ -212,7 +212,7 @@ namespace Restaurante
             txtStrNo.Text = reader["StrNo"].ToString();
             txtzusatz.Text = reader["zusatz"].ToString();
 
-            button3.Enabled = true;
+            btnLoeschen.Enabled = true;
         }
 
         private void myClearForm()
@@ -223,7 +223,7 @@ namespace Restaurante
             txtPLZ.Clear();
             txtOrt.Clear();
             tbStraße.Clear();
-            checkBox1.Checked = false;
+            chkAdminRight.Checked = false;
         }
 
         private int getMaxId()
@@ -231,7 +231,7 @@ namespace Restaurante
             return rData.getMax("mitarbeiter", "idmitarbeiter");  // -1 ist fehler
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnLoeschen_Click(object sender, EventArgs e)
         {
             DialogResult result;
             result = MessageBox.Show("Sind sie sicher diese mitarbeiter Löschen Möchten!", "Vorsicht", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -243,7 +243,7 @@ namespace Restaurante
                 try
                 {
                     cmd.ExecuteNonQuery();
-                    button9.PerformClick();
+                    btnEmptyField.PerformClick();
                     if (recordNr != getMinId())
                         recordNr = getMinId();
                     else
@@ -268,7 +268,7 @@ namespace Restaurante
                                                                                                             // -1 ist fehler
         }
 
-        private void button8_Click(object sender, EventArgs e)
+        private void btnNextRecord_Click(object sender, EventArgs e)
         {
             if (recordNr != getMaxId())
             {
@@ -285,7 +285,7 @@ namespace Restaurante
             rData.closeReadConnection();
         }
 
-        private void button7_Click(object sender, EventArgs e)
+        private void btnLastRecord_Click(object sender, EventArgs e)
         {
             int maxid = getMaxId();
             recordNr = maxid;
@@ -306,7 +306,7 @@ namespace Restaurante
             }
         }
 
-        private void button6_Click(object sender, EventArgs e)
+        private void btnPreviousRecord_Click(object sender, EventArgs e)
         {
             if (recordNr != getMinId())
                 recordNr = getMaxId(recordNr); // gets maximum id which is smaller than recordNr
@@ -320,7 +320,7 @@ namespace Restaurante
             rData.closeReadConnection();
         }
 
-        private void button5_Click(object sender, EventArgs e)
+        private void btnFirstRecord_Click(object sender, EventArgs e)
         {
             int minid = getMinId();
             recordNr = minid;
@@ -334,7 +334,7 @@ namespace Restaurante
             rData.closeReadConnection();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnSuchen_Click(object sender, EventArgs e)
         {
             if (txtMitarbeiterName.Text != "")
             {
@@ -424,7 +424,7 @@ namespace Restaurante
             listView1.Visible = false;
         }
 
-        private void button9_Click(object sender, EventArgs e)
+        private void btnEmptyField_Click(object sender, EventArgs e)
         {
             myClearForm();
         }

@@ -35,8 +35,8 @@
             this.tbTotalMwst = new System.Windows.Forms.TextBox();
             this.tbGesamt = new System.Windows.Forms.TextBox();
             this.label12 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
+            this.btnZuruck = new System.Windows.Forms.Button();
             this.listView1 = new Restaurante.PrintableListView2();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -98,25 +98,25 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(103, 492);
-            this.button1.Margin = new System.Windows.Forms.Padding(4);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(176, 34);
-            this.button1.TabIndex = 35;
-            this.button1.Text = "Drucken ";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(103, 492);
+            this.btnDrucken.Margin = new System.Windows.Forms.Padding(4);
+            this.btnDrucken.Name = "button1";
+            this.btnDrucken.Size = new System.Drawing.Size(176, 34);
+            this.btnDrucken.TabIndex = 35;
+            this.btnDrucken.Text = "Drucken ";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(298, 492);
-            this.button4.Margin = new System.Windows.Forms.Padding(4);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(176, 34);
-            this.button4.TabIndex = 36;
-            this.button4.Text = "Zurück ";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnZuruck.Location = new System.Drawing.Point(298, 492);
+            this.btnZuruck.Margin = new System.Windows.Forms.Padding(4);
+            this.btnZuruck.Name = "button4";
+            this.btnZuruck.Size = new System.Drawing.Size(176, 34);
+            this.btnZuruck.TabIndex = 36;
+            this.btnZuruck.Text = "Zurück ";
+            this.btnZuruck.UseVisualStyleBackColor = true;
+            this.btnZuruck.Click += new System.EventHandler(this.btnZuruck_Click);
             // 
             // listView1
             // 
@@ -182,8 +182,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(1044, 630);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnZuruck);
+            this.Controls.Add(this.btnDrucken);
             this.Controls.Add(this.tbAnfahrtkosten);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label3);
@@ -215,7 +215,7 @@
         private System.Windows.Forms.TextBox tbTotalMwst;
         private System.Windows.Forms.TextBox tbGesamt;
         private System.Windows.Forms.Label label12;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button4;
+        private System.Windows.Forms.Button btnDrucken;
+        private System.Windows.Forms.Button btnZuruck;
     }
 }

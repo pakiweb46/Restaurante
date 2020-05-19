@@ -32,11 +32,11 @@
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button9 = new System.Windows.Forms.Button();
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
+            this.btnEmpty = new System.Windows.Forms.Button();
+            this.btnNextRecord = new System.Windows.Forms.Button();
+            this.btnLastRecord = new System.Windows.Forms.Button();
+            this.btnPreviousRecord = new System.Windows.Forms.Button();
+            this.btnFirstRecord = new System.Windows.Forms.Button();
             this.btnZuruck = new System.Windows.Forms.Button();
             this.btnLöschen = new System.Windows.Forms.Button();
             this.btnÄndern = new System.Windows.Forms.Button();
@@ -87,53 +87,53 @@
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(224, 541);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(163, 64);
-            this.button9.TabIndex = 28;
-            this.button9.Text = "Felder leeren (F5)";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.btnEmpty.Location = new System.Drawing.Point(224, 541);
+            this.btnEmpty.Name = "button9";
+            this.btnEmpty.Size = new System.Drawing.Size(163, 64);
+            this.btnEmpty.TabIndex = 28;
+            this.btnEmpty.Text = "Felder leeren (F5)";
+            this.btnEmpty.UseVisualStyleBackColor = true;
+            this.btnEmpty.Click += new System.EventHandler(this.btnEmpty_Click);
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(416, 541);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 64);
-            this.button8.TabIndex = 27;
-            this.button8.Text = ">>";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.btnNextRecord.Location = new System.Drawing.Point(416, 541);
+            this.btnNextRecord.Name = "button8";
+            this.btnNextRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnNextRecord.TabIndex = 27;
+            this.btnNextRecord.Text = ">>";
+            this.btnNextRecord.UseVisualStyleBackColor = true;
+            this.btnNextRecord.Click += new System.EventHandler(this.btnNextRecord_Click);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(497, 541);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 64);
-            this.button7.TabIndex = 26;
-            this.button7.Text = ">>|";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.btnLastRecord.Location = new System.Drawing.Point(497, 541);
+            this.btnLastRecord.Name = "button7";
+            this.btnLastRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnLastRecord.TabIndex = 26;
+            this.btnLastRecord.Text = ">>|";
+            this.btnLastRecord.UseVisualStyleBackColor = true;
+            this.btnLastRecord.Click += new System.EventHandler(this.btnLastRecord_Click);
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(107, 541);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 64);
-            this.button6.TabIndex = 25;
-            this.button6.Text = "<<";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.btnPreviousRecord.Location = new System.Drawing.Point(107, 541);
+            this.btnPreviousRecord.Name = "button6";
+            this.btnPreviousRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnPreviousRecord.TabIndex = 25;
+            this.btnPreviousRecord.Text = "<<";
+            this.btnPreviousRecord.UseVisualStyleBackColor = true;
+            this.btnPreviousRecord.Click += new System.EventHandler(this.btnPreviousRecord_Click);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(26, 541);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 64);
-            this.button5.TabIndex = 24;
-            this.button5.Text = "|<<";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btnFirstRecord.Location = new System.Drawing.Point(26, 541);
+            this.btnFirstRecord.Name = "button5";
+            this.btnFirstRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnFirstRecord.TabIndex = 24;
+            this.btnFirstRecord.Text = "|<<";
+            this.btnFirstRecord.UseVisualStyleBackColor = true;
+            this.btnFirstRecord.Click += new System.EventHandler(this.btnFirstRecord_Click);
             // 
             // btnZuruck
             // 
@@ -253,11 +253,11 @@
             this.Controls.Add(this.tbBezeichnung);
             this.Controls.Add(this.tbArtikel);
             this.Controls.Add(this.tbMwSt);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.btnEmpty);
+            this.Controls.Add(this.btnNextRecord);
+            this.Controls.Add(this.btnLastRecord);
+            this.Controls.Add(this.btnPreviousRecord);
+            this.Controls.Add(this.btnFirstRecord);
             this.Controls.Add(this.btnZuruck);
             this.Controls.Add(this.btnLöschen);
             this.Controls.Add(this.btnÄndern);
@@ -280,11 +280,11 @@
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
-        private System.Windows.Forms.Button button9;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
+        private System.Windows.Forms.Button btnEmpty;
+        private System.Windows.Forms.Button btnNextRecord;
+        private System.Windows.Forms.Button btnLastRecord;
+        private System.Windows.Forms.Button btnPreviousRecord;
+        private System.Windows.Forms.Button btnFirstRecord;
         private System.Windows.Forms.Button btnZuruck;
         private System.Windows.Forms.Button btnLöschen;
         private System.Windows.Forms.Button btnÄndern;

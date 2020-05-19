@@ -17,8 +17,8 @@ namespace Restaurante
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
+            this.btnZuruck = new System.Windows.Forms.Button();
 
             this.SuspendLayout();
             //
@@ -60,23 +60,23 @@ namespace Restaurante
             this.columnHeader4.Width = 133;
             // button1
             //
-            this.button1.Location = new System.Drawing.Point(53, 614);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(136, 45);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Drucken (F3)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(53, 614);
+            this.btnDrucken.Name = "button1";
+            this.btnDrucken.Size = new System.Drawing.Size(136, 45);
+            this.btnDrucken.TabIndex = 4;
+            this.btnDrucken.Text = "Drucken (F3)";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             //
             // button2
             //
-            this.button2.Location = new System.Drawing.Point(195, 614);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(148, 45);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Zurück (Esc)";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnZuruck.Location = new System.Drawing.Point(195, 614);
+            this.btnZuruck.Name = "button2";
+            this.btnZuruck.Size = new System.Drawing.Size(148, 45);
+            this.btnZuruck.TabIndex = 5;
+            this.btnZuruck.Text = "Zurück (Esc)";
+            this.btnZuruck.UseVisualStyleBackColor = true;
+            this.btnZuruck.Click += new System.EventHandler(this.btnZuruck_Click);
 
             //
 
@@ -87,8 +87,8 @@ namespace Restaurante
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 671);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnZuruck);
+            this.Controls.Add(this.btnDrucken);
 
             this.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Margin = new System.Windows.Forms.Padding(5);
@@ -112,8 +112,8 @@ namespace Restaurante
             this.columnHeader4 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader5 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader12 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
+            this.btnZuruck = new System.Windows.Forms.Button();
 
             this.SuspendLayout();
             //
@@ -183,23 +183,23 @@ namespace Restaurante
 
             // button1
             //
-            this.button1.Location = new System.Drawing.Point(53, 614);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(136, 45);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Drucken (F3)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(53, 614);
+            this.btnDrucken.Name = "button1";
+            this.btnDrucken.Size = new System.Drawing.Size(136, 45);
+            this.btnDrucken.TabIndex = 4;
+            this.btnDrucken.Text = "Drucken (F3)";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             //
             // button2
             //
-            this.button2.Location = new System.Drawing.Point(195, 614);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(148, 45);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Zurück (Esc)";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnZuruck.Location = new System.Drawing.Point(195, 614);
+            this.btnZuruck.Name = "button2";
+            this.btnZuruck.Size = new System.Drawing.Size(148, 45);
+            this.btnZuruck.TabIndex = 5;
+            this.btnZuruck.Text = "Zurück (Esc)";
+            this.btnZuruck.UseVisualStyleBackColor = true;
+            this.btnZuruck.Click += new System.EventHandler(this.btnZuruck_Click);
             //
             //
             // frmShowList
@@ -208,8 +208,8 @@ namespace Restaurante
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(892, 671);
             this.Controls.Add(this.listView1);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnZuruck);
+            this.Controls.Add(this.btnDrucken);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
 
@@ -362,7 +362,7 @@ namespace Restaurante
             rData.closeReadConnection();
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void btnDrucken_Click(object sender, EventArgs e)
         {
             if (isBestellung)
             {
@@ -426,7 +426,7 @@ namespace Restaurante
                 listView1.Print();
         }
 
-        private void button2_Click(object sender, EventArgs e)
+        private void btnZuruck_Click(object sender, EventArgs e)
         {
             this.Close();
         }

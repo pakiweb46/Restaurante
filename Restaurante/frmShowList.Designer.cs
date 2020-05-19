@@ -31,8 +31,8 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmShowList));
             this.label1 = new System.Windows.Forms.Label();
             this.textBox1 = new System.Windows.Forms.TextBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
+            this.btnDrucken = new System.Windows.Forms.Button();
+            this.btnZuruck = new System.Windows.Forms.Button();
             this.listView1 = new Restaurante.PrintableListView2();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -61,23 +61,23 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(53, 570);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(136, 45);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "Drucken (F3)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnDrucken.Location = new System.Drawing.Point(53, 570);
+            this.btnDrucken.Name = "button1";
+            this.btnDrucken.Size = new System.Drawing.Size(136, 45);
+            this.btnDrucken.TabIndex = 4;
+            this.btnDrucken.Text = "Drucken (F3)";
+            this.btnDrucken.UseVisualStyleBackColor = true;
+            this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(195, 570);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(148, 45);
-            this.button2.TabIndex = 5;
-            this.button2.Text = "Zurück (Esc)";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnZuruck.Location = new System.Drawing.Point(195, 570);
+            this.btnZuruck.Name = "button2";
+            this.btnZuruck.Size = new System.Drawing.Size(148, 45);
+            this.btnZuruck.TabIndex = 5;
+            this.btnZuruck.Text = "Zurück (Esc)";
+            this.btnZuruck.UseVisualStyleBackColor = true;
+            this.btnZuruck.Click += new System.EventHandler(this.btnZuruck_Click);
             // 
             // listView1
             // 
@@ -135,8 +135,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(892, 661);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnZuruck);
+            this.Controls.Add(this.btnDrucken);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.listView1);
@@ -164,7 +164,7 @@
         
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.Button button2;
+        private System.Windows.Forms.Button btnDrucken;
+        private System.Windows.Forms.Button btnZuruck;
     }
 }

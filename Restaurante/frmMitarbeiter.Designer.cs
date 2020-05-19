@@ -29,9 +29,9 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(frmMitarbeiter));
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
+            this.btnHauptmenu = new System.Windows.Forms.Button();
+            this.btnLoeschen = new System.Windows.Forms.Button();
+            this.btnSpeichern = new System.Windows.Forms.Button();
             this.txtOrt = new System.Windows.Forms.TextBox();
             this.txtPLZ = new System.Windows.Forms.TextBox();
             this.txtzusatz = new System.Windows.Forms.TextBox();
@@ -47,44 +47,44 @@
             this.listView1 = new System.Windows.Forms.ListView();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
-            this.button8 = new System.Windows.Forms.Button();
-            this.button7 = new System.Windows.Forms.Button();
-            this.button6 = new System.Windows.Forms.Button();
-            this.button5 = new System.Windows.Forms.Button();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.button2 = new System.Windows.Forms.Button();
-            this.button9 = new System.Windows.Forms.Button();
+            this.btnNextRecord = new System.Windows.Forms.Button();
+            this.btnLastRecord = new System.Windows.Forms.Button();
+            this.btnPreviousRecord = new System.Windows.Forms.Button();
+            this.btnFirstRecord = new System.Windows.Forms.Button();
+            this.chkAdminRight = new System.Windows.Forms.CheckBox();
+            this.btnSuchen = new System.Windows.Forms.Button();
+            this.btnEmptyField = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // button4
             // 
-            this.button4.Location = new System.Drawing.Point(616, 407);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(184, 58);
-            this.button4.TabIndex = 31;
-            this.button4.Text = "Hauptmenü (Esc)";
-            this.button4.UseVisualStyleBackColor = true;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
+            this.btnHauptmenu.Location = new System.Drawing.Point(616, 407);
+            this.btnHauptmenu.Name = "button4";
+            this.btnHauptmenu.Size = new System.Drawing.Size(184, 58);
+            this.btnHauptmenu.TabIndex = 31;
+            this.btnHauptmenu.Text = "Hauptmenü (Esc)";
+            this.btnHauptmenu.UseVisualStyleBackColor = true;
+            this.btnHauptmenu.Click += new System.EventHandler(this.btnHauptmenu_Click);
             // 
             // button3
             // 
-            this.button3.Location = new System.Drawing.Point(426, 407);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(184, 58);
-            this.button3.TabIndex = 30;
-            this.button3.Text = "Löschen (F7)";
-            this.button3.UseVisualStyleBackColor = true;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
+            this.btnLoeschen.Location = new System.Drawing.Point(426, 407);
+            this.btnLoeschen.Name = "button3";
+            this.btnLoeschen.Size = new System.Drawing.Size(184, 58);
+            this.btnLoeschen.TabIndex = 30;
+            this.btnLoeschen.Text = "Löschen (F7)";
+            this.btnLoeschen.UseVisualStyleBackColor = true;
+            this.btnLoeschen.Click += new System.EventHandler(this.btnLoeschen_Click);
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(43, 407);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(184, 58);
-            this.button1.TabIndex = 28;
-            this.button1.Text = "Speichern (F4)";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
+            this.btnSpeichern.Location = new System.Drawing.Point(43, 407);
+            this.btnSpeichern.Name = "button1";
+            this.btnSpeichern.Size = new System.Drawing.Size(184, 58);
+            this.btnSpeichern.TabIndex = 28;
+            this.btnSpeichern.Text = "Speichern (F4)";
+            this.btnSpeichern.UseVisualStyleBackColor = true;
+            this.btnSpeichern.Click += new System.EventHandler(this.btnSpeichern_Click);
             // 
             // textBox8
             // 
@@ -211,73 +211,73 @@
             // 
             // button8
             // 
-            this.button8.Location = new System.Drawing.Point(644, 471);
-            this.button8.Name = "button8";
-            this.button8.Size = new System.Drawing.Size(75, 64);
-            this.button8.TabIndex = 38;
-            this.button8.Text = ">>";
-            this.button8.UseVisualStyleBackColor = true;
-            this.button8.Click += new System.EventHandler(this.button8_Click);
+            this.btnNextRecord.Location = new System.Drawing.Point(644, 471);
+            this.btnNextRecord.Name = "button8";
+            this.btnNextRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnNextRecord.TabIndex = 38;
+            this.btnNextRecord.Text = ">>";
+            this.btnNextRecord.UseVisualStyleBackColor = true;
+            this.btnNextRecord.Click += new System.EventHandler(this.btnNextRecord_Click);
             // 
             // button7
             // 
-            this.button7.Location = new System.Drawing.Point(725, 471);
-            this.button7.Name = "button7";
-            this.button7.Size = new System.Drawing.Size(75, 64);
-            this.button7.TabIndex = 37;
-            this.button7.Text = ">>|";
-            this.button7.UseVisualStyleBackColor = true;
-            this.button7.Click += new System.EventHandler(this.button7_Click);
+            this.btnLastRecord.Location = new System.Drawing.Point(725, 471);
+            this.btnLastRecord.Name = "button7";
+            this.btnLastRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnLastRecord.TabIndex = 37;
+            this.btnLastRecord.Text = ">>|";
+            this.btnLastRecord.UseVisualStyleBackColor = true;
+            this.btnLastRecord.Click += new System.EventHandler(this.btnLastRecord_Click);
             // 
             // button6
             // 
-            this.button6.Location = new System.Drawing.Point(124, 471);
-            this.button6.Name = "button6";
-            this.button6.Size = new System.Drawing.Size(75, 64);
-            this.button6.TabIndex = 36;
-            this.button6.Text = "<<";
-            this.button6.UseVisualStyleBackColor = true;
-            this.button6.Click += new System.EventHandler(this.button6_Click);
+            this.btnPreviousRecord.Location = new System.Drawing.Point(124, 471);
+            this.btnPreviousRecord.Name = "button6";
+            this.btnPreviousRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnPreviousRecord.TabIndex = 36;
+            this.btnPreviousRecord.Text = "<<";
+            this.btnPreviousRecord.UseVisualStyleBackColor = true;
+            this.btnPreviousRecord.Click += new System.EventHandler(this.btnPreviousRecord_Click);
             // 
             // button5
             // 
-            this.button5.Location = new System.Drawing.Point(43, 471);
-            this.button5.Name = "button5";
-            this.button5.Size = new System.Drawing.Size(75, 64);
-            this.button5.TabIndex = 35;
-            this.button5.Text = "|<<";
-            this.button5.UseVisualStyleBackColor = true;
-            this.button5.Click += new System.EventHandler(this.button5_Click);
+            this.btnFirstRecord.Location = new System.Drawing.Point(43, 471);
+            this.btnFirstRecord.Name = "button5";
+            this.btnFirstRecord.Size = new System.Drawing.Size(75, 64);
+            this.btnFirstRecord.TabIndex = 35;
+            this.btnFirstRecord.Text = "|<<";
+            this.btnFirstRecord.UseVisualStyleBackColor = true;
+            this.btnFirstRecord.Click += new System.EventHandler(this.btnFirstRecord_Click);
             // 
             // checkBox1
             // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(27, 301);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(199, 24);
-            this.checkBox1.TabIndex = 39;
-            this.checkBox1.Text = " Aministrative Rechte";
-            this.checkBox1.UseVisualStyleBackColor = true;
+            this.chkAdminRight.AutoSize = true;
+            this.chkAdminRight.Location = new System.Drawing.Point(27, 301);
+            this.chkAdminRight.Name = "checkBox1";
+            this.chkAdminRight.Size = new System.Drawing.Size(199, 24);
+            this.chkAdminRight.TabIndex = 39;
+            this.chkAdminRight.Text = " Aministrative Rechte";
+            this.chkAdminRight.UseVisualStyleBackColor = true;
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(236, 407);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(184, 58);
-            this.button2.TabIndex = 29;
-            this.button2.Text = "Suchen (F1)";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
+            this.btnSuchen.Location = new System.Drawing.Point(236, 407);
+            this.btnSuchen.Name = "button2";
+            this.btnSuchen.Size = new System.Drawing.Size(184, 58);
+            this.btnSuchen.TabIndex = 29;
+            this.btnSuchen.Text = "Suchen (F1)";
+            this.btnSuchen.UseVisualStyleBackColor = true;
+            this.btnSuchen.Click += new System.EventHandler(this.btnSuchen_Click);
             // 
             // button9
             // 
-            this.button9.Location = new System.Drawing.Point(302, 471);
-            this.button9.Name = "button9";
-            this.button9.Size = new System.Drawing.Size(179, 59);
-            this.button9.TabIndex = 40;
-            this.button9.Text = "Felder leeren (F5)";
-            this.button9.UseVisualStyleBackColor = true;
-            this.button9.Click += new System.EventHandler(this.button9_Click);
+            this.btnEmptyField.Location = new System.Drawing.Point(302, 471);
+            this.btnEmptyField.Name = "button9";
+            this.btnEmptyField.Size = new System.Drawing.Size(179, 59);
+            this.btnEmptyField.TabIndex = 40;
+            this.btnEmptyField.Text = "Felder leeren (F5)";
+            this.btnEmptyField.UseVisualStyleBackColor = true;
+            this.btnEmptyField.Click += new System.EventHandler(this.btnEmptyField_Click);
             // 
             // frmMitarbeiter
             // 
@@ -285,19 +285,19 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.SkyBlue;
             this.ClientSize = new System.Drawing.Size(941, 549);
-            this.Controls.Add(this.button9);
-            this.Controls.Add(this.checkBox1);
-            this.Controls.Add(this.button8);
-            this.Controls.Add(this.button7);
-            this.Controls.Add(this.button6);
-            this.Controls.Add(this.button5);
+            this.Controls.Add(this.btnEmptyField);
+            this.Controls.Add(this.chkAdminRight);
+            this.Controls.Add(this.btnNextRecord);
+            this.Controls.Add(this.btnLastRecord);
+            this.Controls.Add(this.btnPreviousRecord);
+            this.Controls.Add(this.btnFirstRecord);
             this.Controls.Add(this.listView1);
             this.Controls.Add(this.cmbTatigkeit);
             this.Controls.Add(this.label1);
-            this.Controls.Add(this.button4);
-            this.Controls.Add(this.button3);
-            this.Controls.Add(this.button2);
-            this.Controls.Add(this.button1);
+            this.Controls.Add(this.btnHauptmenu);
+            this.Controls.Add(this.btnLoeschen);
+            this.Controls.Add(this.btnSuchen);
+            this.Controls.Add(this.btnSpeichern);
             this.Controls.Add(this.txtOrt);
             this.Controls.Add(this.txtPLZ);
             this.Controls.Add(this.txtzusatz);
@@ -322,9 +322,9 @@
 
         #endregion
 
-        private System.Windows.Forms.Button button4;
-        private System.Windows.Forms.Button button3;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button btnHauptmenu;
+        private System.Windows.Forms.Button btnLoeschen;
+        private System.Windows.Forms.Button btnSpeichern;
         private System.Windows.Forms.TextBox txtOrt;
         private System.Windows.Forms.TextBox txtPLZ;
         private System.Windows.Forms.TextBox txtzusatz;
@@ -338,13 +338,13 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox cmbTatigkeit;
         private System.Windows.Forms.ListView listView1;
-        private System.Windows.Forms.Button button8;
-        private System.Windows.Forms.Button button7;
-        private System.Windows.Forms.Button button6;
-        private System.Windows.Forms.Button button5;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.Button button9;
+        private System.Windows.Forms.Button btnNextRecord;
+        private System.Windows.Forms.Button btnLastRecord;
+        private System.Windows.Forms.Button btnPreviousRecord;
+        private System.Windows.Forms.Button btnFirstRecord;
+        private System.Windows.Forms.CheckBox chkAdminRight;
+        private System.Windows.Forms.Button btnSuchen;
+        private System.Windows.Forms.Button btnEmptyField;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
     }
