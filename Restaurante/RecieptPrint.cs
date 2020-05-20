@@ -18,7 +18,7 @@ namespace Restaurante
        
         #region Logo Informations
 
-        // Logo Image file
+        // Logo Image fileC:\Users\Bari\Documents\Restaurante\Restaurante\Resources\logo.jpg
 
         Image logo = new Bitmap(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("LieferDienst.Resources.logo.jpg"));
         // point to place the loge 
@@ -418,6 +418,7 @@ protected override void OnPrintPage(System.Drawing.Printing.PrintPageEventArgs e
               //  logo = new Bitmap(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("LieferDienst.Resources.logo.jpg"));
             //else
                 logo = new Bitmap(System.Reflection.Assembly.GetEntryAssembly().GetManifestResourceStream("LieferDienst.Resources.logo.jpg"));
+                    //TODO:: Read from File instead
 
            
             
@@ -447,13 +448,13 @@ protected override void OnPrintPage(System.Drawing.Printing.PrintPageEventArgs e
         g.DrawString(Addresse_text_line2, Addresse_font, Brushes.Black, leftMargin, nextline);
         nextline += Addresse_font.Height;
         // Draw Address line 3 Here Fax
-        g.DrawString(Addresse_text_line2, Addresse_font, Brushes.Black, leftMargin, nextline);
+        g.DrawString(Addresse_text_line3, Addresse_font, Brushes.Black, leftMargin, nextline);
         nextline += Addresse_font.Height;
         // Draw oeffnungzeiten Here webseite
         g.DrawString(oeffenung_text_line1, Addresse_font, Brushes.Black, leftMargin, nextline);
         nextline += Addresse_font.Height;
         nextline +=10;
-        // Draw Bestellung Nr date and time
+        // Draw Bestellung Nr date and time1
         stringwidth = Convert.ToInt32(g.MeasureString(Bestellung_text, Bestellung_font).Width);
         int middle_position = Convert.ToInt32((printWidth / 2) - (stringwidth / 2));
         g.DrawString(Bestellung_text, Bestellung_font, Brushes.Black, middle_position, nextline);

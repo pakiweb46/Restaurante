@@ -28,20 +28,20 @@ namespace Restaurante
         public const string DBPASS = "mrklf598";
         public const string DBNAME = "dbbari";
         public const string DBPORT = "3306";
-
+        //TODO Kryptographie und dann aus Text Datei Lesen
         public const string connString = "server=" + SERVER + ";user=" + DBUSER + ";database="
                                          + DBNAME + ";port=" + DBPORT + ";password=" + DBPASS + ";";
 
-        public const string TITLE_NAME = "ZUR GRILLPFANNE";
-        public const string LINE1_ADDRESS = "Grubenstr. 7 - 18055 Rostock ";
-        public const string LINE2_TELE = " Tel. : 0381 21055633";
-        public const string LINE3_TELE2 = "";
+        public const string TITLE_NAME = "Good Food";
+        public const string LINE1_ADDRESS = "Bömelburgstraße 34";
+        public const string LINE2_TELE = " 30165 Hannover";
+        public const string LINE3_TELE2 = "Tel. 0511 8994702";
         public const string LINE4_OPENTIME = "";
 
-        public const string TITLE_NAME_B = "ZUR GRILLPFANNE";
-        public const string LINE1_ADDRESS_B = "Grubenstr. 7 - 18055 Rostock ";
-        public const string LINE2_TELE_B = " Tel. : 0381 21055633";
-        public const string LINE3_TELE2_B = "";
+        public const string TITLE_NAME_B = "Good Food";
+        public const string LINE1_ADDRESS_B = "Bömelburgstraße 34 ";
+        public const string LINE2_TELE_B = " 30165 Hannover";
+        public const string LINE3_TELE2_B = "Tel. 0511 8994702";
         public const string LINE4_OPENTIME_B = "";
 
         private enum KUNDENDATEN
@@ -59,6 +59,7 @@ namespace Restaurante
             Rabatt
         }
     }
+
 }
 
 // TODO

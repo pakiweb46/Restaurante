@@ -1365,6 +1365,7 @@ namespace Restaurante
                         }
                         else if (lvBestellung.Items[i].SubItems[0].Text == "+-")
                         {
+                            //TODO HERE SUBNITEM[3] can be null so throws exception
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
                             string[] values = { idRech.ToString(),
                                                 lvBestellung.Items[i].SubItems[0].Text,
@@ -1382,13 +1383,14 @@ namespace Restaurante
                         }
                         else
                         {
+                         
                             double tempRabatt = Math.Round((Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) * Rabbatt / 100), 3);
                             string[] values = { idRech.ToString(),
                                                 lvBestellung.Items[i].SubItems[0].Text,
                                                 lvBestellung.Items[i].SubItems[1].Text,
                                                 Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[3].Text) - tempRabatt, 3).ToString(providerEn),
                                                 lvBestellung.Items[i].SubItems[2].Text,
-                                                String.Format("{0:00.00}", lvBestellung.Items[i].SubItems[5].Text).ToString(providerEn)
+                                                Math.Round(Convert.ToDouble(lvBestellung.Items[i].SubItems[5].Text),3).ToString(providerEn)
                                                 };
                             rData.addData("Bestellung", values);
                             // add artikle to printReciept obj
