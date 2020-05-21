@@ -228,6 +228,7 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Rechnung.cs" />
     <Compile Include="RecieptPrint.cs">
       <SubType>Component</SubType>
     </Compile>

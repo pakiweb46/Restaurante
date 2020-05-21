@@ -30,6 +30,7 @@ namespace Restaurante
         private string selectedZutat;
         private double totalTax7, totalTax19, restmwst;
         public IFormatProvider providerEn;
+        private Amounts amtObj;
         // speichert die gesamt pfand.
 
         //s   private Speisekarte speise = new Speisekarte()
@@ -39,6 +40,7 @@ namespace Restaurante
         {
             InitializeComponent();
             rData = new RestauranteData();
+            amtObj = new Amounts(System.DateTime.Now.ToShortDateString(), System.DateTime.Now.ToShortTimeString(), Convert.ToInt32(kno)) ;
             providerEn = CultureInfo.CreateSpecificCulture("en-GB");
             this.kundenreference = kno;
             try
@@ -511,6 +513,7 @@ namespace Restaurante
                 KundenTelefone = readerKunde["kundennr"].ToString();
                 KundenHinweis = readerKunde["zusatz"].ToString();
                 AnfahrtKosten = Convert.ToDouble(readerKunde["AnfahrtKosten"].ToString());
+                amtObj.AddAnfahrtKosten(Convert.ToDouble(readerKunde["AnfahrtKosten"].ToString()));
                 MwstAnfahrt = Math.Round(AnfahrtKosten * 0.19, 3); //LOGICAL ERROR Here Anfahrtkosten is brutto so first calculate netto than tax
                 tbAnfahrtkosten.Text = String.Format("{0:0.00}", AnfahrtKosten);
                 // Add anfahrt kosten in total
@@ -1302,7 +1305,7 @@ namespace Restaurante
             {
                 try
                 {
-                    RecieptPrint obj = new RecieptPrint(lvBestellung.Items.Count);
+                    RecieptPrint recieptObject = new RecieptPrint(lvBestellung.Items.Count);
                     if (checkBox1.Checked)
                         Speicher_Online();
 
@@ -1401,63 +1404,63 @@ namespace Restaurante
                         }
                     }
 
-                    obj.Artikel_Nummer = Artikel_Nummer;
-                    obj.Artikel_Text = Artikel_Text;
-                    obj.Artikel_Preis = Artikel_Preis;
-                    obj.Artikel_Anzahl = Artikel_Anzahl;
+                    recieptObject.Artikel_Nummer = Artikel_Nummer;
+                    recieptObject.Artikel_Text = Artikel_Text;
+                    recieptObject.Artikel_Preis = Artikel_Preis;
+                    recieptObject.Artikel_Anzahl = Artikel_Anzahl;
                     bool isGrillPfane = checkArtikel(Artikel_Nummer[0]);
                     if (isGrillPfane)
                     {
                         // TODO :: move it to some center place or global Class and also
                         // condition with there ID Would be better
-                        obj.Title_Text = Globals.TITLE_NAME;
-                        obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
-                        obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
-                        obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
-                        obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
+                        recieptObject.Title_Text = Globals.TITLE_NAME;
+                        recieptObject.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                        recieptObject.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                        recieptObject.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                        recieptObject.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
                     }
                     else
                     {
-                        obj.Title_Text = Globals.TITLE_NAME;
-                        obj.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
-                        obj.Addresse_Text_Line2 = Globals.LINE2_TELE;
-                        obj.Addresse_Text_Line3 = Globals.LINE3_TELE2;
-                        obj.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
+                        recieptObject.Title_Text = Globals.TITLE_NAME;
+                        recieptObject.Addresse_Text_Line1 = Globals.LINE1_ADDRESS;
+                        recieptObject.Addresse_Text_Line2 = Globals.LINE2_TELE;
+                        recieptObject.Addresse_Text_Line3 = Globals.LINE3_TELE2;
+                        recieptObject.Oeffenung_Text_Line1 = Globals.LINE4_OPENTIME;
                     }
-                    obj.Bestellung_Text = "Bestellung - " + BestellNr + " - " + System.DateTime.Now.ToShortDateString() + " " + System.DateTime.Now.ToShortTimeString();
-                    obj.KundenName_Text = KundenName;
-                    obj.idkunde = kundenreference;
-                    obj.KundenNr_Text = KundenTelefone;
-                    obj.KundenAddresse_Text = KundenAddresse;
-                    obj.KundenAddresse_Text2 = KundenPLZ + " " + KundenOrt;
-                    obj.Hinweise_Text = KundenHinweis;
-                    obj.MwSt7 = totalTax7;
-                    obj.MwSt19 = totalTax19;
+                    recieptObject.Bestellung_Text = "Bestellung - " + BestellNr + " - " + System.DateTime.Now.ToShortDateString() + " " + System.DateTime.Now.ToShortTimeString();
+                    recieptObject.KundenName_Text = KundenName;
+                    recieptObject.idkunde = kundenreference;
+                    recieptObject.KundenNr_Text = KundenTelefone;
+                    recieptObject.KundenAddresse_Text = KundenAddresse;
+                    recieptObject.KundenAddresse_Text2 = KundenPLZ + " " + KundenOrt;
+                    recieptObject.Hinweise_Text = KundenHinweis;
+                    recieptObject.MwSt7 = totalTax7;
+                    recieptObject.MwSt19 = totalTax19;
                     // Calculating Rabatt Zahl
                     Double Rabbatt_Zahl = (Convert.ToDouble(tbGesamt.Text) - (AnfahrtKosten + gesamt_pfand)) * Rabbatt / 100;
-                    obj.Rabatt = Rabbatt_Zahl;// in zahlen nicht in percentage Rabbatt;
-                    obj.Anfahrt_Kosten = AnfahrtKosten;
-                    obj.Gesamt_Betrag = Convert.ToDouble(tbGesamt.Text);
+                    recieptObject.Rabatt = Rabbatt_Zahl;// in zahlen nicht in percentage Rabbatt;
+                    recieptObject.Anfahrt_Kosten = AnfahrtKosten;
+                    recieptObject.Gesamt_Betrag = Convert.ToDouble(tbGesamt.Text);
                     // paper sizes
 
                     System.Drawing.Printing.PaperSize pkSize;
-                    for (int i = 0; i < obj.PrinterSettings.PaperSizes.Count; i++)
+                    for (int i = 0; i < recieptObject.PrinterSettings.PaperSizes.Count; i++)
                     {
-                        pkSize = obj.PrinterSettings.PaperSizes[i];
+                        pkSize = recieptObject.PrinterSettings.PaperSizes[i];
                         if (pkSize.PaperName.ToString() == "A5")
                         {
                             a5index = i;
                             break;
                         }
                     }
-                    if (obj.PrinterSettings.PaperSizes[a5index].PaperName == "A5")
-                        obj.DefaultPageSettings.PaperSize = obj.PrinterSettings.PaperSizes[a5index];
-                    obj.Print();
+                    if (recieptObject.PrinterSettings.PaperSizes[a5index].PaperName == "A5")
+                        recieptObject.DefaultPageSettings.PaperSize = recieptObject.PrinterSettings.PaperSizes[a5index];
+                    recieptObject.Print();
 
                     if (two_print)
                     {
-                        obj.Title_Text = "Küche";
-                        obj.Print();
+                        recieptObject.Title_Text = "Küche";
+                        recieptObject.Print();
                     }
                     this.Close();
                 }

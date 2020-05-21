@@ -25,7 +25,7 @@ namespace Restaurante
         {
 
             conn.Open();
-            listView1.Items.Clear();
+            lvBestellDetail.Items.Clear();
             string sql = "SELECT * From dbbari.Bestellung where RechnungNr=" + index + ";";
             cmd = new MySqlCommand(sql, conn);
             try
@@ -57,7 +57,7 @@ namespace Restaurante
                         item.SubItems.Add(verkaufpreis.ToString());
                         item.SubItems.Add((verkaufpreis * menge).ToString());
                         item.SubItems.Add(rdr["Mwst"].ToString());
-                        listView1.Items.Add(item);
+                        lvBestellDetail.Items.Add(item);
                     }
                     catch (Exception ex)
                     {
@@ -195,27 +195,27 @@ namespace Restaurante
         private void btnDrucken_Click(object sender, EventArgs e)
         {
             
-            RecieptPrint obj = new RecieptPrint(listView1.Items.Count);
-            string[] Artikel_Nummer = new string[listView1.Items.Count];
-            string[] Artikel_Text = new string[listView1.Items.Count];
-            double[] Artikel_Preis = new double[listView1.Items.Count];
-            int[] Artikel_Anzahl = new int[listView1.Items.Count];
-            for (int i = 0; i < listView1.Items.Count; i++)
+            RecieptPrint obj = new RecieptPrint(lvBestellDetail.Items.Count);
+            string[] Artikel_Nummer = new string[lvBestellDetail.Items.Count];
+            string[] Artikel_Text = new string[lvBestellDetail.Items.Count];
+            double[] Artikel_Preis = new double[lvBestellDetail.Items.Count];
+            int[] Artikel_Anzahl = new int[lvBestellDetail.Items.Count];
+            for (int i = 0; i < lvBestellDetail.Items.Count; i++)
             {
-                if (listView1.Items[i].SubItems[0].Text == "+" || listView1.Items[i].SubItems[0].Text == "-")
+                if (lvBestellDetail.Items[i].SubItems[0].Text == "+" || lvBestellDetail.Items[i].SubItems[0].Text == "-")
                 {
                     Artikel_Nummer[i] = "";
-                    Artikel_Text[i] = listView1.Items[i].SubItems[0].Text + " " + listView1.Items[i].SubItems[1].Text;
-                    Artikel_Preis[i] = Convert.ToDouble(listView1.Items[i].SubItems[3].Text);
-                    Artikel_Anzahl[i] = Convert.ToInt32(listView1.Items[i].SubItems[2].Text);
+                    Artikel_Text[i] = lvBestellDetail.Items[i].SubItems[0].Text + " " + lvBestellDetail.Items[i].SubItems[1].Text;
+                    Artikel_Preis[i] = Convert.ToDouble(lvBestellDetail.Items[i].SubItems[3].Text);
+                    Artikel_Anzahl[i] = Convert.ToInt32(lvBestellDetail.Items[i].SubItems[2].Text);
                 }
                 else
                 {
                     // add artikle to printReciept obj
-                    Artikel_Nummer[i] = listView1.Items[i].SubItems[0].Text;
-                    Artikel_Text[i] = listView1.Items[i].SubItems[1].Text;
-                    Artikel_Preis[i] = Convert.ToDouble(listView1.Items[i].SubItems[3].Text);
-                    Artikel_Anzahl[i] = Convert.ToInt32(listView1.Items[i].SubItems[2].Text);
+                    Artikel_Nummer[i] = lvBestellDetail.Items[i].SubItems[0].Text;
+                    Artikel_Text[i] = lvBestellDetail.Items[i].SubItems[1].Text;
+                    Artikel_Preis[i] = Convert.ToDouble(lvBestellDetail.Items[i].SubItems[3].Text);
+                    Artikel_Anzahl[i] = Convert.ToInt32(lvBestellDetail.Items[i].SubItems[2].Text);
                 }
             }
                 obj.Artikel_Nummer = Artikel_Nummer;

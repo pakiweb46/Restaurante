@@ -37,7 +37,7 @@
             this.label12 = new System.Windows.Forms.Label();
             this.btnDrucken = new System.Windows.Forms.Button();
             this.btnZuruck = new System.Windows.Forms.Button();
-            this.listView1 = new Restaurante.PrintableListView2();
+            this.lvBestellDetail = new Restaurante.PrintableListView2();
             this.columnHeader1 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader2 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.columnHeader3 = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
@@ -96,55 +96,56 @@
             this.label12.TabIndex = 29;
             this.label12.Text = "Gesamt Betrag:";
             // 
-            // button1
+            // btnDrucken
             // 
             this.btnDrucken.Location = new System.Drawing.Point(103, 492);
             this.btnDrucken.Margin = new System.Windows.Forms.Padding(4);
-            this.btnDrucken.Name = "button1";
+            this.btnDrucken.Name = "btnDrucken";
             this.btnDrucken.Size = new System.Drawing.Size(176, 34);
             this.btnDrucken.TabIndex = 35;
             this.btnDrucken.Text = "Drucken ";
             this.btnDrucken.UseVisualStyleBackColor = true;
             this.btnDrucken.Click += new System.EventHandler(this.btnDrucken_Click);
             // 
-            // button4
+            // btnZuruck
             // 
             this.btnZuruck.Location = new System.Drawing.Point(298, 492);
             this.btnZuruck.Margin = new System.Windows.Forms.Padding(4);
-            this.btnZuruck.Name = "button4";
+            this.btnZuruck.Name = "btnZuruck";
             this.btnZuruck.Size = new System.Drawing.Size(176, 34);
             this.btnZuruck.TabIndex = 36;
             this.btnZuruck.Text = "Zurück ";
             this.btnZuruck.UseVisualStyleBackColor = true;
             this.btnZuruck.Click += new System.EventHandler(this.btnZuruck_Click);
             // 
-            // listView1
+            // lvBestellDetail
             // 
-            this.listView1.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.lvBestellDetail.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
             this.columnHeader1,
             this.columnHeader2,
             this.columnHeader3,
             this.columnHeader4,
             this.columnHeader5,
             this.columnHeader12});
-            this.listView1.FitToPage = false;
-            this.listView1.FullRowSelect = true;
-            this.listView1.GridLines = true;
-            this.listView1.Location = new System.Drawing.Point(21, 25);
-            this.listView1.Margin = new System.Windows.Forms.Padding(4);
-            this.listView1.Name = "listView1";
-            this.listView1.Size = new System.Drawing.Size(890, 430);
-            this.listView1.summesatz = "";
-            this.listView1.TabIndex = 9;
-            this.listView1.TabStop = false;
-            this.listView1.Title = "";
-            this.listView1.Title2 = "";
-            this.listView1.Title3 = "";
-            this.listView1.TitleFont = new System.Drawing.Font("Arial", 12F);
-            this.listView1.TitleFont2 = new System.Drawing.Font("Arial", 12F);
-            this.listView1.TitleFont3 = new System.Drawing.Font("Arial", 12F);
-            this.listView1.UseCompatibleStateImageBehavior = false;
-            this.listView1.View = System.Windows.Forms.View.Details;
+            this.lvBestellDetail.FitToPage = false;
+            this.lvBestellDetail.FullRowSelect = true;
+            this.lvBestellDetail.GridLines = true;
+            this.lvBestellDetail.HideSelection = false;
+            this.lvBestellDetail.Location = new System.Drawing.Point(21, 25);
+            this.lvBestellDetail.Margin = new System.Windows.Forms.Padding(4);
+            this.lvBestellDetail.Name = "lvBestellDetail";
+            this.lvBestellDetail.Size = new System.Drawing.Size(890, 430);
+            this.lvBestellDetail.summesatz = "";
+            this.lvBestellDetail.TabIndex = 9;
+            this.lvBestellDetail.TabStop = false;
+            this.lvBestellDetail.Title = "";
+            this.lvBestellDetail.Title2 = "";
+            this.lvBestellDetail.Title3 = "";
+            this.lvBestellDetail.TitleFont = new System.Drawing.Font("Arial", 12F);
+            this.lvBestellDetail.TitleFont2 = new System.Drawing.Font("Arial", 12F);
+            this.lvBestellDetail.TitleFont3 = new System.Drawing.Font("Arial", 12F);
+            this.lvBestellDetail.UseCompatibleStateImageBehavior = false;
+            this.lvBestellDetail.View = System.Windows.Forms.View.Details;
             // 
             // columnHeader1
             // 
@@ -190,7 +191,7 @@
             this.Controls.Add(this.tbTotalMwst);
             this.Controls.Add(this.tbGesamt);
             this.Controls.Add(this.label12);
-            this.Controls.Add(this.listView1);
+            this.Controls.Add(this.lvBestellDetail);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmBestellungDetails";
             this.Text = "Bestellung Detailiert";
@@ -202,7 +203,7 @@
 
         #endregion
 
-        private PrintableListView2 listView1;
+        private PrintableListView2 lvBestellDetail;
         private System.Windows.Forms.ColumnHeader columnHeader1;
         private System.Windows.Forms.ColumnHeader columnHeader2;
         private System.Windows.Forms.ColumnHeader columnHeader3;
